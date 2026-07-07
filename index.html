@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eclatineers | June 2025 | Department of English | SRM VEC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDF5E6;
+            --cream-light: #FFFAF0;
+            --cream-dark: #F5DEB3;
+            --gold: #D4AF37;
+            --gold-light: #E6C87E;
+            --gold-dark: #B8860B;
+            --brown: #8B4513;
+            --brown-light: #A0522D;
+            --text-dark: #2C1810;
+            --text-medium: #4A3728;
+            --text-light: #6B5744;
+            --accent-red: #8B0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%);
+            padding: 40px 0 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="0.5" fill="rgba(139,69,19,0.1)"/><circle cx="75" cy="75" r="0.5" fill="rgba(139,69,19,0.1)"/><circle cx="50" cy="10" r="0.3" fill="rgba(139,69,19,0.08)"/><circle cx="10" cy="60" r="0.4" fill="rgba(139,69,19,0.08)"/><circle cx="90" cy="40" r="0.3" fill="rgba(139,69,19,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .college-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .magazine-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+        }
+
+        .magazine-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--brown);
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .issue-info {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            position: relative;
+            z-index: 1;
+        }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ornament-line {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .ornament-diamond {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* Cover Image Section */
+        .cover-section {
+            position: relative;
+            margin: -20px 0 30px;
+            padding: 0 20px;
+        }
+
+        .cover-image-container {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.2);
+            border: 3px solid var(--gold);
+        }
+
+        .cover-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cover-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(44, 24, 16, 0.8), transparent);
+            padding: 30px 20px 20px;
+        }
+
+        .cover-caption {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--cream);
+            line-height: 1.5;
+        }
+
+        .cover-photographer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: var(--gold-light);
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* Introduction Section */
+        .intro-section {
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--text-medium);
+            margin-bottom: 20px;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.1));
+            border-left: 4px solid var(--gold);
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-term {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-bottom: 5px;
+        }
+
+        .definition-pronunciation {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .definition-text {
+            font-size: 16px;
+            color: var(--text-medium);
+            line-height: 1.6;
+        }
+
+        /* Table of Contents */
+        .toc-section {
+            padding: 30px 0 40px;
+            background: linear-gradient(to bottom, var(--cream), var(--cream-light));
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 5px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .toc-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .toc-link:hover {
+            background: rgba(212, 175, 55, 0.08);
+            transform: translateX(5px);
+        }
+
+        .toc-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold);
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .toc-content {
+            flex-grow: 1;
+        }
+
+        .toc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+        }
+
+        .toc-meta {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+
+        .toc-arrow {
+            font-size: 18px;
+            color: var(--gold);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover .toc-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Article Sections */
+        .article-section {
+            padding: 40px 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .article-category {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .author-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--cream);
+            margin-right: 15px;
+        }
+
+        .author-info {
+            flex-grow: 1;
+        }
+
+        .author-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .author-bio {
+            font-size: 13px;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-medium);
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+        }
+
+        .article-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-style: italic;
+            color: var(--gold-dark);
+            text-align: center;
+            padding: 30px 20px;
+            margin: 30px 0;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .article-quote::before,
+        .article-quote::after {
+            content: '"';
+            font-size: 60px;
+            color: var(--gold);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .article-quote::before {
+            top: 10px;
+            left: 10px;
+        }
+
+        .article-quote::after {
+            bottom: -20px;
+            right: 10px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.15));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--gold-dark);
+            margin-bottom: 15px;
+        }
+
+        .highlight-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlight-box li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 17px;
+        }
+
+        .highlight-box li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 12px;
+        }
+
+        /* Poetry Section */
+        .poetry-section {
+            padding: 40px 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .poetry-content {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            line-height: 1.8;
+            color: var(--text-medium);
+            font-style: italic;
+        }
+
+        .poetry-content p {
+            margin-bottom: 15px;
+        }
+
+        .poetry-content .stanza {
+            margin-bottom: 25px;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            border: 2px solid var(--gold);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(44, 24, 16, 0.8), transparent);
+            padding: 20px 10px 10px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            color: var(--cream);
+            font-style: italic;
+        }
+
+        /* Cryptic Clues Section */
+        .cryptic-section {
+            padding: 40px 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            background: linear-gradient(to bottom, var(--cream), var(--cream-light));
+        }
+
+        .clue-card {
+            background: white;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .clue-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.12);
+        }
+
+        .clue-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .clue-text {
+            font-size: 17px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .clue-hint {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Riddles Section */
+        .riddle-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.1));
+            border-left: 4px solid var(--gold);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .riddle-text {
+            font-size: 18px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .riddle-answer {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: var(--gold-dark);
+            font-weight: 600;
+            display: none;
+        }
+
+        .riddle-answer.show {
+            display: block;
+        }
+
+        .riddle-btn {
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold-dark);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .riddle-btn:hover {
+            background: var(--gold);
+            color: var(--cream);
+        }
+
+        /* Patrons Section */
+        .patrons-section {
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%);
+        }
+
+        .patron-card {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .patron-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--cream);
+            border: 3px solid var(--cream);
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+        }
+
+        .patron-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .patron-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            color: var(--gold-dark);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .patron-bio {
+            font-size: 15px;
+            color: var(--text-medium);
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Editorial Board */
+        .editorial-section {
+            padding: 40px 0;
+        }
+
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .editor-card {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .editor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--cream);
+            border: 2px solid var(--cream);
+        }
+
+        .editor-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .editor-role {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%);
+            color: var(--cream);
+            padding: 40px 0 30px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .footer-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--cream);
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .footer-link {
+            color: var(--cream);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .footer-copyright {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-ornament {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 20px auto;
+            opacity: 0.5;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: var(--gold);
+            color: var(--cream);
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: var(--gold-dark);
+            transform: translateY(-3px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--cream);
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.15);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--gold-dark);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn span::before,
+        .mobile-menu-btn span::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--gold-dark);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn span::before {
+            top: -6px;
+        }
+
+        .mobile-menu-btn span::after {
+            bottom: -6px;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--cream);
+            z-index: 1000;
+            padding: 80px 30px 30px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--gold-dark);
+        }
+
+        .mobile-menu-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+        }
+
+        .mobile-menu-list {
+            list-style: none;
+        }
+
+        .mobile-menu-item {
+            margin-bottom: 5px;
+        }
+
+        .mobile-menu-link {
+            display: block;
+            padding: 12px 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-link:hover {
+            color: var(--gold-dark);
+            padding-left: 15px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .magazine-title {
+                font-size: 42px;
+            }
+
+            .article-title {
+                font-size: 30px;
+            }
+
+            .poetry-content {
+                font-size: 18px;
+            }
+
+            .editorial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .mobile-menu-btn,
+            .mobile-menu,
+            .back-to-top {
+                display: none !important;
+            }
+
+            .header {
+                padding: 20px 0;
+            }
+
+            .article-section,
+            .poetry-section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Menu">
+        <span></span>
+    </button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close Menu">✕</button>
+        <div class="mobile-menu-title">Contents</div>
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item"><a href="#cover" class="mobile-menu-link">Cover Story</a></li>
+            <li class="mobile-menu-item"><a href="#why-every-engineering-student-should-have-a-job" class="mobile-menu-link">Why Every Engineering Student Should Have a Job</a></li>
+            <li class="mobile-menu-item"><a href="#thinking-in-the-classroom" class="mobile-menu-link">Thinking in the Classroom</a></li>
+            <li class="mobile-menu-item"><a href="#the-ideal-student" class="mobile-menu-link">The Ideal Student</a></li>
+            <li class="mobile-menu-item"><a href="#ai-in-the-classroom" class="mobile-menu-link">AI in the Classroom</a></li>
+            <li class="mobile-menu-item"><a href="#love-for-my-mother" class="mobile-menu-link">Love for My Mother</a></li>
+            <li class="mobile-menu-item"><a href="#campus-chronicles" class="mobile-menu-link">Campus Chronicles</a></li>
+            <li class="mobile-menu-item"><a href="#the-missed-word" class="mobile-menu-link">The Missed Word</a></li>
+            <li class="mobile-menu-item"><a href="#riddles" class="mobile-menu-link">Riddles</a></li>
+            <li class="mobile-menu-item"><a href="#symphony-of-sight-and-soul" class="mobile-menu-link">A Symphony of Sight and Soul</a></li>
+            <li class="mobile-menu-item"><a href="#patrons" class="mobile-menu-link">Patrons</a></li>
+            <li class="mobile-menu-item"><a href="#editorial-board" class="mobile-menu-link">Editorial Board</a></li>
+        </ul>
+    </div>
+
+    <!-- Header Section -->
+    <header class="header" id="cover">
+        <div class="container">
+            <div class="college-name">SRM Valliammai Engineering College</div>
+            <h1 class="magazine-title">Eclatineers</h1>
+            <div class="ornament">
+                <div class="ornament-line"></div>
+                <div class="ornament-diamond"></div>
+                <div class="ornament-line"></div>
+            </div>
+            <div class="magazine-subtitle">Department of English</div>
+            <div class="issue-info">June 2025 Issue</div>
+        </div>
+    </header>
+
+    <!-- Cover Image Section -->
+    <section class="cover-section">
+        <div class="container">
+            <div class="cover-image-container">
+                <img src="https://picsum.photos/seed/sunset-tower/800/560.jpg" alt="Sunset with Mobile Tower" class="cover-image">
+                <div class="cover-overlay">
+                    <div class="cover-caption">"Visible éclat. Invisible engineer. One stuns, the other signals."</div>
+                    <div class="cover-photographer">PHOTOGRAPH BY AARATHI T</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="intro-section">
+        <div class="container">
+            <p class="intro-text">
+                VEC Eclatineers was created with the objective of providing a space to foster creativity. We aim at multifaceted development of our students. From writing, sketching, poetry to digital art we give our students a platform to showcase their brilliance.
+            </p>
+            
+            <div class="definition-box">
+                <div class="definition-term">Eclatineers</div>
+                <div class="definition-pronunciation">/ˌek-lə-ˈnīrz/ (rhymes with Engineers!)</div>
+                <div class="definition-text">
+                    A fusion of éclat and engineers, symbolizing a brilliant expression of technical and creative excellence! The term was coined by blending "eclat" (brilliance, dazzling effect) and "engineers" (problem-solvers who apply scientific principles to real-world challenges).
+                </div>
+            </div>
+
+            <p class="intro-text">
+                Our magazine thus intends on aiding our students in their process of self-exploration. Here we offer a glimpse into the magic that erupts when technology meets arts.
+            </p>
+        </div>
+    </section>
+
+    <!-- Table of Contents -->
+    <section class="toc-section" id="toc">
+        <div class="container">
+            <h2 class="section-title">In This Issue</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#why-every-engineering-student-should-have-a-job" class="toc-link">
+                        <div class="toc-number">01</div>
+                        <div class="toc-content">
+                            <div class="toc-title">Why Every Engineering Student Should Have a Job</div>
+                            <div class="toc-meta">MUHAMMAD SIDDHIQ J • COVER STORY</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#thinking-in-the-classroom" class="toc-link">
+                        <div class="toc-number">02</div>
+                        <div class="toc-content">
+                            <div class="toc-title">Thinking in the Classroom</div>
+                            <div class="toc-meta">RAGAMALIKA L R • POETRY & CRYPTIC CLUES</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#the-ideal-student" class="toc-link">
+                        <div class="toc-number">03</div>
+                        <div class="toc-content">
+                            <div class="toc-title">The Ideal Student (According to Society)</div>
+                            <div class="toc-meta">CASSANDRA MARIA WILTSHIRE • COLUMN</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#ai-in-the-classroom" class="toc-link">
+                        <div class="toc-number">04</div>
+                        <div class="toc-content">
+                            <div class="toc-title">AI in the Classroom</div>
+                            <div class="toc-meta">ANESH G J • OPINION</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#love-for-my-mother" class="toc-link">
+                        <div class="toc-number">05</div>
+                        <div class="toc-content">
+                            <div class="toc-title">Love for My Mother</div>
+                            <div class="toc-meta">SANTHOSH U K • POETRY</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#campus-chronicles" class="toc-link">
+                        <div class="toc-number">06</div>
+                        <div class="toc-content">
+                            <div class="toc-title">Campus Chronicles: A Gentle Roast</div>
+                            <div class="toc-meta">MATHESH N • ROAST</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#the-missed-word" class="toc-link">
+                        <div class="toc-number">07</div>
+                        <div class="toc-content">
+                            <div class="toc-title">The Missed Word</div>
+                            <div class="toc-meta">THANISHA T • POETRY</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#riddles" class="toc-link">
+                        <div class="toc-number">08</div>
+                        <div class="toc-content">
+                            <div class="toc-title">Riddles</div>
+                            <div class="toc-meta">NANDHIKA DHARSHINI R • RIDDLES</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#symphony-of-sight-and-soul" class="toc-link">
+                        <div class="toc-number">09</div>
+                        <div class="toc-content">
+                            <div class="toc-title">A Symphony of Sight and Soul</div>
+                            <div class="toc-meta">AARATHI T • LINES & LENSES</div>
+                        </div>
+                        <div class="toc-arrow">→</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Article 1: Why Every Engineering Student Should Have a Job -->
+    <section class="article-section" id="why-every-engineering-student-should-have-a-job">
+        <div class="container">
+            <div class="article-category">Cover Story</div>
+            <h2 class="article-title">Why Every Engineering Student Should Have a Job</h2>
+            <div class="article-author">
+                <div class="author-avatar">MS</div>
+                <div class="author-info">
+                    <div class="author-name">Muhammad Siddhiq J</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>I work part-time, and honestly, I think every student should do it too. It's not just about earning money, it's about learning about Life. Many students say that they don't have the time to do all the work given in college but all of us know that that is not true. In many ways, it's been more educational than some of my actual classes. And I think more students (and maybe teachers too) should be talking about that.</p>
+                
+                <div class="article-quote">"Every hour I work, every step I take, I carry the weight of my dreams and the love of those I hold close"</div>
+                
+                <p>When I tell people that I am working a part-time job, they assume it is about money. Yes, it is about money but it is much more than that.</p>
+                
+                <p>It is not about earning, it is also about learning about life. The life lessons I have learnt when I started working are more valuable than the money I have earned so far. The first time I realized how long it takes to earn enough for a night out with friends, it hit me hard that money isn't just numbers on Google Pay. When you work for your income, every rupee has value. You begin budgeting and start calculating how much money and work it takes to earn that.</p>
+
+                <div class="highlight-box">
+                    <h3>LEARN LIFE LESSONS, EARN MONEY TOO!</h3>
+                </div>
+
+                <p>I work in a clothing store. Even though it is run by my relative, and many of my co-workers are my extended family, it is not easy because the expectations are actually higher. I have to constantly earn my place through effort and keep proving my reliability.</p>
+                
+                <p>This job is physically and mentally demanding. I'm on my feet most of the day, managing stock, assisting customers, and staying alert from morning till night. I started off earning ₹400 a day, and now I earn ₹600 for a full day and ₹350 for a half day. The earnings may seem modest, but the experience is priceless.</p>
+                
+                <p>There were times when I wasn't fully focused at work. I'd get distracted sometimes by pending college tasks, sometimes just by fatigue. And that's when mistakes happen. I forgot prices, mis-arranged items, or unintentionally ignored a customer. These weren't just small slip-ups. They were wake-up calls. At first, I felt defeated. I even wondered if I was trying to do too much.</p>
+                
+                <p>But those moments became turning points. They taught me a powerful truth:</p>
+                
+                <div class="article-quote">"Focus is a form of respect" for the job, for the people around me, and for my own growth.</div>
+                
+                <p>I started learning from my mistakes, owning them, and improving bit by bit.</p>
+
+                <div class="highlight-box">
+                    <h3>STOP TAKING TIME FOR GRANTED</h3>
+                    <p>Balancing work and college forces you to actually manage time properly. Instead of spreading an assignment for one whole week and complaining about how difficult it is, we have to try to cram it in the time that we get. There is no time to waste asking "doubts" about the assignments to our friends and then just chatting about something else. Every minute counts. You plan your day with no time to waste - class in the morning, work in the evening, study at night.</p>
+                </div>
+
+                <p>Others spend hours scrolling on Instagram and then wondering why they don't have time to do their assignments. They also don't do their assignments and they don't remember the time they spent on Instagram also.</p>
+                
+                <p>Working part-time has helped me grow so much and has taught me skills and values that syllabus alone could not have taught me.</p>
+                
+                <div class="highlight-box">
+                    <h3>Key Skills & Values Gained:</h3>
+                    <ul>
+                        <li>Time Management</li>
+                        <li>Discipline</li>
+                        <li>Responsibility</li>
+                        <li>Patience</li>
+                        <li>Communication</li>
+                        <li>Self-Awareness</li>
+                    </ul>
+                </div>
+
+                <p>If you want to learn these skills and values and in addition to that, gain confidence, resilience, grit and different perspectives, you have to start working part-time immediately!</p>
+                
+                <p>Yes, it's tiring. Yes, you'll make mistakes. But those struggles build character. You will be in a different league, both personally and professionally!</p>
+                
+                <p>Working has taught me that education doesn't end at the classroom door, it continues through every interaction, every mistake, and every day you choose to grow!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 2: Thinking in the Classroom -->
+    <section class="poetry-section" id="thinking-in-the-classroom">
+        <div class="container">
+            <div class="article-category">Poetry & Cryptic Clues</div>
+            <h2 class="article-title">Thinking in the Classroom</h2>
+            <div class="article-author">
+                <div class="author-avatar">RL</div>
+                <div class="author-info">
+                    <div class="author-name">Ragamalika L R</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="poetry-content">
+                <div class="stanza">
+                    <p>ENGLISH class: A wondrous land!</p>
+                    <p>The place where joy and happiness bloom,</p>
+                    <p>That fills the cheerful classroom.</p>
+                    <p>To every class, professors enter,</p>
+                    <p>Like cheerful mentors at the centre.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>Not just grammar but ideas glow,</p>
+                    <p>It makes our curious minds to blow.</p>
+                    <p>With cryptic clues we love to play,</p>
+                    <p>Language found in slang heist, say!</p>
+                    <p>Twisting words in a clever way,</p>
+                    <p>Letting riddles brighten our day.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>Riddles And Games Are Made And Loved,</p>
+                    <p>In Knowledge Acquiring, much beloved!</p>
+                    <p>"Think beyond the ink," we say,</p>
+                    <p>"Let your thoughts light up the way."</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>Writing letters, we make mistakes,</p>
+                    <p>We fix them all for learning's sake.</p>
+                    <p>We speak up indeed very bold,</p>
+                    <p>With confidence that our teachers hold.</p>
+                    <p>We rhyme, we write, we shape, we mould,</p>
+                    <p>Ideas fresh and thoughts untold.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>They guide us up life's learning trek,</p>
+                    <p>Scholars Reach the Mountain Via Every Check.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>The English class, a sacred ground,</p>
+                    <p>Where all the magic can be found.</p>
+                    <p>The English department is the place we love,</p>
+                    <p>To each teacher hats off and bows from above.</p>
+                    <p>In English class, where wonders brew,</p>
+                    <p>The answer's simple - forty-two!</p>
+                </div>
+            </div>
+
+            <div class="cryptic-section" style="padding: 30px 0 0; border-top: 1px solid rgba(212, 175, 55, 0.3); margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; text-align: center;">Cryptic Clues</h3>
+                
+                <div class="clue-card">
+                    <div class="clue-number">Clue 1</div>
+                    <div class="clue-text">Tricky Initially. Measure Everything! (4)</div>
+                    <div class="clue-hint">Hint: Initial letters</div>
+                </div>
+                
+                <div class="clue-card">
+                    <div class="clue-number">Clue 2</div>
+                    <div class="clue-text">Harmful in a lab - less than angled number Professor head (4)</div>
+                    <div class="clue-hint">Hint: Hidden word + abbreviation</div>
+                </div>
+                
+                <div class="clue-card">
+                    <div class="clue-number">Clue 3</div>
+                    <div class="clue-text">Tips: Fully Observe. Calmly Understand Situations. (5)</div>
+                    <div class="clue-hint">Hint: Initial letters</div>
+                </div>
+                
+                <div class="clue-card">
+                    <div class="clue-number">Clue 4</div>
+                    <div class="clue-text">Near, squad confused. Wasting Time (8)</div>
+                    <div class="clue-hint">Hint: Anagram</div>
+                </div>
+                
+                <div class="clue-card">
+                    <div class="clue-number">Clue 5</div>
+                    <div class="clue-text">If I sent cleverly. Said effective. (9)</div>
+                    <div class="clue-hint">Hint: Anagram</div>
+                </div>
+                
+                <div class="clue-card">
+                    <div class="clue-number">Clue 6</div>
+                    <div class="clue-text">I delay mostly confused, lazy. (4)</div>
+                    <div class="clue-hint">Hint: Anagram</div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 25px;">
+                    <h3>Solutions to Embedded Clues:</h3>
+                    <ul>
+                        <li><strong>Language found in slang heist, say! (7)</strong> - ENGLISH (Unscrambling 'slang heist' gives English leaving behind three letters SAT)</li>
+                        <li><strong>Riddles And Games Are Made And Loved, In Knowledge Acquiring, much beloved! (10)</strong> - RAGAMALIKA (Initial letters give the author's name)</li>
+                        <li><strong>Scholars Reach the Mountain Via Every Check. (3, 3)</strong> - SRM VEC (Initial letters give the college name)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 3: The Ideal Student -->
+    <section class="article-section" id="the-ideal-student">
+        <div class="container">
+            <div class="article-category">Column</div>
+            <h2 class="article-title">The Ideal Student (According to Society)</h2>
+            <div class="article-author">
+                <div class="author-avatar">CW</div>
+                <div class="author-info">
+                    <div class="author-name">Cassandra Maria Wiltshire</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>An Ideal Student wakes up at 3.00 a.m and starts the day with the books, aces every test without breaking a sweat, leads every club and volunteers on weekends.</p>
+                
+                <p>Society loves this fantasy because it keeps you chasing an invisible line. Straight A's, no complaints, dress neatly. That "ideal" student is a myth. It is designed to make you feel less-than if you don't fit the mould.</p>
+                
+                <p>Being flawless doesn't mean life is never going to hit you. It will. You may fall but you will eventually rise up. But is this practical in our society? No. Because according to society, once you fall, you will never rise.</p>
+                
+                <div class="article-quote">"Society cheers toppers but forgets the ones who fought battles just to show up."</div>
+                
+                <p>Our hearts will always crave to hear this one sentence, "You've tried your best." But that will never be the scenario. People won't stop judging. No matter how much you give, there will always be someone expecting more. Be who you are, because that's what matters the most.</p>
+                
+                <p>But let's be honest. In a system built to reward obedience over originality, it's easier said than done. We're taught to follow, not question. Taught to memorize, not understand, and if you even think about colouring outside the box, you're labelled as a rebel.</p>
+                
+                <p>We live in a world that demands perfection from students, but barely gives them space to breathe. You're expected to be disciplined like a monk, be productive every minute like machines and be emotionally bulletproof like a superhero.</p>
+                
+                <div class="highlight-box">
+                    <ul>
+                        <li>One mistake? You're careless.</li>
+                        <li>One low grade? You're slacking off.</li>
+                        <li>One breakdown? You're overreacting.</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-style: italic;">Tired of hearing these things, aren't you?</p>
+                </div>
+                
+                <p>Some people would preach about mental health but sometimes it's the same people calling you weak behind your back. "Hypocrisy at its peak".</p>
+                
+                <p>Society claps for toppers but forgets the ones who fought battles just to show up. We're expected to show up, follow the line and blend in, not because it's good for you, but because it's easier to control someone who is failing.</p>
+                
+                <p>If all these expectations have crushed you, drained you, or made you doubt yourself - then congratulations. Society has made you forget who you really are. But if you've held on, even just a little, protect your peace and fight back in quiet ways…</p>
+                
+                <p>Then guess what?</p>
+                
+                <p>You've already won. So stop trying to be flawless. You're human. You're allowed to mess up, take breaks.</p>
+                
+                <div class="article-quote">"You are not God to be perfect."</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 4: AI in the Classroom -->
+    <section class="article-section" id="ai-in-the-classroom">
+        <div class="container">
+            <div class="article-category">Opinion</div>
+            <h2 class="article-title">AI in the Classroom</h2>
+            <div class="article-author">
+                <div class="author-avatar">AG</div>
+                <div class="author-info">
+                    <div class="author-name">Anesh G J</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>Take a look at the average Indian classroom. We cant use phones or laptops (AI) in class and if we do, it would be considered 'cheating'. Whether it's a government school in a rural village or a private institution in a metro city, most students are still expected to sit quietly, copy notes, memorize answers, and spit them out in exams.</p>
+                
+                <p>Now, imagine giving these same students access to an AI that could explain Newton's Laws in Tamil, Malayalam, or English. One that could patiently repeat a concept five times without getting irritated. One that adjusts based on whether you're a visual learner or someone who understands better through examples from cricket or movies.</p>
+                
+                <p>That's not cheating. That's learning.</p>
+                
+                <div class="article-quote">"AI doesn't get tired. It doesn't scold. It doesn't have bias."</div>
+                
+                <p>Students are taught to memorize facts and not learn. But real learning comes from questioning, making mistakes, and figuring things out. AI could be the perfect partner for that journey. It doesn't get tired. It doesn't scold. It doesn't have bias. Whether you're from an English-medium CBSE school or a Government school, AI could provide personalized learning that meets you exactly where you are.</p>
+                
+                <p>In India, where access to good teachers and quality resources is unequal, AI can be the great leveler. A college student in a rural college could get the same (or better) learning environment that a student in IITs gets. That's revolutionary. Why fear that?</p>
+                
+                <p>If AI is the future, we should stop treating it like a problem. We should bring it into every classroom. Not just sometimes. Not just for the top students. Everyone should learn how to use it.</p>
+                
+                <div class="highlight-box">
+                    <h3>The Calculator Analogy</h3>
+                    <p>Just like how without calculators, we can't enter Maths classrooms, without AI, we shouldn't be allowed inside all the classrooms. Because in the real world, AI is already being used everywhere. People use it to write emails, make presentations, check grammar, and write code.</p>
+                </div>
+                
+                <p>Yes, AI has limits. Sometimes it makes mistakes. Sometimes it gives wrong answers. This is why students must learn how to use it wisely. We should learn to double-check what AI says. We should learn to ask good questions.</p>
+                
+                <p>Right now, many people are scared they will lose their jobs because of AI. But avoiding AI won't help. The best way to deal with it is to learn how to use it.</p>
+                
+                <p>If we don't learn it in college, when will we learn it?</p>
+                
+                <p>We are not just preparing for exams.</p>
+                
+                <p>We are preparing for life.</p>
+                
+                <p>And in life today, knowing AI is not a choice.</p>
+                
+                <p>It's a must.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 5: Love for My Mother -->
+    <section class="poetry-section" id="love-for-my-mother">
+        <div class="container">
+            <div class="article-category">Poetry</div>
+            <h2 class="article-title">Love for My Mother</h2>
+            <div class="article-author">
+                <div class="author-avatar">SU</div>
+                <div class="author-info">
+                    <div class="author-name">Santhosh U K</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="poetry-content">
+                <div class="stanza">
+                    <p>Look how far we have come</p>
+                    <p>Form dad's scooter</p>
+                    <p>To government bus</p>
+                    <p>From mom's cooking</p>
+                    <p>To kettle maggie packets</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>From washing machine</p>
+                    <p>To washing clothes on our own</p>
+                    <p>From holding hands</p>
+                    <p>To holding phones</p>
+                    <p>From sleeping on her shoulder</p>
+                    <p>To video calling her</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>From fighting with our sibling</p>
+                    <p>To missing their bickering</p>
+                    <p>Form crying in front of them</p>
+                    <p>To holding our tears</p>
+                    <p>From bunking together</p>
+                    <p>To attending classes alone</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>Look how far we have come</p>
+                    <p>So much far…</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid rgba(212, 175, 55, 0.3); padding-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; text-align: center;">Journeying and Becoming</h3>
+                
+                <div class="poetry-content">
+                    <div class="stanza">
+                        <p>As first</p>
+                        <p>In the deep blues</p>
+                        <p>When the darkness surrounds</p>
+                        <p>The whole world went</p>
+                        <p>Silent</p>
+                        <p>Still I can hear your voice</p>
+                        <p>Calling out for me</p>
+                        <p>Crying out for me</p>
+                    </div>
+                    
+                    <div class="stanza">
+                        <p>As the cold waves paused my beats</p>
+                        <p>I can still hear yours</p>
+                        <p>As I was slipping to my end</p>
+                        <p>My corners craved a Cry</p>
+                        <p>Knowing</p>
+                        <p>That you will always love me</p>
+                        <p>As first</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 6: Campus Chronicles -->
+    <section class="article-section" id="campus-chronicles">
+        <div class="container">
+            <div class="article-category">Roast</div>
+            <h2 class="article-title">Campus Chronicles: A Gentle Roast</h2>
+            <div class="article-author">
+                <div class="author-avatar">MN</div>
+                <div class="author-info">
+                    <div class="author-name">Mathesh N</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>As a Cyber Security student, I am training to scan systems for patterns, vulnerabilities, and unusual behaviour. Every department has its own patterns not just in their syllabus, but in the way students talk, chill, and even panic before exams!</p>
+                
+                <p>These light-hearted observations of my fellow first year students aren't meant to offend. They're only notes from the Cyber Security system part of the system defending the entire system! It is written with humour, curiosity, and a lot of affection. After all, if we can debug code, we can debug culture too.</p>
+
+                <div class="highlight-box">
+                    <h3>CSE</h3>
+                    <p>This class has the energy that everyone thinks they're the next Elon Musk, but don't even know why some websites won't open. If it doesn't load, they just say: "Server down dude." But hey future Elon Musks might be getting training here.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>IT</h3>
+                    <p>If CSE is the elder brother suffering in silence, then IT is the chill younger sibling living life on easy mode. They enjoy more freedom, less stress, and a syllabus that's 80% copy-paste from CSE but with all the complex stuff conveniently omitted. Still top in the exams. Future Elon Musks' siblings might be getting training here.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>ECE</h3>
+                    <p>Forever confused between circuits. Can't even draw a diagram to connect a basic night lamp. They think they can fix any electronic device but don't know the difference between a resistor and resistivity. Still, they're the creative problem solvers who somehow make those confusing circuits actually work.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>EIE</h3>
+                    <p>No one knows what they actually do. Not even them. So I also don't know. But I think they are secretly solving all the World's problems.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>EEE</h3>
+                    <p>Professional wire inspectors who can't even explain how a transformer works. They'll shout, "Don't touch that da, live wire!" Bruh, that wire isn't even plugged into the circuit. Every lab ends with more internal shock than electrical shock. But when it comes to real work, they're the backbone of every campus project, giving excellent idEEEas!</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>MECHANICAL</h3>
+                    <p>99% guys? Hell feels like heaven compared to their classroom. Yet these warriors proudly roar, "Mech dhaan da gethu!" and bring roaring machines to life. Hats off!</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>CIVIL</h3>
+                    <p>They say, "I'll build your house one day." Bruh, first draw the EG diagram properly. But credit where it's due they're the ones who turn blueprints into reality, brick by brick.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>AGRI</h3>
+                    <p>The Agri gang? Forever explaining that yes, it's a real engineering course. They'll say, "Soil la strength iruku, but semester la illa." But behind the jokes, they're the ones making farming smarter, easier, and more sustainable.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>AIDS</h3>
+                    <p>These folks think they're building the next Jarvis, Iron Man's AI assistant, no less. They spend half their time Googling "How to create AI like Jarvis" and the other half asking ChatGPT the same question. And ChatGPT? It's like, "Who the hell are you guys?" But hey, their hype is real they'll be the ones probably running campus one day with their AI overlords.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>MDE</h3>
+                    <p>These guys are the tech doctors on campus. If your device acts weird, they'll switch it off and on. Do you think they know how an oscilloscope works? Still, when campus tech needs a cure, they're the real heroes in the lab coat.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>CYBER SECURITY</h3>
+                    <p>My department at last! We are expected to wear hoodies, dark shades, and carry a laptop like we're about to hack NASA. Whenever we open a website, we imagine "Access Granted" flashing in green font with numbers raining down Matrix-style.</p>
+                    <p>Reality? 99% of the time we're Googling "What is Cyber Security?"</p>
+                    <p>Laptop? Dead. Internet? Gone. Confidence? 404 Error.</p>
+                    <p>Still, we'll warn you "Bro, don't click that link, it's phishing!"</p>
+                    <p>Like, bruh, we can't even open a Zoom link without technical issues.</p>
+                    <p>But hey, one day, we would be the Guardians of the Cyber Galaxy. Legends in the making.</p>
+                </div>
+
+                <div class="article-quote">"No matter which department you belong to, just know that your branch has its own spark, its own quirks, and its own kind of brilliance."</div>
+
+                <p>Conclusion: Some of us code, some connect circuits, some work with soil and concrete, and all of us work with AI. And together, we make this crazy, chaotic, and unforgettable college universe.</p>
+                
+                <p>SRM Valliammai - Many Minds and one heart for an amazing future!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 7: The Missed Word -->
+    <section class="poetry-section" id="the-missed-word">
+        <div class="container">
+            <div class="article-category">Poetry</div>
+            <h2 class="article-title">The Missed Word</h2>
+            <div class="article-author">
+                <div class="author-avatar">TT</div>
+                <div class="author-info">
+                    <div class="author-name">Thanisha T</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="poetry-content">
+                <div class="stanza">
+                    <p>As I first saw you, not a spark, but a storm.</p>
+                    <p>A storm my eyes held, as silence stood between.</p>
+                    <p>A year passed, the storm turned to a settled calm.</p>
+                    <p>Insta-windows opened,</p>
+                    <p>Where misunderstandings blossomed.</p>
+                    <p>Days went smoothly, sharing each other's story.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>One day, a leg injury then revealed us,</p>
+                    <p>Heart to heart.</p>
+                    <p>Then I told him, "I love you"</p>
+                    <p>The missed word "friend" made him confess.</p>
+                    <p>The quiet shock in me,</p>
+                    <p>Spoke words I hadn't meant.</p>
+                    <p>My fingers flew,</p>
+                    <p>"Just affection" I conveyed.</p>
+                    <p>"No," he declared, "what I feel is real."</p>
+                    <p>That moment set aside,</p>
+                    <p>Our friendship then resumed.</p>
+                    <p>Silently, my heart began to sway.</p>
+                    <p>The boy I never dreamt of,</p>
+                    <p>Unexpectedly came to me.</p>
+                    <p>And treated mine as his own, with love so deep.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>Smooth days closed,</p>
+                    <p>A sudden storm came.</p>
+                    <p>Our path diverged,</p>
+                    <p>By his old crush's hold.</p>
+                    <p>The moment showed.</p>
+                    <p>Our journey couldn't last.</p>
+                    <p>I saw his smile,</p>
+                    <p>I heard his whispered tales,</p>
+                    <p>But walked away, leaving him forlorn.</p>
+                    <p>The promise vanished,</p>
+                    <p>And the dream, just a faded plea.</p>
+                </div>
+                
+                <div class="stanza">
+                    <p>I sought to erase,</p>
+                    <p>But memories remained.</p>
+                    <p>Forever in my heart,</p>
+                    <p>I only wish him well.</p>
+                    <p>That future's vision,</p>
+                    <p>It never truly faded.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 8: Riddles -->
+    <section class="article-section" id="riddles">
+        <div class="container">
+            <div class="article-category">Riddles</div>
+            <h2 class="article-title">Riddles</h2>
+            <div class="article-author">
+                <div class="author-avatar">ND</div>
+                <div class="author-info">
+                    <div class="author-name">Nandhika Dharshini R</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+            
+            <div class="riddle-card">
+                <div class="riddle-text">
+                    You leave your laptop all unlocked,<br>
+                    Bathroom break. Now friends are shocked!<br>
+                    They post weird stuff and change your screen,<br>
+                    Now you're the friends group's meme machine.<br><br>
+                    What did you forget?
+                </div>
+                <button class="riddle-btn" onclick="toggleAnswer(this)">Reveal Answer</button>
+                <div class="riddle-answer">To lock your screen!</div>
+            </div>
+
+            <div class="riddle-card">
+                <div class="riddle-text">
+                    I'm like a secret only you should know,<br>
+                    If others guess, your stuff will go!<br>
+                    Use me wisely, don't be rash<br>
+                    Or say goodbye to all your cash!<br><br>
+                    What am I?
+                </div>
+                <button class="riddle-btn" onclick="toggleAnswer(this)">Reveal Answer</button>
+                <div class="riddle-answer">Your password!</div>
+            </div>
+
+            <div class="riddle-card">
+                <div class="riddle-text">
+                    You found a pen drive, free and new,<br>
+                    Plugged it in and now who hacked who?<br>
+                    It looked so shiny, but it bites,<br>
+                    Now your laptop's full of frights!<br><br>
+                    What did you fall for?
+                </div>
+                <button class="riddle-btn" onclick="toggleAnswer(this)">Reveal Answer</button>
+                <div class="riddle-answer">A USB trap / Malware-infected drive!</div>
+            </div>
+
+            <div class="riddle-card">
+                <div class="riddle-text">
+                    I'm sneaky small, I track your tap,<br>
+                    When you type, I see the map.<br>
+                    Bank logins? Oh, that's mine!<br>
+                    I steal your secrets, line by line.<br><br>
+                    What am I?
+                </div>
+                <button class="riddle-btn" onclick="toggleAnswer(this)">Reveal Answer</button>
+                <div class="riddle-answer">A keylogger!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article 9: A Symphony of Sight and Soul -->
+    <section class="article-section" id="symphony-of-sight-and-soul">
+        <div class="container">
+            <div class="article-category">Lines & Lenses</div>
+            <h2 class="article-title">A Symphony of Sight and Soul</h2>
+            <div class="article-author">
+                <div class="author-avatar">AT</div>
+                <div class="author-info">
+                    <div class="author-name">Aarathi T</div>
+                    <div class="author-bio">I BE Cyber Security</div>
+                </div>
+            </div>
+
+            <div class="photo-gallery">
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/light-shadows/400/400.jpg" alt="Light Within the Shadows" class="gallery-image">
+                    <div class="gallery-caption">The Light Within the Shadows</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/butterfly-storm/400/400.jpg" alt="The Butterfly in the Storm" class="gallery-image">
+                    <div class="gallery-caption">The Butterfly in the Storm</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/homecoming-light/400/400.jpg" alt="Homecoming" class="gallery-image">
+                    <div class="gallery-caption">Homecoming</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/quiet-world/400/400.jpg" alt="When the World Went Quiet" class="gallery-image">
+                    <div class="gallery-caption">When the World Went Quiet, I Heard Myself</div>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">The Light Within the Shadows</h3>
+                
+                <p>When I stood before this sky, Where day slowly surrendered to night, I saw something more than just a sunset. The rays of light, Piercing through the dim horizon, Reminded me of life itself - How even in moments of darkness, There's a direction, A purpose.</p>
+                
+                <div class="article-quote">"But the light? Oh the light kissed every corner like it had waited just for me"</div>
+                
+                <p>Sometimes, I feel lost, Like the shadows stretching quietly across the earth below But then I realize Those shadows exist Only because something within me still shines.</p>
+                
+                <p>Even when my world feels quiet, Still, uncertain… There's a silent strength rising in me, Like those soft beams reaching into the unknown.</p>
+                
+                <p>The fading orange glow reminds me: endings aren't failures. They are transitions. The most beautiful changes Don't happen in the brightness of day, But in the stillness of transformation.</p>
+                
+                <p>And the sky whispered to me: You don't need to be perfect or bright all the time. You just need to keep rising, Even in pieces, Just like the light does - one soft ray at a time.</p>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">The Butterfly in the Storm</h3>
+                
+                <div class="article-content">
+                    <p>I once believed I needed comfort zones To feel like I could grow Soft people, Safe days, Smooth paths. I thought I needed peace To even begin blooming.</p>
+                    
+                    <p>Then I saw it. A butterfly. And In that one moment, I understood something I hadn't known before.</p>
+                    
+                    <p>I'm not here To grow only when Everything's perfect. I'm built for the storm!</p>
+                    
+                    <p>My softness Is not weakness. It is my power. I don't just survive I rise. And I rise Gently, But surely, Like fireflies Dancing in the dark.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">Homecoming</h3>
+                
+                <div class="article-content">
+                    <p>I've walked this road a hundred times Feet moving, eyes open, But soul elsewhere. And yet today Something shifted.</p>
+                    
+                    <p>The pavement didn't change. The buildings didn't move. But the light? Oh, the light kissed every corner Like it had waited just for me.</p>
+                    
+                    <p>The silence didn't feel empty it felt full, like it had been holding its breath, waiting for me to finally notice it.</p>
+                    
+                    <p>Maybe It was never the world That was too fast. Maybe it was me Rushing Chasing Surviving.</p>
+                    
+                    <p>I was so busy Trying to reach The next version of myself, I forgot how to be The one I already am.</p>
+                    
+                    <p>Today, I didn't walk to escape. I walked to feel.</p>
+                    
+                    <p>And every crack in the road, Every flicker of sunset on the windows, whispered to me "You've always been here. But today… You've arrived."</p>
+                    
+                    <p>There is holy magic in the ordinary. In the forgotten streets, The soft light, The gentle air That doesn't ask me to do anything But just exist.</p>
+                    
+                    <p>I am not racing to become. I am remembering How to just be. And that, in itself, Is a kind of homecoming.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">When the World Went Quiet, I Heard Myself</h3>
+                
+                <div class="article-content">
+                    <p>I used to think Peace was something I had to chase Loud laughs, Crowded rooms, Constant noise.</p>
+                    
+                    <p>But today, I found it Right here. Before the first drop of rain. Before the thunder woke the sky.</p>
+                    
+                    <p>Just me, The trees, The ancient air, And a kind of stillness so quiet it almost felt like time stopped breathing.</p>
+                    
+                    <p>And in that breathless pause, I heard something clearer than any prayer. Stillness is not emptiness. It's awareness. It's where my overthinking mind Finally slows, and my soul softly answers, "I'm here. I've always been here."</p>
+                    
+                    <p>This place didn't ask me to speak. It didn't ask me to perform, to explain, to shine. It just let me exist.</p>
+                    
+                    <p>And maybe that's the lesson That the most sacred things in life don't need to announce themselves. They don't shout. They simply are.</p>
+                    
+                    <p>And when I finally stop running, I see them. I am not lost. I am just learning How to sit in the silence Where peace has been Waiting for me All along.</p>
+                </div>
+            </div>
+
+            <div class="photo-gallery" style="margin-top: 30px;">
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/sky-doesnt-rush/400/400.jpg" alt="The Sky Doesn't Rush" class="gallery-image">
+                    <div class="gallery-caption">The Sky Doesn't Rush</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/quiet-victory/400/400.jpg" alt="The Quiet Victory" class="gallery-image">
+                    <div class="gallery-caption">The Quiet Victory of Just Being Here</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/beautiful-goodbyes/400/400.jpg" alt="Goodbyes Can Be Beautiful" class="gallery-image">
+                    <div class="gallery-caption">Goodbyes Can Be Beautiful Too</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/soft-surrender/400/400.jpg" alt="The Soft Power of Surrender" class="gallery-image">
+                    <div class="gallery-caption">The Soft Power of Surrender</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">The Sky Doesn't Rush</h3>
+                
+                <div class="article-content">
+                    <p>The sky above me Isn't just a stretch of colour It's a breathing, Shape-shifting epic, Ancient and infinite.</p>
+                    
+                    <p>It doesn't speak in words, But in silences so vast They echo Somewhere inside my chest.</p>
+                    
+                    <p>Each cloud feels Like a slow-moving thought, A prayer not yet answered, A memory drifting across time.</p>
+                    
+                    <p>I stand still, Eyes locked to the heavens, And for once I don't feel the need to hurry.</p>
+                    
+                    <p>The chaos of life below fades. The expectations, the noise, The questions that never stop asking Who are you becoming? What's next? Are you enough?</p>
+                    
+                    <p>The quiet Under the soft weight of this sky. I watch the clouds As they fold into themselves, Reform, Disappear. There's no resistance. No panic. Just movement. Graceful, Continuous, Free.</p>
+                    
+                    <p>And I think Why do I fear change so much, When the sky embraces it Like an art form?</p>
+                    
+                    <p>Even the tallest buildings around me Seem to bow slightly, As if they too remember: We may rise high, But we will never be higher Than the sky that made us Dream upward.</p>
+                    
+                    <p>And in that moment, Something in me softens. I stop trying To figure everything out. I stop reaching, Instead, I receive.</p>
+                    
+                    <p>I let the wind rewrite my thoughts. I let the vastness humble me, ground me, remind me of everything I am and everything I don't need to be right now.</p>
+                    
+                    <p>Because here's the truth: The sky doesn't ask me to shine. It doesn't ask me to perform. It just wants me to look up And remember That even when I feel small, I am a part of something infinite.</p>
+                    
+                    <p>I am not behind. I am not broken. I am simply becoming Like the sky, Always shifting, Always sacred, Always enough.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">The Quiet Victory of Just Being Here</h3>
+                
+                <div class="article-content">
+                    <p>When the day Starts to fade, And the light gets soft, Something deep inside me Changes.</p>
+                    
+                    <p>It's like the world Takes a deep breath, And I can finally breathe too.</p>
+                    
+                    <p>Dusk doesn't rush anything. It doesn't yell for you To look at it, Or demand anything from you. It just quietly, Gently, Spreads its colours The deep purples And soft blues Over everything.</p>
+                    
+                    <p>It's like a soft, warm hug That tells me "You made it. You got through another day."</p>
+                    
+                    <p>And in that simple message, There's so much peace. It feels like enough. More than enough, actually.</p>
+                    
+                    <p>I don't need to have done Amazing, big things today. I don't need to have made a lot of noise, or been the smartest, or done everything perfectly.</p>
+                    
+                    <p>All those pressures just fade away with the light.</p>
+                    
+                    <p>What I really need is to feel that quiet truth I am still here. My heart is still beating. I am still trying my best Even if my best today Was just getting through.</p>
+                    
+                    <p>Some days, Just being here, Just continuing on, Is the biggest and strongest thing I can possibly do.</p>
+                    
+                    <p>It's like a quiet victory That only I can truly feel.</p>
+                    
+                    <p>I am allowed to let the day end gently, just like the sky. I am truly okay, Truly complete, Even when I am quiet and still.</p>
+                    
+                    <p>My value isn't in what I achieve, but in simply being myself, here in this moment.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">Goodbyes Can Be Beautiful Too</h3>
+                
+                <div class="article-content">
+                    <p>When I see the sky turn dark, filled with those deep red and purple clouds, I learn something truly important.</p>
+                    
+                    <p>It's like the whole day Is having its last, most powerful moment before it goes to sleep.</p>
+                    
+                    <p>The bright light is fading away but it doesn't feel sad. It feels strong. And very, very quiet.</p>
+                    
+                    <p>This sky tells me even when things in my life come to an end, or when my own light feels like it's dimming, there can still be so much beauty and a quiet strength.</p>
+                    
+                    <p>It shows me that it's okay for things to be peaceful and a little dark sometimes. It doesn't mean anything bad is happening. Instead, it means something new Is gently arriving. Something Deep, Something Calm.</p>
+                    
+                    <p>From this sky, I understand I don't always have to be loud. I don't always have to shine super bright.</p>
+                    
+                    <p>Sometimes, just being here, just watching the world softly change is the strongest thing I can do.</p>
+                    
+                    <p>It teaches me to accept when things finish. To find the hidden beauty in those goodbyes. To trust that even in the quiet dark, there's always a gentle peace waiting for me.</p>
+                    
+                    <p>I can let go of the day's worries, just like the sky lets go of its light and know, deep down: I am still strong. I am still here. And that is enough.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">The Soft Power of Surrender</h3>
+                
+                <div class="article-content">
+                    <p>When I look at this sunset, With the sky burning In deep orange and red, It feels like the whole world Is holding its breath.</p>
+                    
+                    <p>Like the day is having Its last, big moment Before it goes to sleep.</p>
+                    
+                    <p>The bright sun A perfect circle, Is slowly going down Behind that tall tower.</p>
+                    
+                    <p>And even with Man-made things reaching up, Nature's beauty Still grabs all my attention.</p>
+                    
+                    <p>It's like the day is telling me: "This is it. This is the moment to pause."</p>
+                    
+                    <p>I feel this soft pull to let go Of everything that happened today The rushing, The worrying, The overthinking.</p>
+                    
+                    <p>This sky shows me letting go can be beautiful. Not scary. Not dramatic. Just peaceful. Like a quiet exhale.</p>
+                    
+                    <p>It reminds me Even when things end, there's a strong, quiet power in just watching, in just being here.</p>
+                    
+                    <p>I don't need to fix anything. Or explain myself. Or solve the whole world.</p>
+                    
+                    <p>I am allowed to be still. To let the day disappear softly and still feel its beauty and peace living inside me.</p>
+                    
+                    <p>The sun may set but what it leaves behind stays in my chest, like a gentle glow saying "You're okay. You've always been okay."</p>
+                </div>
+            </div>
+
+            <div class="photo-gallery" style="margin-top: 30px;">
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/dream-big-grounded/400/400.jpg" alt="Dream Big and Be Grounded" class="gallery-image">
+                    <div class="gallery-caption">I Can Dream Big and Still Be Grounded</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/quiet-growth/400/400.jpg" alt="Quiet Strength of Growth" class="gallery-image">
+                    <div class="gallery-caption">The Quiet Strength of Growth Unseen</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">I Can Dream Big and Still Be Grounded</h3>
+                
+                <div class="article-content">
+                    <p>As I stand here and look out at this huge view, Giant buildings stretching so high, Strong, green trees below a soft, grey sky, I feel a very old and deep knowing grow in my heart.</p>
+                    
+                    <p>It's like I'm seeing the whole big story of life Laid out in front of me, in one quiet moment.</p>
+                    
+                    <p>Here are the dreams of people, Built up carefully, brick by brick, Trying to reach the very clouds, Almost as if they want to touch or hold the sky.</p>
+                    
+                    <p>But then, right there too, are the trees Ancient and wise, holding their ground, Roots deep, deep in the earth. Their yellow flowers like thousands of tiny, happy stars Scattered all over the ground, bringing joy.</p>
+                    
+                    <p>This whole picture, this entire scene, Tells me a profound truth: Life is a perfect, beautiful mix of everything.</p>
+                    
+                    <p>It's about the big plans we make, The huge things we try to build with our hands and minds, And also the deep, quiet, natural world That just is - without trying to be anything else.</p>
+                    
+                    <p>I feel a constant pull inside me, A gentle tug-of-war. One part wants more, To do great things, To achieve big goals. The other part just wants to be, To simply exist, To feel peace in the moment.</p>
+                    
+                    <p>This view reminds me, with deep, comforting peace, That I don't have to pick only one way to live.</p>
+                    
+                    <p>I can build my biggest, most amazing dreams The ones that reach really high. But at the same time, I must always find my roots, Just like these wise trees dig deep into the earth.</p>
+                    
+                    <p>I can live in a busy world, Full of noise and movement, But I must always find my quiet moments Those peaceful times, Like the soft, calm light resting under this grey sky.</p>
+                    
+                    <p>This whole view teaches me, truly and deeply, That real strength isn't only in what I do, Or what I build for the world to see.</p>
+                    
+                    <p>It comes from living with all these different parts of life The busy and the quiet, The building and the growing.</p>
+                    
+                    <p>It comes from finding my own deep, silent peace, In the perfect, calm balance Between what I create with my efforts And what simply grows around me Always there, Always being.</p>
+                    
+                    <p>This is a peace that stays with me, No matter what.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px;">The Quiet Strength of Growth Unseen</h3>
+                
+                <div class="article-content">
+                    <p>When I look very, very closely At these small, green buds, All closed up And quietly waiting to open, A powerful and kind truth fills my heart.</p>
+                    
+                    <p>These are not flowers yet. Not fully open, Not bright for everyone to see. Instead, they are small, perfect promises, Held tight inside.</p>
+                    
+                    <p>They remind me of myself On days when I feel small, When I feel like I'm not growing fast enough, When I compare myself to others Who seem to be blooming already.</p>
+                    
+                    <p>But these buds teach me something beautiful: Growth doesn't have to be loud. Growth doesn't have to be fast. Growth doesn't have to be seen by everyone to be real.</p>
+                    
+                    <p>There is quiet strength In the waiting. There is deep power In the preparation. There is sacred magic In the unseen becoming.</p>
+                    
+                    <p>Just like these buds, I am growing Even when no one is watching. Even when I can't see it myself. Even when it feels like nothing is happening.</p>
+                    
+                    <p>My growth is happening In the silence of my heart, In the depth of my thoughts, In the roots of my being That are reaching deeper Into the soil of my experiences.</p>
+                    
+                    <p>I don't need to rush my blooming. I don't need to force my opening. I just need to trust The process That is already working Inside me.</p>
+                    
+                    <p>And when the time is right, When the conditions are perfect, When I have grown enough In the quiet, unseen spaces…</p>
+                    
+                    <p>I will bloom. Beautifully. Naturally. In my own unique way.</p>
+                    
+                    <p>Until then, I honor this quiet time. I celebrate this unseen growth. I trust this sacred process.</p>
+                    
+                    <p>Because even the most magnificent flowers Started exactly like this: Small, closed, Quietly becoming.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Patrons Section -->
+    <section class="patrons-section" id="patrons">
+        <div class="container">
+            <h2 class="section-title">Our Patrons</h2>
+            
+            <div class="patron-card">
+                <div class="patron-avatar">BC</div>
+                <div class="patron-name">Dr. B. Chidhambara Rajan</div>
+                <div class="patron-title">Director</div>
+                <div class="patron-bio">
+                    Dr. B. Chidhambara Rajan was born in Ambasamudram, Tirunelveli. He obtained his Bachelors degree in Electronics & Communications Engineering, Masters degree in Microwave & Optical engineering from Madurai Kamaraj University and a Ph.D. from Anna University, Chennai. He has 34 years of teaching experience in government and reputed private institutions.
+                </div>
+            </div>
+            
+            <div class="patron-card">
+                <div class="patron-avatar">MM</div>
+                <div class="patron-name">Dr. M. Murugan</div>
+                <div class="patron-title">Principal</div>
+                <div class="patron-bio">
+                    Prof. Dr. M. Murugan is an accomplished academician and administrator with over 33 years of experience in teaching and leading academic departments. He holds a Ph.D. in Electronics & Communication Engineering, specializing in Microwave, and has authored several textbooks in the field.
+                </div>
+            </div>
+            
+            <div class="patron-card">
+                <div class="patron-avatar">SV</div>
+                <div class="patron-name">Dr. S. Visalakshi</div>
+                <div class="patron-title">Vice Principal</div>
+                <div class="patron-bio">
+                    Dr. S. Visalakshi is an experienced academician and administrator with 23 years of experience in teaching and administration. She holds a Ph.D. in Power System Deregulation from Anna University. She is currently serving as Vice Principal at SRMVEC and is also the Head of the Department of Electronics and Instrumentation Engineering.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Board Section -->
+    <section class="editorial-section" id="editorial-board">
+        <div class="container">
+            <h2 class="section-title">Editorial Board</h2>
+            
+            <div class="editorial-grid">
+                <div class="editor-card">
+                    <div class="editor-avatar">MC</div>
+                    <div class="editor-name">Dr. M. Chithra</div>
+                    <div class="editor-role">FYCC and Head, Department of English</div>
+                </div>
+                
+                <div class="editor-card">
+                    <div class="editor-avatar">SM</div>
+                    <div class="editor-name">Dr. Sheeba Manodh</div>
+                    <div class="editor-role">Assistant Professor</div>
+                </div>
+                
+                <div class="editor-card">
+                    <div class="editor-avatar">SR</div>
+                    <div class="editor-name">Ms. S. Roshan Fathima</div>
+                    <div class="editor-role">Assistant Professor</div>
+                </div>
+                
+                <div class="editor-card">
+                    <div class="editor-avatar">AD</div>
+                    <div class="editor-name">Mr. Abishek David John</div>
+                    <div class="editor-role">Assistant Professor</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <div style="margin-bottom: 10px; font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-light); letter-spacing: 2px; text-transform: uppercase;">Layout and Design</div>
+                <div style="font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--text-dark);">Mr. Abishek David John</div>
+                <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: var(--text-light); margin-top: 5px;">Assistant Professor</div>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <div style="margin-bottom: 10px; font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-light); letter-spacing: 2px; text-transform: uppercase;">Technical Lead</div>
+                <div style="font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--text-dark);">Andrew Veda</div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center; font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-light); font-style: italic;">
+                For private circulation only
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">Eclatineers</div>
+            <div class="footer-tagline">Visible éclat. Invisible engineer.</div>
+            <div class="footer-ornament"></div>
+            <div class="footer-links">
+                <a href="#cover" class="footer-link">Home</a>
+                <a href="#toc" class="footer-link">Contents</a>
+                <a href="https://www.eclatineers.in/" class="footer-link" target="_blank">Website</a>
+            </div>
+            <div class="footer-copyright">
+                © 2025 SRM Valliammai Engineering College<br>
+                Department of English
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to Top">↑</button>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+        
+        // Close mobile menu when a link is clicked
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Riddle Answer Toggle
+        function toggleAnswer(button) {
+            const answer = button.nextElementSibling;
+            answer.classList.toggle('show');
+            button.textContent = answer.classList.contains('show') ? 'Hide Answer' : 'Reveal Answer';
+        }
+        
+        // Scroll Animations
+        const animateOnScroll = document.querySelectorAll('.animate-on-scroll');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        animateOnScroll.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Show mobile menu button after scrolling past header
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 200) {
+                mobileMenuBtn.style.display = 'flex';
+            } else {
+                mobileMenuBtn.style.display = 'none';
+            }
+        });
+        
+        // Initially hide mobile menu button
+        mobileMenuBtn.style.display = 'none';
+    </script>
+</body>
+</html>
