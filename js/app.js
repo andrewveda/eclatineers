@@ -2,24 +2,29 @@
 // GLOBAL APP ARCHITECTURE CONFIGURATION
 // ═══════════════════════════════════════════════════════
 const CONFIG = {
+    // Shared Google Spreadsheet ID
     SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
+    
+    // Tab names inside your Google Sheet
     SHEETS: {
         ISSUES: 'Issues',
         ARTICLES: 'Articles',
         PATRONS: 'Patrons',
         EDITORIAL: 'Editorial'
     },
+    
+    // Institutional Footer & Layout Context Data
     COLLEGE: 'SRM Valliammai Engineering College',
     DEPARTMENT: 'Department of English',
     WEBSITE: 'https://www.eclatineers.in/',
     FOOTER_NOTE: 'For private circulation only'
 };
 
-// Application State Memory Engine
+// Application State Memory Cache Engine
 const Cache = { issues: null, articles: null, patrons: null, editorial: null };
 
 // ═══════════════════════════════════════════════════════
-// DATA PIPELINE INTERACTION LAYER
+// DATA PIPELINE INTERACTION LAYER (gviz API)
 // ═══════════════════════════════════════════════════════
 async function fetchSheet(sheetName) {
     const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
@@ -146,7 +151,7 @@ function parseContent(text, category) {
         return html;
     }
 
-    // Traditional Structure Document Parser (Paragraphs, Quotes, Code Blocks)
+    // Traditional Structure Document Parser (Paragraphs, Quotes, Highlighting, Images)
     let html = '';
     const blocks = text.split('\n\n').map(b => b.trim()).filter(Boolean);
     let inBox = false;
@@ -213,7 +218,7 @@ window.toggleRiddle = function(btn) {
 };
 
 // ═══════════════════════════════════════════════════════
-// UI RENDERING PARSER FUNCTIONS
+// UI RENDERING SECTIONS
 // ═══════════════════════════════════════════════════════
 function renderHomePage() {
     let html = `
@@ -360,6 +365,10 @@ function renderArticlePage(issueId, slug) {
                     </div>
                 </div>
                 ${isPoetry ? `<div class="poetry-content">${contentHtml}</div>` : `<div class="article-content">${contentHtml}</div>`}
+                
+                <!-- Giscus Comment Section Target Anchor Base -->
+                <div class="ornament" style="margin-top: 50px;"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+                <div id="giscus-container" style="margin-top: 30px; min-height: 150px;"></div>
             </div>
         </section>${renderFooter()}`;
 
@@ -367,6 +376,9 @@ function renderArticlePage(issueId, slug) {
     updateNavBarState(true, article.title, `#issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
+
+    // Bootstrap Dynamic Giscus Comment Frame Injection
+    initGiscusComments();
 }
 
 function renderPatronsPage(issueId) {
@@ -434,6 +446,42 @@ function renderFooter() {
                 <div class="footer-copyright">© ${new Date().getFullYear()} ${CONFIG.COLLEGE}<br>${CONFIG.DEPARTMENT}</div>
             </div>
         </footer>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// GISCUS COMMENT INTEGRATION PIPELINE
+// ═══════════════════════════════════════════════════════
+function initGiscusComments() {
+    // Evict any existing instances if navigating between components to avoid element stacking bugs
+    const oldScript = document.getElementById('giscus-script');
+    if (oldScript) oldScript.remove();
+
+    const script = document.createElement('script');
+    script.id = 'giscus-script';
+    script.src = 'https://giscus.app/client.js';
+    
+    // ═══════════════════════════════════════════════════════
+    // CONFIGURATION — Setup your targeted GitHub project details here
+    // ═══════════════════════════════════════════════════════
+    script.setAttribute('data-repo', 'andrewveda/eclatineers');
+    script.setAttribute('data-repo-id', 'R_kgDOMN0F0w'); 
+    script.setAttribute('data-category', 'Announcements');
+    script.setAttribute('data-category-id', 'DIC_kwDOMN0F084CgSpf');
+    
+    // Strict 1:1 hashing mapping rule based entirely on structural parameters
+    script.setAttribute('data-mapping', 'url'); 
+    
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1'); // Unlocks emoji reaction blocks
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'bottom');
+    script.setAttribute('data-theme', 'light_high_contrast'); // Blends perfectly with your cream editorial styling tokens
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    const container = document.getElementById('giscus-container');
+    if (container) container.appendChild(script);
 }
 
 // ═══════════════════════════════════════════════════════
