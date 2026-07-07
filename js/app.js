@@ -2,19 +2,25 @@
 // GLOBAL APP ARCHITECTURE CONFIGURATION
 // ═══════════════════════════════════════════════════════
 const CONFIG = {
+    // Shared Google Spreadsheet ID
     SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
+    
+    // Tab names inside your Google Sheet
     SHEETS: {
         ISSUES: 'Issues',
         ARTICLES: 'Articles',
         PATRONS: 'Patrons',
         EDITORIAL: 'Editorial'
     },
+    
+    // Institutional Footer & Layout Context Data
     COLLEGE: 'SRM Valliammai Engineering College',
     DEPARTMENT: 'Department of English',
     WEBSITE: 'https://www.eclatineers.in/',
     FOOTER_NOTE: 'For private circulation only'
 };
 
+// Application State Memory Cache Engine
 const Cache = { issues: null, articles: null, patrons: null, editorial: null };
 
 // ═══════════════════════════════════════════════════════
@@ -26,15 +32,19 @@ async function fetchSheet(sheetName) {
     if (!res.ok) throw new Error(`Network failure requesting dataset: ${sheetName}`);
     
     const text = await res.text();
+    // Safely extract payload clean boundaries from the JSONP response envelope wrap
     const jsonStr = text.replace(/\/\*O_o\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);?\s*$/, '');
     const data = JSON.parse(jsonStr);
     
+    // Auto-normalize sheet cell structural indices using matching data tokens
     const cols = data.table.cols.map(c => c.label.toLowerCase().replace(/[^a-z0-9]/g, '_').trim());
     
     return data.table.rows.map(row => {
         const obj = {};
         cols.forEach((col, i) => { 
-            let val = row.c[i]?.v ?? ''; 
+            let val = row.c[i]?.v ?? '';
+            
+            // FIX: Normalize ID value matching fields to absolute lower-case to avoid case matching failure bugs
             if (typeof val === 'string' && (col === 'id' || col === 'issueid')) {
                 val = val.toLowerCase().trim();
             }
@@ -66,15 +76,15 @@ const CoreData = {
 };
 
 // ═══════════════════════════════════════════════════════
-// UNIFIED ROUTER HANDLING SYSTEM
+// UNIFIED ROUTER HANDLING SYSTEM (Hash Parameters)
 // ═══════════════════════════════════════════════════════
 function getRouterParams() {
     const hash = window.location.hash.substring(1);
     const params = new URLSearchParams(hash);
     return { 
-        issue: params.get('issue'), 
-        article: params.get('article'), 
-        section: params.get('section') 
+        issue: params.get('issue'),
+        article: params.get('article'),
+        section: params.get('section')
     };
 }
 
@@ -94,7 +104,7 @@ function handleRouting() {
     }
 }
 
-// Helper to render complex linear gold patterns
+// Complex Linear Gold Pattern Ornament Injector
 function renderGoldOrnament() {
     return `
         <div class="ornament-frame">
@@ -105,18 +115,21 @@ function renderGoldOrnament() {
 }
 
 // ═══════════════════════════════════════════════════════
-// DYNAMIC TEXT EDITOR DOCUMENT PARSER
+// DYNAMIC TEXT & ELEMENT CONTENT PARSER
 // ═══════════════════════════════════════════════════════
 function parseContent(text, category) {
     if (!text) return '';
 
+    // Interactive Riddle Render Loop
     if (category === 'Riddles') {
         let html = '';
         const qas = text.split('>>').map(item => item.trim()).filter(Boolean);
+        
         for (let i = 0; i < qas.length; i++) {
             if (qas[i].startsWith('??')) {
                 const question = qas[i].slice(2).trim().replace(/\n/g, '<br>');
                 const answer = (qas[i + 1] && !qas[i + 1].startsWith('??')) ? qas[i + 1].trim() : '...';
+                
                 html += `
                     <div class="riddle-card">
                         <div class="riddle-text">${question}</div>
@@ -128,9 +141,11 @@ function parseContent(text, category) {
         return html;
     }
 
+    // Cryptic Clue Parser Injection
     if (category && category.includes('Cryptic')) {
         const lines = text.split('\n');
         let html = '<div style="display:grid; gap:20px;">';
+        
         lines.forEach(line => {
             if (line.trim().startsWith('!!')) {
                 const clean = line.replace(/^\s*!!/, '').trim();
@@ -138,7 +153,9 @@ function parseContent(text, category) {
                 if (parts.length >= 3) {
                     const num = parts[0].trim();
                     const clue = parts[1].trim();
+                    // FIX: Recombine everything following the second token partition boundary cleanly
                     const hint = parts.slice(2).join(':').trim(); 
+                    
                     html += `
                         <div class="clue-card">
                             <div class="clue-number">Clue ${num}</div>
@@ -152,11 +169,13 @@ function parseContent(text, category) {
         return html;
     }
 
+    // Traditional Structure Document Parser (Paragraphs, Quotes, Highlighting, Images)
     let html = '';
     const blocks = text.split('\n\n').map(b => b.trim()).filter(Boolean);
     let inBox = false;
 
     blocks.forEach(block => {
+        // Image parsing mapping sequence (!Caption:SourceURL)
         if (block.startsWith('!') && block.includes(':')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const parts = block.substring(1).split(':');
@@ -166,6 +185,7 @@ function parseContent(text, category) {
             return;
         }
 
+        // Pull Quotes
         if (block.startsWith('>>')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const quote = block.slice(2).trim();
@@ -173,6 +193,7 @@ function parseContent(text, category) {
             return;
         }
 
+        // Highlight Container Box Title Header
         if (block.startsWith('##')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const title = block.slice(2).trim();
@@ -181,6 +202,7 @@ function parseContent(text, category) {
             return;
         }
 
+        // Internal List Element Generation Loops
         if (inBox && block.startsWith('- ')) {
             const items = block.split('\n').filter(l => l.trim().startsWith('- '));
             html += '<ul>' + items.map(i => `<li>${escHtml(i.trim().slice(2))}</li>`).join('') + '</ul>';
@@ -192,6 +214,7 @@ function parseContent(text, category) {
             inBox = false;
         }
 
+        // Standard Editorial Paragraph Normalization
         const formatted = escHtml(block).replace(/\n/g, '<br>');
         html += `<p>${formatted}</p>`;
     });
@@ -213,7 +236,7 @@ window.toggleRiddle = function(btn) {
 };
 
 // ═══════════════════════════════════════════════════════
-// UI MASTER CORE RENDER ENGINES
+// UI RENDERING SECTIONS
 // ═══════════════════════════════════════════════════════
 function renderHomePage() {
     let html = `
@@ -356,6 +379,7 @@ function renderArticlePage(issueId, slug) {
     }
 
     html += `
+                <!-- Minimal Editorial Signature Attribution — No Avatars -->
                 <div class="article-author-signature">
                     <div class="author-name">${escHtml(article.author)}</div>
                     ${article.authorbio ? `<div class="author-bio">${escHtml(article.authorbio)}</div>` : ''}
@@ -373,7 +397,8 @@ function renderArticlePage(issueId, slug) {
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 
-    initGiscusComments();
+    // Initialize the professional comment structure dynamically mapped to Title & Author
+    initGiscusComments(article.title, article.author);
 }
 
 function renderPatronsPage(issueId) {
@@ -443,26 +468,35 @@ function renderFooter() {
 }
 
 // ═══════════════════════════════════════════════════════
-// COMMENTARY FRAME PIPELINE INTERFACE (GISCUS)
+// GISCUS COMMENT INTEGRATION PIPELINE
 // ═══════════════════════════════════════════════════════
-function initGiscusComments() {
+function initGiscusComments(articleTitle, articleAuthor) {
+    // Evict any existing elements to prevent double stacking artifacts inside the view container
     const oldScript = document.getElementById('giscus-script');
     if (oldScript) oldScript.remove();
+
+    // Map Specific Lookup Query to: "Article Title by Author Name"
+    const uniqueDiscussionTerm = `${articleTitle} by ${articleAuthor}`;
 
     const script = document.createElement('script');
     script.id = 'giscus-script';
     script.src = 'https://giscus.app/client.js';
     
+    // Explicit 1:1 API configuration matches based on your specific keys
     script.setAttribute('data-repo', 'andrewveda/eclatineers');
-    script.setAttribute('data-repo-id', 'R_kgDOMN0F0w'); 
+    script.setAttribute('data-repo-id', 'R_kgDOTP7ILw'); 
     script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'DIC_kwDOMN0F084CgSpf');
-    script.setAttribute('data-mapping', 'url'); 
-    script.setAttribute('data-strict', '0');
-    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-category-id', 'DIC_kwDOTP7IL84DAruF');
+    
+    // Professional Term Mapping Protocols
+    script.setAttribute('data-mapping', 'specific'); 
+    script.setAttribute('data-term', uniqueDiscussionTerm); 
+    script.setAttribute('data-strict', '1'); // Strict mapping checks
+    
+    script.setAttribute('data-reactions-enabled', '1'); 
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'light_high_contrast');
+    script.setAttribute('data-theme', 'light_high_contrast'); // Editorial theme integration
     script.setAttribute('data-lang', 'en');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
@@ -472,7 +506,7 @@ function initGiscusComments() {
 }
 
 // ═══════════════════════════════════════════════════════
-// ENGINE CONTROLLERS & HOOK INTERFACES
+// UI ENGINE RE-RENDERING PIPELINE HOOKS
 // ═══════════════════════════════════════════════════════
 function updateNavBarState(visible, title, backHash) {
     const nav = document.getElementById('navBar');
@@ -505,6 +539,7 @@ function buildDynamicSlideoutMenu(issueId, articles) {
         
     list.innerHTML = html;
 
+    // Clear UI layout bounds on transition link selection
     list.querySelectorAll('.mobile-menu-link').forEach(link => {
         link.addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.remove('open');
@@ -520,9 +555,10 @@ function displayApplicationError(msg) {
 }
 
 // ═══════════════════════════════════════════════════════
-// DOM READY INITIALIZATION INITIALIZERS
+// INITIALIZATION ENTRY POINT
 // ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
+    // Dynamic event trigger bounds mapping
     document.getElementById('navMenuBtn').addEventListener('click', () => {
         const menu = document.getElementById('mobileMenu');
         menu.classList.toggle('open');
@@ -540,12 +576,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+    // Listen for hash parameter routing changes cleanly 
     window.addEventListener('hashchange', handleRouting);
 
     try {
         await loadAllData();
         document.getElementById('loader').classList.add('hidden');
-        handleRouting();
+        handleRouting(); // Bootstrap routing configuration engine parameters explicitly
     } catch (err) {
         console.error(err);
         displayApplicationError('Failed to capture database cells from your spreadsheet channel.');
