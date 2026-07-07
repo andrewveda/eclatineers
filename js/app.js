@@ -75,13 +75,10 @@ const CoreData = {
     getEditorial: (issueId) => Cache.editorial.filter(e => String(e.issueid) === String(issueId).toLowerCase())
 };
 
-// ═══════════════════════════════════════════════════════
-// UNIFIED ROUTER HANDLING SYSTEM (Hash Parameters)
-// ═══════════════════════════════════════════════════════
 function getRouterParams() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    return { 
+    const params = new URLSearchParams(window.location.search);
+
+    return {
         issue: params.get('issue'),
         article: params.get('article'),
         section: params.get('section')
@@ -255,7 +252,7 @@ function renderHomePage() {
     Cache.issues.forEach(issue => {
         const imgSrc = issue.cover || `https://picsum.photos/seed/${issue.id}/800/400.jpg`;
         html += `
-            <a class="issue-card" href="#issue=${issue.id}">
+            <a class="issue-card" href="?issue=${issue.id}">
                 <img class="issue-card-img" src="${escHtml(imgSrc)}" alt="${escHtml(issue.title)}" loading="lazy">
                 <div class="issue-card-body">
                     <div class="issue-card-date">${escHtml(issue.date)}</div>
@@ -320,7 +317,7 @@ function renderIssuePage(issueId) {
         const num = String(i + 1).padStart(2, '0');
         html += `
             <li class="toc-item">
-                <a class="toc-link" href="#issue=${issueId}&article=${art.slug}">
+                <a class="toc-link" href="?issue=${issueId}&article=${art.slug}">
                     <div class="toc-number">${num}</div>
                     <div class="toc-content">
                         <div class="toc-title">${escHtml(art.title)}</div>
@@ -333,7 +330,7 @@ function renderIssuePage(issueId) {
 
     html += `
             <li class="toc-item">
-                <a class="toc-link" href="#issue=${issueId}&section=patrons">
+                <a class="toc-link" href="?issue=${issueId}&section=editorial">
                     <div class="toc-number">✦</div>
                     <div class="toc-content">
                         <div class="toc-title">Our Patrons</div>
@@ -343,7 +340,7 @@ function renderIssuePage(issueId) {
                 </a>
             </li>
             <li class="toc-item">
-                <a class="toc-link" href="#issue=${issueId}&section=editorial">
+                <a class="toc-link" href="?issue=${issueId}&section=editorial">
                     <div class="toc-number">✦</div>
                     <div class="toc-content">
                         <div class="toc-title">Editorial Board</div>
@@ -356,7 +353,7 @@ function renderIssuePage(issueId) {
     html += `</ul></div></section>${renderFooter()}`;
 
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, issue.title, '#');
+    updateNavBarState(true, issue.title, '?');
     buildDynamicSlideoutMenu(issueId, articles);
     window.scrollTo(0, 0);
 }
@@ -393,7 +390,7 @@ function renderArticlePage(issueId, slug) {
         </section>${renderFooter()}`;
 
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, article.title, `#issue=${issueId}`);
+    updateNavBarState(true, article.title, `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 
@@ -420,7 +417,7 @@ function renderPatronsPage(issueId) {
     
     html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, 'Our Patrons', `#issue=${issueId}`);
+    updateNavBarState(true, 'Our Patrons', `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 }
@@ -447,7 +444,7 @@ function renderEditorialPage(issueId) {
         </section>${renderFooter()}`;
         
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, 'Editorial Board', `#issue=${issueId}`);
+    updateNavBarState(true, 'Editorial Board', `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 }
@@ -459,7 +456,7 @@ function renderFooter() {
                 <div class="footer-logo">Eclatineers</div>
                 <div class="footer-tagline">Visible éclat. Invisible engineer.</div>
                 <div class="footer-links">
-                    <a href="#" class="footer-link">Home</a>
+                    <a href="?" class="footer-link">Home</a>
                     <a href="${CONFIG.WEBSITE}" class="footer-link" target="_blank">Website</a>
                 </div>
                 <div class="footer-copyright">© ${new Date().getFullYear()} ${CONFIG.COLLEGE}<br>${CONFIG.DEPARTMENT}</div>
@@ -512,7 +509,7 @@ function updateNavBarState(visible, title, backHash) {
     if (visible) {
         nav.classList.add('show');
         document.getElementById('navTitle').textContent = title || 'Eclatineers';
-        document.getElementById('navBack').href = backHash || '#';
+        document.getElementById('navBack').href = backHash || '?';
     } else {
         nav.classList.remove('show');
     }
@@ -522,17 +519,17 @@ function buildDynamicSlideoutMenu(issueId, articles) {
     const list = document.getElementById('mobileMenuList');
     let html = `
         <li class="mobile-menu-sep">Navigation</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}">← Main Folio</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}">← Main Folio</a></li>
         <li class="mobile-menu-sep">Table of Contents</li>`;
         
     articles.forEach(art => {
-        html += `<li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}&article=${art.slug}">${escHtml(art.title)}</a></li>`;
+        html += `<li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&article=${art.slug}">${escHtml(art.title)}</a></li>`;
     });
     
     html += `
         <li class="mobile-menu-sep">Management</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}&section=patrons">Our Patrons</a></li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}&section=editorial">Editorial Board</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Our Patrons</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
         <li class="mobile-menu-sep">System</li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View Archive</a></li>`;
         
@@ -576,7 +573,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // Listen for hash parameter routing changes cleanly 
-    window.addEventListener('hashchange', handleRouting);
+    handleRouting();
 
     try {
         await loadAllData();
