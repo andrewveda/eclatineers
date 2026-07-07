@@ -452,6 +452,9 @@ function calculateEbookPaginationMetrics() {
     updateEbookNavigationFeedbackStrip();
 }
 
+// ═══════════════════════════════════════════════════════
+// E-READER ENGINE NAVIGATION CONTROLS
+// ═══════════════════════════════════════════════════════
 window.turnEbookPage = function(direction) {
     const book = document.getElementById('readerBook');
     const viewport = document.getElementById('readerViewport');
@@ -476,7 +479,11 @@ function updateEbookNavigationFeedbackStrip() {
     }
 }
 
-// Hook vertical mouse wheel scrolling actions or trackpad sweeps safely into horizontal turns
+// ═══════════════════════════════════════════════════════
+// GESTURE & KEYBOARD EVENTS INTERACTION LAYER
+// ═══════════════════════════════════════════════════════
+
+/* A. Desktop Trackpad & Mouse Wheel Horizontal Hook */
 document.removeEventListener('wheel', handleEbookWheelGestures);
 document.addEventListener('wheel', handleEbookWheelGestures, { passive: false });
 
@@ -484,18 +491,81 @@ function handleEbookWheelGestures(e) {
     const book = document.getElementById('readerBook');
     if (!book) return;
 
-    // Prevent traditional explosive browser structural scroll-down ticks
+    // Prevent standard structural vertical overflow scroll ticks
     e.preventDefault();
     
-    // Throttle triggers to prevent aggressive page-skips
     if (window.ebookWheelThrottled) return;
     window.ebookWheelThrottled = true;
     setTimeout(() => { window.ebookWheelThrottled = false; }, 400);
 
+    // Turn next on scroll down/right; turn prev on scroll up/left
     if (e.deltaY > 0 || e.deltaX > 0) {
         turnEbookPage(1);
     } else {
         turnEbookPage(-1);
+    }
+}
+
+/* B. Desktop Comprehensive Keyboard Navigation Matrix */
+document.removeEventListener('keydown', handleMagKeydowns);
+document.addEventListener('keydown', handleMagKeydowns);
+
+function handleMagKeydowns(e) {
+    if (!document.getElementById('readerBook')) return;
+
+    // Map up/right directions to "Next", down/left directions to "Prev"
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        turnEbookPage(1);
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        turnEbookPage(-1);
+    }
+}
+
+/* C. Mobile Fluid Touch Swipe Pagination Engine */
+let touchStartY = 0;
+let touchStartX = 0;
+
+document.removeEventListener('touchstart', handleEbookTouchStart);
+document.addEventListener('touchstart', handleEbookTouchStart, { passive: true });
+
+document.removeEventListener('touchend', handleEbookTouchEnd);
+document.addEventListener('touchend', handleEbookTouchEnd, { passive: false });
+
+function handleEbookTouchStart(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}
+
+function handleEbookTouchEnd(e) {
+    if (!document.getElementById('readerBook')) return;
+
+    const deltaX = e.changedTouches[0].screenX - touchStartX;
+    const deltaY = e.changedTouches[0].screenY - touchStartY;
+    
+    // Define a minimum pixel threshold to distinguish intentional swipes from accidental micro-taps
+    const threshold = 40; 
+
+    // Capture vertical swipe gestures ("scrolling down") or clear horizontal swipes
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        if (Math.abs(deltaY) > threshold) {
+            e.preventDefault(); // Halt standard bouncing behavior
+            if (deltaY < 0) {
+                turnEbookPage(1);  // Swiped upward (scrolling down the screen) -> Next Page
+            } else {
+                turnEbookPage(-1); // Swiped downward (scrolling up the screen) -> Previous Page
+            }
+        }
+    } else {
+        if (Math.abs(deltaX) > threshold) {
+            if (deltaX < 0) {
+                turnEbookPage(1);  // Swiped left -> Next Page
+            } else {
+                turnEbookPage(-1); // Swiped right -> Previous Page
+            }
+        }
     }
 }
 
