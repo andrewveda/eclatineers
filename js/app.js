@@ -330,7 +330,7 @@ function renderIssuePage(issueId) {
 
     html += `
             <li class="toc-item">
-                <a class="toc-link" href="?issue=${issueId}&section=editorial">
+                <a class="toc-link" href="?issue=${issueId}&section=patrons">
                     <div class="toc-number">✦</div>
                     <div class="toc-content">
                         <div class="toc-title">Our Patrons</div>
@@ -340,7 +340,7 @@ function renderIssuePage(issueId) {
                 </a>
             </li>
             <li class="toc-item">
-                <a class="toc-link" href="?issue=${issueId}&section=editorial">
+                <a class="toc-link" href="?issue=${issueId}&section=patrons">
                     <div class="toc-number">✦</div>
                     <div class="toc-content">
                         <div class="toc-title">Editorial Board</div>
@@ -528,8 +528,8 @@ function buildDynamicSlideoutMenu(issueId, articles) {
     
     html += `
         <li class="mobile-menu-sep">Management</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Our Patrons</a></li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=patrons">Our Patrons</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=patrons">Editorial Board</a></li>
         <li class="mobile-menu-sep">System</li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View Archive</a></li>`;
         
@@ -572,8 +572,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // Listen for hash parameter routing changes cleanly 
-    handleRouting();
 
     try {
         await loadAllData();
