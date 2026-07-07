@@ -570,3 +570,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayApplicationError('Failed to capture database cells from your spreadsheet channel.');
     }
 });
+ 
