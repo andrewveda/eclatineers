@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,13 @@
         <div class="spinner"></div>
         <div class="loader-text">E C L A T I N E E R S</div>
     </div>
+
+    <div class="error-screen" id="errorScreen">
+        <p id="errorMsg">Could not load magazine layout context.</p>
+        <button class="retry-btn" onclick="window.location.reload()">Retry</button>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to Top">↑</button>
 
     <script src="js/app.js"></script>
 </body>
