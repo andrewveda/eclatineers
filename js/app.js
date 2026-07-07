@@ -470,52 +470,24 @@ function renderFooter() {
 // ═══════════════════════════════════════════════════════
 // GISCUS COMMENT INTEGRATION PIPELINE
 // ═══════════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════════
-// GISCUS COMMENT INTEGRATION PIPELINE
-// ═══════════════════════════════════════════════════════
 function initGiscusComments(articleTitle, articleAuthor) {
-    // 1. Evict any existing elements to prevent double stacking artifacts inside the view container
-    const oldScript = document.getElementById('giscus-script');
-    if (oldScript) oldScript.remove();
-
-    // 2. FORCE BACKLINK ACCURACY: Dynamically inject/update the canonical URL to include hash routes
-    let canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (!canonicalLink) {
-        canonicalLink = document.createElement('link');
-        canonicalLink.setAttribute('rel', 'canonical');
-        document.head.appendChild(canonicalLink);
-    }
-    // This tells Giscus to use the exact URL (with your #issue and #article parameters) for the GitHub backlink
-    canonicalLink.setAttribute('href', window.location.href);
-
-    // 3. Map Specific Lookup Query to: "Article Title by Author Name"
-    const uniqueDiscussionTerm = `${articleTitle} by ${articleAuthor}`;
+    const container = document.getElementById('giscus-container');
+    if (!container) return;
+    container.innerHTML = ''; // fresh mount per article render
 
     const script = document.createElement('script');
-    script.id = 'giscus-script';
     script.src = 'https://giscus.app/client.js';
-    
-    // Explicit 1:1 API configuration matches based on your specific keys
-    script.setAttribute('data-repo', 'andrewveda/eclatineers');
-    script.setAttribute('data-repo-id', 'R_kgDOTP7ILw'); 
-    script.setAttribute('data-category', 'Announcements');
+    script.setAttribute('data-repo',        'andrewveda/eclatineers');
+    script.setAttribute('data-repo-id',     'R_kgDOTP7ILw');
+    script.setAttribute('data-category',    'Announcements');
     script.setAttribute('data-category-id', 'DIC_kwDOTP7IL84DAruF');
-    
-    // Professional Term Mapping Protocols
-    script.setAttribute('data-mapping', 'specific'); 
-    script.setAttribute('data-term', uniqueDiscussionTerm); 
-    script.setAttribute('data-strict', '1'); // Enforces strict matching check profiles
-    
-    script.setAttribute('data-reactions-enabled', '1'); 
-    script.setAttribute('data-emit-metadata', '0');
-    script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'light_high_contrast'); // Editorial theme integration
-    script.setAttribute('data-lang', 'en');
-    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('data-mapping',     'specific');
+    script.setAttribute('data-term',        `${articleTitle} — ${articleAuthor}`);
+    script.setAttribute('data-theme',       'preferred_color_scheme');
+    script.crossOrigin = 'anonymous';
     script.async = true;
 
-    const container = document.getElementById('giscus-container');
-    if (container) container.appendChild(script);
+    container.appendChild(script);
 }
 
 // ═══════════════════════════════════════════════════════
