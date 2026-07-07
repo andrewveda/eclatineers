@@ -1,23 +1,30 @@
 /* ═══════════════════════════════════════════════════════
-   DESIGN SYSTEM VARIABLE DICTIONARY TOKENS
+   PREMIUM LUXURY DESIGN SYSTEM VARIABLE DICTIONARY
    ═══════════════════════════════════════════════════════ */
 :root {
-    --cream: #FDF5E6;
-    --cream-light: #FFFAF0;
-    --cream-dark: #F5DEB3;
+    /* Ivory & Alabaster Palette */
+    --cream: #FAF6F0;
+    --cream-light: #FCF9F5;
+    --cream-dark: #F0E6D8;
+    
+    /* Luxury Metallic True Gold */
+    --gold-raw: 212, 175, 55;
     --gold: #D4AF37;
-    --gold-light: #E6C87E;
-    --gold-dark: #B8860B;
-    --brown: #8B4513;
-    --brown-light: #A0522D;
-    --text-dark: #2C1810;
-    --text-medium: #4A3728;
-    --text-light: #6B5744;
-    --accent-red: #8B0000;
+    --gold-light: #F3E5AB;
+    --gold-dark: #AA7C11;
+    
+    /* Deep Obsidian & Espresso Editorial Typography */
+    --text-dark: #1A0F0A;
+    --text-medium: #3D2B1F;
+    --text-light: #705B4E;
+    
+    /* System Accents */
+    --accent-crimson: #5C0606;
+    --transition-premium: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ═══════════════════════════════════════════════════════
-   GLOBAL APPLICATION RESETS & DEFAULTS
+   GLOBAL RESETS & CHOREOGRAPHY
    ═══════════════════════════════════════════════════════ */
 * {
     margin: 0;
@@ -27,694 +34,454 @@
 
 html {
     scroll-behavior: smooth;
+    background-color: var(--cream);
 }
 
 body {
     font-family: 'Cormorant Garamond', serif;
     background-color: var(--cream);
     color: var(--text-dark);
-    line-height: 1.6;
+    line-height: 1.75;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* 🧱 FLUID SYSTEM STRUCTURAL CONTAINER CONTAINER */
+/* 🧱 MONOLITHIC STRUCTURAL GRID MAPPING */
 .container {
     max-width: 100%;
-    width: 480px; /* Perfect tracking measure bounds constraint for portable viewports */
+    width: 520px; /* Enhanced reading measure */
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+    .container { width: 840px; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   FIXED APPLICATION BAR COMPONENTS
+   MATHEMATICAL GOLD PATTERNS (CSS-ENGINEERED FILIGREE)
+   ═══════════════════════════════════════════════════════ */
+/* Guilloché Art Decó Wallpaper / Canvas Structure */
+.guilloche-bg {
+    background-color: var(--cream);
+    background-image: 
+        radial-gradient(rgba(var(--gold-raw), 0.15) 1px, transparent 0),
+        radial-gradient(rgba(var(--gold-raw), 0.1) 2px, transparent 0);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+}
+
+/* Symmetrical Intricate Linear Ornament Frame Header */
+.ornament-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px 0;
+    user-select: none;
+}
+
+.ornament-line-complex {
+    flex-grow: 1;
+    height: 3px;
+    background: linear-gradient(to right, 
+        transparent, 
+        var(--gold) 30%, 
+        var(--gold-dark) 50%, 
+        var(--gold) 70%, 
+        transparent
+    );
+    position: relative;
+}
+
+.ornament-line-complex::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: 10%; right: 10%; height: 1px;
+    background: rgba(var(--gold-raw), 0.4);
+}
+
+.ornament-crest {
+    font-size: 14px;
+    color: var(--gold-dark);
+    letter-spacing: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   FIXED APPLICATION BAR (MINIMALIST APPLE GLASS MAPPING)
    ═══════════════════════════════════════════════════════ */
 .nav-bar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: var(--cream-light);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    top: 0; left: 0; right: 0;
+    height: 70px;
+    background: rgba(252, 249, 245, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(var(--gold-raw), 0.15);
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 40px;
     z-index: 900;
-    box-shadow: 0 2px 10px rgba(44, 24, 16, 0.05);
+    transition: var(--transition-premium);
 }
 
-.nav-bar.show {
-    display: flex;
-}
+.nav-bar.show { display: flex; }
 
 .nav-back-btn {
-    color: var(--gold-dark);
+    color: var(--text-dark);
     text-decoration: none;
     font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 300;
+    transition: var(--transition-premium);
 }
+.nav-back-btn:hover { color: var(--gold-dark); transform: translateX(-2px); }
 
 .nav-title {
     font-family: 'Playfair Display', serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     color: var(--text-dark);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 60%;
-    text-align: center;
 }
 
 .nav-menu-btn {
     background: none;
     border: none;
-    font-size: 24px;
-    color: var(--gold-dark);
+    font-size: 20px;
+    color: var(--text-dark);
     cursor: pointer;
+    transition: var(--transition-premium);
 }
+.nav-menu-btn:hover { color: var(--gold-dark); }
 
 /* ═══════════════════════════════════════════════════════
-   EDITORIAL LITERARY BLOCK STYLING
+   EDITORIAL MASTER HEADER BLOCK
    ═══════════════════════════════════════════════════════ */
 .header {
-    background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%);
-    padding: 50px 0 30px;
+    padding: 100px 0 60px;
     text-align: center;
     position: relative;
 }
 
 .college-name {
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--text-light);
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
 .magazine-title {
     font-family: 'Playfair Display', serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--gold-dark);
-    margin-bottom: 8px;
-    text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    color: var(--text-dark);
+    line-height: 1.1;
+    margin-bottom: 12px;
 }
 
 .magazine-subtitle {
-    font-size: 18px;
-    font-style: italic;
-    color: var(--brown);
-    margin-bottom: 20px;
-}
-
-.ornament {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin: 15px 0;
-}
-
-.ornament-line {
-    width: 80px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
-
-.ornament-diamond {
-    width: 8px;
-    height: 8px;
-    background: var(--gold);
-    transform: rotate(45deg);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    font-weight: 500;
 }
 
 .issue-info {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-light);
+    margin-top: 16px;
 }
 
 /* ═══════════════════════════════════════════════════════
-   CONTENT STRUCTURAL PRESENTATION DECK CARDS
+   PREMIUM EDITORIAL DECK GRID & CARDS
    ═══════════════════════════════════════════════════════ */
+.editorial-canvas-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 20px 0;
+}
+
+@media(min-width: 768px) {
+    .editorial-canvas-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 .issue-card {
     display: block;
     background: var(--cream-light);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 25px;
+    border: 1px solid rgba(var(--gold-raw), 0.15);
+    position: relative;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.05);
-    transition: transform 0.3s ease;
+    transition: var(--transition-premium);
+}
+
+/* Decorative Gold Corner Borders mimicking high-end folio bindings */
+.issue-card::before {
+    content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 1px solid rgba(var(--gold-raw), 0.25);
+    pointer-events: none;
+    transition: var(--transition-premium);
 }
 
 .issue-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px rgba(44, 24, 16, 0.08);
+    border-color: rgba(var(--gold-raw), 0.6);
+}
+
+.issue-card:hover::before {
+    border-color: var(--gold-dark);
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
 }
 
 .issue-card-img {
     width: 100%;
-    height: 200px;
+    height: 260px;
     object-fit: cover;
+    filter: sepia(10%) contrast(95%);
+    border-bottom: 1px solid rgba(var(--gold-raw), 0.15);
 }
 
 .issue-card-body {
-    padding: 20px;
+    padding: 32px;
+    text-align: center;
 }
 
 .issue-card-date {
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 1px;
+    font-size: 9px;
+    color: var(--gold-dark);
+    letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 }
 
 .issue-card-title {
     font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 8px;
-}
-
-.issue-card-tagline {
-    font-size: 14px;
-    color: var(--text-medium);
-    font-style: italic;
-}
-
-/* ═══════════════════════════════════════════════════════
-   COVER ART GALLERY BOUNDS CONFIGURATION
-   ═══════════════════════════════════════════════════════ */
-.cover-section {
-    margin: -20px 0 30px;
-}
-
-.cover-image-container {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(139, 69, 19, 0.15);
-    border: 3px solid var(--gold);
-}
-
-.cover-image {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    display: block;
-}
-
-.intro-section {
-    padding: 20px 0;
-    text-align: center;
-}
-
-.intro-text {
-    font-size: 17px;
-    line-height: 1.7;
-    color: var(--text-medium);
-    margin-bottom: 20px;
-}
-
-.definition-box {
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.04), rgba(212, 175, 55, 0.08));
-    border-left: 4px solid var(--gold);
-    padding: 20px;
-    margin: 25px 0;
-    text-align: left;
-    border-radius: 0 8px 8px 0;
-}
-
-.definition-term {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--gold-dark);
-}
-
-.definition-pronunciation {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 8px;
-    font-style: italic;
-}
-
-.definition-text {
-    font-size: 15px;
-    color: var(--text-medium);
-}
-
-/* ═══════════════════════════════════════════════════════
-   TABLE OF CONTENTS SHEET MAPPINGS
-   ═══════════════════════════════════════════════════════ */
-.toc-section {
-    padding: 30px 0;
-}
-
-.section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px;
-    color: var(--text-dark);
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.section-title::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 2px;
-    background: var(--gold);
-    margin: 8px auto 0;
-}
-
-.toc-list {
-    list-style: none;
-}
-
-.toc-item {
-    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-}
-
-.toc-link {
-    display: flex;
-    align-items: center;
-    padding: 16px 8px;
-    text-decoration: none;
-    color: var(--text-dark);
-    transition: all 0.2s ease;
-}
-
-.toc-link:hover {
-    background: rgba(212, 175, 55, 0.05);
-    transform: translateX(4px);
-}
-
-.toc-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--gold);
-    width: 40px;
-}
-
-.toc-content {
-    flex-grow: 1;
-}
-
-.toc-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 2px;
-}
-
-.toc-meta {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    color: var(--text-light);
-    letter-spacing: 0.5px;
-}
-
-.toc-arrow {
-    color: var(--gold);
-    font-weight: bold;
-}
-
-/* ═══════════════════════════════════════════════════════
-   DYNAMIC LITERARY TEXT INJECTION INTERFACES
-   ═══════════════════════════════════════════════════════ */
-.article-section {
-    padding: 30px 0;
-}
-
-.article-category {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
-}
-
-.article-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text-dark);
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-.article-author {
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
-    background: rgba(255, 255, 255, 0.4);
-    padding: 10px;
-    border-radius: 6px;
-}
-
-.author-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--cream);
-    margin-right: 12px;
-}
-
-.author-name {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.author-bio {
-    font-size: 12px;
-    color: var(--text-light);
-    font-style: italic;
-}
-
-.article-content, .poetry-content {
-    font-size: 17.5px;
-    line-height: 1.8;
-    color: var(--text-medium);
-}
-
-.article-content p, .poetry-content p {
-    margin-bottom: 18px;
-}
-
-.poetry-content {
-    font-style: italic;
-    text-align: center;
-}
-
-.poetry-content p {
-    margin-bottom: 6px;
-}
-
-.poetry-content br + br {
-    display: block;
-    margin-top: 15px;
-    content: "";
-}
-
-.article-quote {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-style: italic;
-    color: var(--gold-dark);
-    text-align: center;
-    padding: 25px 15px;
-    margin: 25px 0;
-    position: relative;
-    line-height: 1.4;
-    border-top: 1px solid rgba(212,175,55,0.2);
-    border-bottom: 1px solid rgba(212,175,55,0.2);
-}
-
-.highlight-box {
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(212, 175, 55, 0.12));
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 25px 0;
-}
-
-.highlight-box h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    color: var(--gold-dark);
-    margin-bottom: 10px;
-}
-
-.highlight-box ul {
-    list-style: none;
-}
-
-.highlight-box li {
-    padding: 6px 0 6px 20px;
-    position: relative;
-    font-size: 16px;
-}
-
-.highlight-box li::before {
-    content: '◆';
-    position: absolute;
-    left: 0;
-    color: var(--gold);
-    font-size: 11px;
-}
-
-.article-image {
-    margin: 20px 0;
-    border: 2px solid var(--gold);
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.article-image img {
-    width: 100%;
-    display: block;
-    height: auto;
-}
-
-.image-caption {
-    background: var(--cream-light);
-    padding: 8px 12px;
-    font-size: 13px;
-    font-style: italic;
-    color: var(--text-light);
-    border-top: 1px solid rgba(212,175,55,0.2);
-}
-
-/* ═══════════════════════════════════════════════════════
-   INTERACTIVE LITERARY CARD ARRAYS (RIDDLES & GAME LAYERS)
-   ═══════════════════════════════════════════════════════ */
-.riddle-card, .clue-card {
-    background: var(--cream-light);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: 6px;
-    padding: 18px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 6px rgba(139, 69, 19, 0.04);
-}
-
-.riddle-text, .clue-text {
-    font-size: 16.5px;
+    font-size: 28px;
+    font-weight: 400;
     color: var(--text-dark);
     margin-bottom: 12px;
 }
 
-.clue-number {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    color: var(--gold-dark);
-    margin-bottom: 4px;
-}
-
-.clue-hint {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+.issue-card-tagline {
+    font-size: 15px;
     color: var(--text-light);
     font-style: italic;
 }
 
-.riddle-btn {
-    background: none;
-    border: 1px solid var(--gold);
+/* ═══════════════════════════════════════════════════════
+   PREMIUM TYPOGRAPHIC ARTICLE VIEWS
+   ═══════════════════════════════════════════════════════ */
+.article-section {
+    padding: 120px 0 60px;
+}
+
+.article-category {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
     color: var(--gold-dark);
-    padding: 6px 12px;
-    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.article-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.2;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto 32px;
+}
+
+/* Redesigned Minimalist Jony Ive Style Attribution Block */
+.article-author-signature {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.author-name {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.riddle-btn:hover {
-    background: var(--gold);
-    color: var(--cream-light);
-}
-
-.riddle-answer {
-    background: rgba(212, 175, 55, 0.08);
-    padding: 10px 12px;
-    border-radius: 4px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    color: var(--accent-red);
     font-weight: 600;
-    margin-top: 10px;
-    display: none;
+    letter-spacing: 1px;
+    color: var(--text-dark);
+    text-transform: uppercase;
 }
 
-.riddle-answer.show {
-    display: block;
+.author-bio {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.article-content, .poetry-content {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--text-medium);
+}
+
+/* Editorial Drop Cap Concept */
+.article-content p:first-of-type::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 75px;
+    float: left;
+    line-height: 55px;
+    padding-top: 4px;
+    padding-right: 10px;
+    padding-left: 3px;
+    color: var(--text-dark);
+}
+
+.article-content p {
+    margin-bottom: 24px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.article-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-style: italic;
+    color: var(--gold-dark);
+    text-align: center;
+    max-width: 80%;
+    margin: 48px auto;
+    line-height: 1.4;
+    padding: 30px 0;
+    border-top: 1px solid rgba(var(--gold-raw), 0.2);
+    border-bottom: 1px solid rgba(var(--gold-raw), 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════
-   TEAM & INSTITUTIONAL ACADEMIC STRUCTURING
+   LUXURY TEAM LAYOUT VIEWS
    ═══════════════════════════════════════════════════════ */
 .patron-card {
     text-align: center;
-    margin-bottom: 35px;
-    background: rgba(255,255,255,0.3);
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(212,175,55,0.1);
-}
-
-.patron-avatar, .editor-avatar {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    margin: 0 auto 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--cream);
-    border: 2px solid var(--cream-light);
-    box-shadow: 0 4px 10px rgba(139, 69, 19, 0.1);
+    margin-bottom: 60px;
+    padding: 40px;
+    border: 1px solid rgba(var(--gold-raw), 0.15);
+    background: var(--cream-light);
 }
 
 .patron-name, .editor-name {
     font-family: 'Playfair Display', serif;
-    font-size: 19px;
-    font-weight: 600;
+    font-size: 24px;
     color: var(--text-dark);
+    margin-bottom: 4px;
 }
 
 .patron-title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--gold-dark);
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 .patron-bio {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text-medium);
-}
-
-.editorial-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.editor-card {
-    text-align: center;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 6px;
-    border: 1px solid rgba(212, 175, 55, 0.15);
-}
-
-.editor-name {
-    font-size: 15px;
-    margin-bottom: 2px;
-}
-
-.editor-role {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    color: var(--text-light);
+    font-style: italic;
 }
 
 /* ═══════════════════════════════════════════════════════
-   SLIDEOUT DRAWER NAVIGATION SYSTEMS
+   PREMIUM SLIDEOUT FULL SCREEN DRAWER
    ═══════════════════════════════════════════════════════ */
 .mobile-menu {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--cream);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(250, 246, 240, 0.98);
+    backdrop-filter: blur(30px);
     z-index: 1000;
-    padding: 70px 25px 25px;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 100px 40px;
+    transform: translateY(-100%);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     overflow-y: auto;
+    text-align: center;
 }
 
-.mobile-menu.open {
-    transform: translateX(0);
-}
+.mobile-menu.open { transform: translateY(0); }
 
 .mobile-menu-close {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
-    background: none;
-    border: 1px solid var(--gold);
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 16px;
-    color: var(--gold-dark);
+    top: 30px; right: 40px;
+    background: none; border: none;
+    cursor: pointer; font-size: 24px;
+    color: var(--text-dark);
+    font-weight: 200;
+    transition: var(--transition-premium);
 }
-
-.mobile-menu-list {
-    list-style: none;
-}
+.mobile-menu-close:hover { color: var(--gold-dark); transform: rotate(90deg); }
 
 .mobile-menu-sep {
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+    font-size: 9px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
     color: var(--gold-dark);
-    margin: 20px 0 8px 5px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid rgba(212,175,55,0.2);
+    margin: 40px 0 16px;
 }
 
 .mobile-menu-link {
-    display: block;
-    padding: 10px 5px;
+    display: inline-block;
+    padding: 12px 0;
     text-decoration: none;
     color: var(--text-dark);
     font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    transition: color 0.2s;
+    font-size: 28px;
+    transition: var(--transition-premium);
 }
-
-.mobile-menu-link:hover {
-    color: var(--gold-dark);
-}
+.mobile-menu-link:hover { color: var(--gold-dark); transform: scale(1.03); }
 
 /* ═══════════════════════════════════════════════════════
-   SCREEN CURTAIN LOADERS & CONTROLLER COVERS
+   MINIMAL GLASS FALLBACK UTILITIES
+   ═══════════════════════════════════════════════════════ */
+.back-to-top {
+    position: fixed;
+    bottom: 40px; right: 40px;
+    width: 50px; height: 50px;
+    background: var(--cream-light);
+    border: 1px solid rgba(var(--gold-raw), 0.3);
+    color: var(--text-dark);
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    z-index: 800;
+    transition: var(--transition-premium);
+}
+.back-to-top.show { display: flex; }
+.back-to-top:hover { background: var(--text-dark); color: var(--cream); border-color: var(--text-dark); }
+
+/* ═══════════════════════════════════════════════════════
+   MINIMAL CURTAIN ENGINE LOADING SCREEN
    ═══════════════════════════════════════════════════════ */
 .loader-screen {
     position: fixed;
@@ -726,153 +493,12 @@ body {
     align-items: center;
     justify-content: center;
 }
-
-.loader-screen.hidden {
-    display: none;
-}
-
+.loader-screen.hidden { display: none; }
 .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(212,175,55,0.2);
-    border-top-color: var(--gold-dark);
+    width: 30px; height: 30px;
+    border: 1px solid rgba(var(--gold-raw), 0.2);
+    border-top-color: var(--text-dark);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
-}
-
-.loader-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    color: var(--text-light);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.error-screen {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--cream);
-    z-index: 1900;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    text-align: center;
-}
-
-.error-screen.show {
-    display: flex;
-}
-
-.error-screen p {
-    margin-bottom: 20px;
-    color: var(--accent-red);
-    font-size: 18px;
-}
-
-.retry-btn {
-    padding: 8px 16px;
-    background: var(--gold-dark);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-family: 'Montserrat';
-    cursor: pointer;
-}
-
-/* ═══════════════════════════════════════════════════════
-   FOOTER TRADITIONAL INSTITUTION BLOCK
-   ═══════════════════════════════════════════════════════ */
-.footer {
-    background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%);
-    color: var(--cream);
-    padding: 35px 0 25px;
-    text-align: center;
-    margin-top: 40px;
-}
-
-.footer-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 5px;
-}
-
-.footer-tagline {
-    font-size: 14px;
-    font-style: italic;
-    opacity: 0.8;
-    margin-bottom: 15px;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.footer-link {
-    color: var(--cream);
-    text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    opacity: 0.7;
-}
-
-.footer-copyright {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    opacity: 0.5;
-}
-
-.back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: var(--gold);
-    color: var(--cream);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    z-index: 800;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.back-to-top.show {
-    display: flex;
-}
-
-/* ═══════════════════════════════════════════════════════
-   ANIMATION KEYFRAMES HOOK
-   ═══════════════════════════════════════════════════════ */
-@keyframes spin { 
-    to { transform: rotate(360deg); } 
-}
-
-/* ═══════════════════════════════════════════════════════
-   📱 RESPONSIVE SYSTEM MEDIA BREAKPOINTS OVERRIDES
-   ═══════════════════════════════════════════════════════ */
-@media (min-width: 768px) {
-    .container {
-        width: 720px; /* Seamless reading expansion space across wide desktop layout viewports */
-    }
-    
-    .cover-image {
-        height: 420px; /* Scales master asset layout dimensions cleanly */
-    }
-
-    .editorial-grid {
-        grid-template-columns: 1fr 1fr 1fr; /* Enhances row density to 3 columns */
-    }
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 24px;
 }
