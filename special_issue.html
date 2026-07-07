@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Eclatineers | SRM VEC Department of English</title>
+    <meta name="description" content="Eclatineers - The official magazine of the Department of English, SRM Valliammai Engineering College">
+    <meta name="theme-color" content="#D4AF37">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDF5E6;
+            --cream-light: #FFFAF0;
+            --cream-dark: #F5DEB3;
+            --gold: #D4AF37;
+            --gold-light: #E6C87E;
+            --gold-dark: #B8860B;
+            --brown: #8B4513;
+            --brown-light: #A0522D;
+            --text-dark: #2C1810;
+            --text-medium: #4A3728;
+            --text-light: #6B5744;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+
+        /* Loading */
+        .loader {
+            position: fixed; inset: 0; background: var(--cream);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.5s ease;
+        }
+        .loader.hidden { opacity: 0; pointer-events: none; }
+        .loader-spinner {
+            width: 40px; height: 40px; border: 3px solid var(--cream-dark);
+            border-top-color: var(--gold); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .loader-text {
+            font-family: 'Playfair Display', serif; font-size: 24px;
+            color: var(--gold-dark); margin-top: 20px; font-style: italic;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Error */
+        .error-screen {
+            display: none; padding: 60px 20px; text-align: center;
+        }
+        .error-screen.show { display: block; }
+        .error-icon { font-size: 48px; margin-bottom: 20px; }
+        .error-title {
+            font-family: 'Playfair Display', serif; font-size: 28px;
+            color: var(--text-dark); margin-bottom: 10px;
+        }
+        .error-msg { font-size: 16px; color: var(--text-light); margin-bottom: 25px; }
+        .error-btn {
+            background: var(--gold); color: var(--cream); border: none;
+            padding: 12px 30px; border-radius: 5px; font-family: 'Montserrat', sans-serif;
+            font-size: 13px; font-weight: 600; cursor: pointer; letter-spacing: 1px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%);
+            padding: 40px 0 30px; text-align: center; position: relative; overflow: hidden;
+        }
+        .header::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="g" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="0.5" fill="rgba(139,69,19,0.08)"/><circle cx="75" cy="75" r="0.5" fill="rgba(139,69,19,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23g)"/></svg>');
+            opacity: 0.3;
+        }
+        .college-name {
+            font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500;
+            letter-spacing: 3px; text-transform: uppercase; color: var(--text-light);
+            margin-bottom: 15px; position: relative; z-index: 1;
+        }
+        .magazine-title {
+            font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700;
+            color: var(--gold-dark); margin-bottom: 8px; position: relative; z-index: 1;
+        }
+        .ornament {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; margin: 20px 0; position: relative; z-index: 1;
+        }
+        .ornament-line { width: 80px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+        .ornament-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+        .magazine-subtitle {
+            font-size: 18px; font-style: italic; color: var(--brown);
+            margin-bottom: 25px; position: relative; z-index: 1;
+        }
+        .issue-info {
+            font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 400;
+            letter-spacing: 2px; text-transform: uppercase; color: var(--gold);
+            position: relative; z-index: 1;
+        }
+
+        /* Cover */
+        .cover-section { position: relative; margin: -20px 0 30px; padding: 0 20px; }
+        .cover-image-container {
+            position: relative; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(139,69,19,0.2); border: 3px solid var(--gold);
+        }
+        .cover-image { width: 100%; height: 280px; object-fit: cover; display: block; }
+        .cover-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(44,24,16,0.8), transparent);
+            padding: 30px 20px 20px;
+        }
+        .cover-caption { font-size: 16px; font-style: italic; color: var(--cream); line-height: 1.5; }
+        .cover-photographer {
+            font-family: 'Montserrat', sans-serif; font-size: 11px;
+            color: var(--gold-light); margin-top: 8px; letter-spacing: 1px;
+        }
+
+        /* Intro */
+        .intro-section { padding: 30px 0; text-align: center; }
+        .intro-text { font-size: 18px; line-height: 1.7; color: var(--text-medium); margin-bottom: 20px; }
+        .definition-box {
+            background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(212,175,55,0.1));
+            border-left: 4px solid var(--gold); padding: 20px; margin: 25px 0;
+            text-align: left; border-radius: 0 8px 8px 0;
+        }
+        .definition-term { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--gold-dark); margin-bottom: 5px; }
+        .definition-pronunciation { font-family: 'Montserrat', sans-serif; font-size: 12px; color: var(--text-light); margin-bottom: 8px; font-style: italic; }
+        .definition-text { font-size: 16px; color: var(--text-medium); line-height: 1.6; }
+
+        /* TOC */
+        .toc-section { padding: 30px 0 40px; background: linear-gradient(to bottom, var(--cream), var(--cream-light)); }
+        .section-title {
+            font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700;
+            color: var(--text-dark); text-align: center; margin-bottom: 30px; position: relative;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 60px; height: 3px;
+            background: var(--gold); margin: 12px auto 0; border-radius: 2px;
+        }
+        .toc-list { list-style: none; }
+        .toc-item { margin-bottom: 5px; border-bottom: 1px solid rgba(212,175,55,0.2); }
+        .toc-link {
+            display: flex; align-items: center; padding: 15px 10px; text-decoration: none;
+            color: var(--text-dark); transition: all 0.3s ease; border-radius: 8px;
+        }
+        .toc-link:hover { background: rgba(212,175,55,0.08); transform: translateX(5px); }
+        .toc-number { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--gold); width: 40px; flex-shrink: 0; }
+        .toc-content { flex-grow: 1; }
+        .toc-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+        .toc-meta { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-light); letter-spacing: 0.5px; }
+        .toc-arrow { font-size: 18px; color: var(--gold); opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; }
+        .toc-link:hover .toc-arrow { opacity: 1; transform: translateX(0); }
+
+        /* Article */
+        .article-section { padding: 40px 0; border-top: 1px solid rgba(212,175,55,0.3); }
+        .article-category {
+            font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+        }
+        .article-title {
+            font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700;
+            color: var(--text-dark); line-height: 1.2; margin-bottom: 20px;
+        }
+        .article-author { display: flex; align-items: flex-start; margin-bottom: 25px; }
+        .author-avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+            color: var(--cream); margin-right: 15px; flex-shrink: 0;
+        }
+        .author-info { flex-grow: 1; }
+        .author-name { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .author-bio { font-size: 14px; color: var(--text-light); line-height: 1.5; margin-top: 6px; font-style: italic; }
+
+        /* Content blocks */
+        .article-content { font-size: 18px; line-height: 1.8; color: var(--text-medium); }
+        .article-content p { margin-bottom: 20px; }
+        .article-quote {
+            font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic;
+            color: var(--gold-dark); text-align: center; padding: 30px 20px; margin: 30px 0;
+            position: relative; line-height: 1.5;
+        }
+        .article-quote::before, .article-quote::after {
+            content: '"'; font-size: 60px; color: var(--gold); opacity: 0.3; position: absolute;
+        }
+        .article-quote::before { top: 10px; left: 10px; }
+        .article-quote::after { bottom: -20px; right: 10px; }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.15));
+            border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; padding: 25px; margin: 25px 0;
+        }
+        .highlight-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold-dark); margin-bottom: 15px; }
+        .highlight-box p { font-size: 17px; color: var(--text-medium); margin-bottom: 0; }
+        .highlight-box ul { list-style: none; padding-left: 0; }
+        .highlight-box li { padding: 8px 0 8px 25px; position: relative; font-size: 17px; color: var(--text-medium); }
+        .highlight-box li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 12px; }
+
+        /* Poetry */
+        .poetry-content { font-size: 20px; line-height: 1.8; color: var(--text-medium); font-style: italic; }
+        .poetry-content p { margin-bottom: 15px; }
+        .poetry-content .stanza { margin-bottom: 25px; }
+
+        /* Article Image */
+        .article-image { margin: 30px 0; }
+        .article-image img {
+            width: 100%; border-radius: 8px; border: 2px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(139,69,19,0.15);
+        }
+        .image-caption {
+            font-size: 15px; font-style: italic; color: var(--text-light);
+            text-align: center; margin-top: 10px;
+        }
+
+        /* Cryptic Clues */
+        .clue-card {
+            background: white; border: 1px solid rgba(212,175,55,0.3); border-radius: 8px;
+            padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(139,69,19,0.08);
+            transition: all 0.3s ease;
+        }
+        .clue-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139,69,19,0.12); }
+        .clue-number { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+        .clue-text { font-size: 17px; color: var(--text-dark); line-height: 1.5; }
+        .clue-hint { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-light); margin-top: 8px; font-style: italic; }
+
+        /* Riddles */
+        .riddle-card {
+            background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(212,175,55,0.1));
+            border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        .riddle-text { font-size: 18px; color: var(--text-dark); line-height: 1.6; margin-bottom: 15px; }
+        .riddle-answer {
+            background: rgba(212,175,55,0.1); padding: 10px 15px; border-radius: 5px;
+            font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--gold-dark);
+            font-weight: 600; display: none; margin-top: 10px;
+        }
+        .riddle-answer.show { display: block; }
+        .riddle-btn {
+            background: none; border: 1px solid var(--gold); color: var(--gold-dark);
+            padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif;
+            font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;
+        }
+        .riddle-btn:hover { background: var(--gold); color: var(--cream); }
+
+        /* Patrons */
+        .patrons-section { padding: 40px 0; background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%); }
+        .patron-card { text-align: center; margin-bottom: 35px; }
+        .patron-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700;
+            color: var(--cream); border: 3px solid var(--cream);
+            box-shadow: 0 4px 12px rgba(139,69,19,0.2);
+        }
+        .patron-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--text-dark); margin-bottom: 5px; }
+        .patron-title {
+            font-family: 'Montserrat', sans-serif; font-size: 12px; color: var(--gold-dark);
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+        }
+        .patron-bio { font-size: 15px; color: var(--text-medium); line-height: 1.6; max-width: 400px; margin: 0 auto; }
+
+        /* Editorial */
+        .editorial-section { padding: 40px 0; }
+        .editorial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .editor-card {
+            text-align: center; padding: 20px; background: rgba(255,255,255,0.5);
+            border-radius: 8px; border: 1px solid rgba(212,175,55,0.2);
+        }
+        .editor-avatar {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700;
+            color: var(--cream); border: 2px solid var(--cream);
+        }
+        .editor-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--text-dark); margin-bottom: 5px; }
+        .editor-role { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-light); letter-spacing: 0.5px; }
+
+        /* Issues List (Home) */
+        .issues-section { padding: 40px 0; }
+        .issue-card {
+            display: block; text-decoration: none; color: var(--text-dark);
+            background: white; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px;
+            overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(139,69,19,0.08);
+            transition: all 0.3s ease;
+        }
+        .issue-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(139,69,19,0.15); }
+        .issue-card-img { width: 100%; height: 200px; object-fit: cover; }
+        .issue-card-body { padding: 20px; }
+        .issue-card-date { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+        .issue-card-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .issue-card-tagline { font-size: 15px; color: var(--text-light); line-height: 1.5; }
+
+        /* Nav */
+        .nav-bar {
+            position: sticky; top: 0; z-index: 100; background: rgba(253,245,230,0.95);
+            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(212,175,55,0.2);
+            padding: 12px 0; display: none;
+        }
+        .nav-bar.show { display: block; }
+        .nav-inner {
+            max-width: 480px; margin: 0 auto; padding: 0 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-back {
+            background: none; border: 1px solid var(--gold); color: var(--gold-dark);
+            padding: 6px 14px; border-radius: 5px; font-family: 'Montserrat', sans-serif;
+            font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none;
+            letter-spacing: 0.5px; transition: all 0.3s ease;
+        }
+        .nav-back:hover { background: var(--gold); color: var(--cream); }
+        .nav-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--text-dark); }
+        .nav-menu-btn {
+            background: none; border: none; font-size: 22px; color: var(--gold-dark);
+            cursor: pointer; padding: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%);
+            color: var(--cream); padding: 40px 0 30px; text-align: center;
+        }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+        .footer-tagline { font-size: 16px; font-style: italic; color: var(--cream); opacity: 0.8; margin-bottom: 25px; }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; }
+        .footer-link {
+            color: var(--cream); text-decoration: none; font-family: 'Montserrat', sans-serif;
+            font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+            opacity: 0.7; transition: all 0.3s ease;
+        }
+        .footer-link:hover { opacity: 1; color: var(--gold); }
+        .footer-ornament { width: 60px; height: 1px; background: var(--gold); margin: 20px auto; opacity: 0.5; }
+        .footer-copyright { font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--cream); opacity: 0.5; }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
+            background: var(--gold); color: var(--cream); border: none; border-radius: 50%;
+            font-size: 20px; cursor: pointer; display: none; align-items: center;
+            justify-content: center; box-shadow: 0 2px 10px rgba(139,69,19,0.3);
+            z-index: 1000; transition: all 0.3s ease;
+        }
+        .back-to-top:hover { background: var(--gold-dark); transform: translateY(-3px); }
+        .back-to-top.show { display: flex; }
+
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed; inset: 0; background: var(--cream); z-index: 1000;
+            padding: 70px 30px 30px; transform: translateX(100%);
+            transition: transform 0.3s ease; overflow-y: auto;
+        }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-menu-close {
+            position: absolute; top: 15px; right: 15px; width: 40px; height: 40px;
+            background: none; border: 1px solid var(--gold); border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--gold-dark);
+        }
+        .mobile-menu-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--text-dark); margin-bottom: 25px; }
+        .mobile-menu-list { list-style: none; }
+        .mobile-menu-item { margin-bottom: 5px; }
+        .mobile-menu-link {
+            display: block; padding: 12px 10px; text-decoration: none; color: var(--text-dark);
+            font-family: 'Playfair Display', serif; font-size: 18px;
+            border-bottom: 1px solid rgba(212,175,55,0.2); transition: all 0.3s ease;
+        }
+        .mobile-menu-link:hover { color: var(--gold-dark); padding-left: 15px; }
+        .mobile-menu-sep {
+            font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--gold);
+            letter-spacing: 2px; text-transform: uppercase; padding: 15px 10px 5px;
+        }
+
+        @media (max-width: 480px) {
+            .magazine-title { font-size: 42px; }
+            .article-title { font-size: 30px; }
+            .editorial-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .nav-bar, .mobile-menu, .back-to-top, .footer { display: none !important; }
+            .article-section, .poetry-section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Eclatineers</div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-screen" id="errorScreen">
+        <div class="error-icon">📖</div>
+        <div class="error-title">Couldn't Load</div>
+        <div class="error-msg" id="errorMsg">Something went wrong. Please check your connection.</div>
+        <button class="error-btn" onclick="location.reload()">Try Again</button>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav-bar" id="navBar">
+        <div class="nav-inner">
+            <a class="nav-back" id="navBack" href="#">← Back</a>
+            <div class="nav-title" id="navTitle">Eclatineers</div>
+            <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">☰</button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close">✕</button>
+        <div class="mobile-menu-title">Contents</div>
+        <ul class="mobile-menu-list" id="mobileMenuList"></ul>
+    </div>
+
+    <!-- Main App -->
+    <div id="app"></div>
+
+    <!-- Back to top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to Top">↑</button>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
