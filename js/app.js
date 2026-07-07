@@ -362,113 +362,168 @@ function renderArticlePage(issueId, slug) {
     const article = CoreData.getArticle(issueId, slug);
     if (!article) { displayApplicationError('Article structure could not be mapped.'); return; }
 
-    const rawContent = article.content || '';
     const category = article.category || '';
-    
-    let pageGroups = [];
+    const rawContent = article.content || '';
 
-    // Chunking rules tailored specifically to content type to minimize empty spaces
+    // Handle special structural block logic parsed values smoothly
+    let finalBodyHtml = '';
     if (category === 'Riddles' || (category && category.includes('Cryptic'))) {
-        // Special structural parsers require explicit self-contained rendering blocks
-        pageGroups.push(parseContent(rawContent, category));
+        finalBodyHtml = parseContent(rawContent, category);
     } else {
+        // Construct natural premium paragraphs layout strings
         const paragraphs = rawContent.split('\n\n').map(p => p.trim()).filter(Boolean);
-        let currentGroup = [];
-        
-        paragraphs.forEach((para, idx) => {
-            currentGroup.push(para);
-            // Dynamic clustering: Group chunks in segments of two to balance spatial layouts tightly
-            if (currentGroup.length === 2 || idx === paragraphs.length - 1) {
-                // Parse standard inner formatting tokens fields on generation
-                const collectiveHtml = currentGroup.map((p, pIdx) => {
-                    if (pageGroups.length === 0 && pIdx === 0 && !['Poetry', 'Lines & Lenses'].includes(category)) {
-                        // Apply drop-cap signature style formatting only on the first letter of the first page
-                        const cleanP = escHtml(p);
-                        return `<p class="drop-cap-p">${cleanP}</p>`;
-                    }
-                    return `<p>${escHtml(p).replace(/\n/g, '<br>')}</p>`;
-                }).join('');
-                
-                pageGroups.push(collectiveHtml);
-                currentGroup = [];
-            }
-        });
+        finalBodyHtml = paragraphs.map((p, idx) => {
+            if (idx === 0) return `<p class="drop-cap-p">${escHtml(p)}</p>`;
+            return `<p>${escHtml(p).replace(/\n/g, '<br>')}</p>`;
+        }).join('');
     }
 
-    // Always append Giscus Discussion platform dynamically to the final layout page
-    const totalContentPages = pageGroups.length;
-    
+    // Layout Composition Base Frame Mount
     let html = `
-        <div class="magazine-viewport">
-            <div class="magazine-book" id="magazineBook">`;
-
-    // Render generated content nodes out as sequential fixed portfolio flip elements
-    pageGroups.forEach((pageHtmlContent, pageIndex) => {
-        const pageNum = pageIndex + 1;
-        const totalPages = totalContentPages + 1; // plus 1 explicitly to account for comments sheet
-        const isFirst = pageIndex === 0;
-        const stateClass = isFirst ? 'active' : 'future';
-
-        html += `
-            <div class="magazine-page ${stateClass}" data-page="${pageIndex}">
-                <div class="article-category" style="margin-bottom:1vh;">${escHtml(category)}</div>
-                
-                <div class="page-content-wrapper">
-                    ${isFirst ? `<h2 class="article-title-compact">${escHtml(article.title)}</h2>` : ''}
-                    ${isFirst ? `
-                    <div class="article-author-signature" style="margin-bottom: 3vh;">
-                        <div class="author-name" style="font-size:11px;">${escHtml(article.author)}</div>
-                        ${article.authorbio ? `<div class="author-bio" style="font-size:13px; margin-top:2px;">${escHtml(article.authorbio)}</div>` : ''}
-                    </div>` : ''}
+        <div class="reader-container">
+            <div class="reader-canvas-viewport" id="readerViewport">
+                <div class="reader-fluid-book" id="readerBook">
                     
-                    <div class="article-body-bounded">
-                        ${pageHtmlContent}
+                    <!-- Single Continuous Multi-Column Folio Page -->
+                    <div class="reader-folio-page">
+                        <div class="article-category" style="margin-bottom:1.5vh; text-align:left; color:var(--gold-dark); font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase;">${escHtml(category)}</div>
+                        <h2>${escHtml(article.title)}</h2>
+                        
+                        <div class="article-author-signature" style="text-align:left; margin-bottom:4vh; border-bottom:1px solid rgba(var(--gold-raw), 0.15); padding-bottom:2vh;">
+                            <div class="author-name" style="font-family:'Montserrat',sans-serif; font-size:11px; text-transform:uppercase; font-weight:600;">${escHtml(article.author)}</div>
+                            ${article.authorbio ? `<div class="author-bio" style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:var(--text-light); margin-top:2px;">${escHtml(article.authorbio)}</div>` : ''}
+                        </div>
+
+                        <div class="reader-text-flow">
+                            ${finalBodyHtml}
+                        </div>
                     </div>
-                </div>
 
-                <div class="page-footer-strip">
-                    <div>${CONFIG.COLLEGE}</div>
-                    <div style="font-weight:600; color:var(--gold-dark);">${pageNum} / ${totalPages}</div>
-                    <div>${escHtml(article.title).substring(0, 20)}...</div>
-                </div>
-            </div>`;
-    });
-
-    // Mount dedicated Commentary Sheet to handle layout density isolation rules cleanly
-    const finalPageNum = totalContentPages + 1;
-    html += `
-            <div class="magazine-page future" data-page="${totalContentPages}">
-                <div class="article-category" style="margin-bottom:1vh;">Discussion Folio</div>
-                <div class="page-content-wrapper" style="justify-content: flex-start; overflow-y: auto;">
-                    <h3 style="font-family:'Playfair Display',serif; font-size:20px; text-align:center; margin-bottom:15px; color:var(--text-dark);">Literary Review Contributions</h3>
-                    <div id="giscus-container" style="min-height: 150px; width:100%;"></div>
-                </div>
-                <div class="page-footer-strip">
-                    <div>${CONFIG.COLLEGE}</div>
-                    <div style="font-weight:600; color:var(--gold-dark);">${finalPageNum} / ${finalPageNum}</div>
-                    <div>Reader Analytics</div>
                 </div>
             </div>
+
+            <!-- Kindle Bottom Navigation Dashboard Ribbon -->
+            <div class="page-footer-strip" style="margin-top:2vh;">
+                <div style="cursor:pointer;" onclick="turnEbookPage(-1)">‹ PREV</div>
+                <div id="ebookProgressIndicator" style="font-weight:600; font-family:'Montserrat',sans-serif; font-size:10px; color:var(--gold-dark);">PAGE 1</div>
+                <div style="cursor:pointer;" onclick="turnEbookPage(1)">NEXT ›</div>
+            </div>
         </div>
-    </div>
-    
-    <div class="magazine-controls">
-        <button class="mag-btn" onclick="turnMagazinePage(-1)">« Prev</button>
-        <button class="mag-btn" onclick="turnMagazinePage(1)">Next »</button>
-    </div>`;
+
+        <!-- Global Collapsible Persistent Giscus Forum Sheet Overlay -->
+        <button class="drawer-toggle-trigger-btn" id="commentDrawerBtn" onclick="toggleCommentDrawer(true)">Reviews & Thoughts</button>
+        
+        <div class="reader-comments-drawer" id="commentDrawer">
+            <div class="drawer-header-bar">
+                <span style="font-family:'Playfair Display',serif; font-size:15px; font-weight:600;">Contributions & Analysis</span>
+                <span style="cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; letter-spacing:1px;" onclick="toggleCommentDrawer(false)">✕ CLOSE</span>
+            </div>
+            <div style="padding: 20px 40px; height: calc(100% - 50px); overflow-y: auto;">
+                <div id="giscus-container"></div>
+            </div>
+        </div>`;
 
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, article.title, `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
-    
-    // Initialize standard runtime parameters pointers context tracker fields
-    window.currentMagPageIndex = 0;
-    window.totalMagPages = finalPageNum;
 
-    // Bootstrap comments engine asynchronously
+    // Bootstrap E-Reader Pagination & Virtual Matrix Calculation Parameters 
+    window.currentEbookPage = 0;
+    setTimeout(() => { calculateEbookPaginationMetrics(); }, 150);
+
+    // Initialize Global Interactive Comment Systems asynchronously
     initGiscusComments(article.title, article.author);
 }
 
+// ═══════════════════════════════════════════════════════
+// E-READER ENGINE CALCULATION MATRIX
+// ═══════════════════════════════════════════════════════
+function calculateEbookPaginationMetrics() {
+    const viewport = document.getElementById('readerViewport');
+    const book = document.getElementById('readerBook');
+    if (!viewport || !book) return;
+
+    // Read dynamic horizontal layout dimensions mapped inside the client browser context
+    const viewWidth = viewport.clientWidth;
+    const totalScrollWidth = book.scrollWidth;
+
+    // Total virtual pages matches the physical width of contents divided by visible viewport slices
+    window.totalEbookPages = Math.max(1, Math.round(totalScrollWidth / viewWidth));
+    updateEbookNavigationFeedbackStrip();
+}
+
+window.turnEbookPage = function(direction) {
+    const book = document.getElementById('readerBook');
+    const viewport = document.getElementById('readerViewport');
+    if (!book || !viewport) return;
+
+    let targetPage = window.currentEbookPage + direction;
+    if (targetPage < 0 || targetPage >= window.totalEbookPages) return;
+
+    window.currentEbookPage = targetPage;
+    
+    // Shift horizontally using seamless, hardware-accelerated translations
+    const shiftOffset = targetPage * viewport.clientWidth;
+    book.style.transform = `translateX(-${shiftOffset}px)`;
+    
+    updateEbookNavigationFeedbackStrip();
+};
+
+function updateEbookNavigationFeedbackStrip() {
+    const indicator = document.getElementById('ebookProgressIndicator');
+    if (indicator) {
+        indicator.textContent = `LOC ${window.currentEbookPage + 1} OF ${window.totalEbookPages}`;
+    }
+}
+
+// Hook vertical mouse wheel scrolling actions or trackpad sweeps safely into horizontal turns
+document.removeEventListener('wheel', handleEbookWheelGestures);
+document.addEventListener('wheel', handleEbookWheelGestures, { passive: false });
+
+function handleEbookWheelGestures(e) {
+    const book = document.getElementById('readerBook');
+    if (!book) return;
+
+    // Prevent traditional explosive browser structural scroll-down ticks
+    e.preventDefault();
+    
+    // Throttle triggers to prevent aggressive page-skips
+    if (window.ebookWheelThrottled) return;
+    window.ebookWheelThrottled = true;
+    setTimeout(() => { window.ebookWheelThrottled = false; }, 400);
+
+    if (e.deltaY > 0 || e.deltaX > 0) {
+        turnEbookPage(1);
+    } else {
+        turnEbookPage(-1);
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// DYNAMIC COMMENTS ACTION ENGINE
+// ═══════════════════════════════════════════════════════
+window.toggleCommentDrawer = function(open) {
+    const drawer = document.getElementById('commentDrawer');
+    const btn = document.getElementById('commentDrawerBtn');
+    if (!drawer) return;
+
+    if (open) {
+        drawer.classList.add('open');
+        if (btn) btn.style.display = 'none';
+    } else {
+        drawer.classList.remove('open');
+        if (btn) btn.style.display = 'block';
+    }
+};
+
+// Handle window structural canvas ratio re-sizing modifications natively
+window.addEventListener('resize', () => {
+    if (document.getElementById('readerBook')) {
+        window.currentEbookPage = 0;
+        document.getElementById('readerBook').style.transform = 'translateX(0px)';
+        calculateEbookPaginationMetrics();
+    }
+});
 function renderPatronsPage(issueId) {
     const patrons = CoreData.getPatrons(issueId);
     let html = `
