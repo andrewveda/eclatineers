@@ -500,3 +500,162 @@ body {
     animation: spin 0.8s linear infinite;
     margin-bottom: 24px;
 }
+
+/* ═══════════════════════════════════════════════════════
+   FIXED VIEWPORT & FLIP CHOREOGRAPHY ENGINE
+   ═══════════════════════════════════════════════════════ */
+html, body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Master Magazine Deck Container */
+.magazine-viewport {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: calc(100vh - 70px); /* Adjusting dynamically for fixed navigation bar */
+    padding: 2vh 4vw;
+    perspective: 1500px; /* Crucial for 3D page flip depth perception */
+}
+
+/* Page Binder wrapper */
+.magazine-book {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.15, 0.85, 0.45, 1);
+}
+
+/* Individual Page Sheet Card Layout */
+.magazine-page {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--cream-light);
+    border: 1px solid rgba(var(--gold-raw), 0.25);
+    padding: 4vh 4vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Keeps content spaced out without loose void space */
+    box-shadow: 0 10px 30px rgba(26, 15, 10, 0.05);
+    backface-visibility: hidden; /* Hides back layout while flipping */
+    transform-origin: left center;
+    transition: transform 0.8s cubic-bezier(0.15, 0.85, 0.45, 1), z-index 0s linear 0.4s;
+    z-index: 1;
+}
+
+/* Inner Frame Border to prevent loose empty edges */
+.magazine-page::after {
+    content: '';
+    position: absolute;
+    top: 15px; left: 15px; right: 15px; bottom: 15px;
+    border: 1px solid rgba(var(--gold-raw), 0.15);
+    pointer-events: none;
+}
+
+/* Active and Past State Flipping Animations */
+.magazine-page.past {
+    transform: rotateY(-180deg);
+    z-index: 0;
+}
+
+.magazine-page.active {
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.magazine-page.future {
+    transform: rotateY(0deg);
+    z-index: 1;
+    visibility: hidden; /* Conceals oncoming pages underneath */
+}
+.magazine-page.active ~ .magazine-page {
+    visibility: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ANTI-WHITESPACE CONTENT BOUNDING BOXES
+   ═══════════════════════════════════════════════════════ */
+.page-content-wrapper {
+    flex-grow: 1;
+    overflow: hidden; /* Content is divided strictly so scrolling is hidden */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Scale down editorial text dynamically to prevent line drops pushing out bounds */
+.article-title-compact {
+    font-family: 'Playfair Display', serif;
+    font-size: min(4.5vh, 32px);
+    line-height: 1.2;
+    text-align: center;
+    color: var(--text-dark);
+    margin-bottom: 2vh;
+}
+
+.article-body-bounded {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: min(2.3vh, 17px);
+    line-height: 1.6;
+    color: var(--text-medium);
+    text-align: justify;
+}
+
+.article-body-bounded p {
+    margin-bottom: 1.5vh;
+}
+
+/* Magazine Sheet Bottom Footer Pagination Strip */
+.page-footer-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(var(--gold-raw), 0.15);
+    padding-top: 1.5vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    text-transform: uppercase;
+}
+
+/* Navigation Pager Overlay UI Control Brackets */
+.magazine-controls {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 950;
+}
+
+.mag-btn {
+    background: var(--text-dark);
+    color: var(--cream);
+    border: 1px solid var(--gold);
+    padding: 8px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-premium);
+}
+.mag-btn:hover {
+    background: var(--gold-dark);
+    color: #FFF;
+}
