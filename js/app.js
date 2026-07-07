@@ -470,12 +470,25 @@ function renderFooter() {
 // ═══════════════════════════════════════════════════════
 // GISCUS COMMENT INTEGRATION PIPELINE
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// GISCUS COMMENT INTEGRATION PIPELINE
+// ═══════════════════════════════════════════════════════
 function initGiscusComments(articleTitle, articleAuthor) {
-    // Evict any existing elements to prevent double stacking artifacts inside the view container
+    // 1. Evict any existing elements to prevent double stacking artifacts inside the view container
     const oldScript = document.getElementById('giscus-script');
     if (oldScript) oldScript.remove();
 
-    // Map Specific Lookup Query to: "Article Title by Author Name"
+    // 2. FORCE BACKLINK ACCURACY: Dynamically inject/update the canonical URL to include hash routes
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+        canonicalLink = document.createElement('link');
+        canonicalLink.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonicalLink);
+    }
+    // This tells Giscus to use the exact URL (with your #issue and #article parameters) for the GitHub backlink
+    canonicalLink.setAttribute('href', window.location.href);
+
+    // 3. Map Specific Lookup Query to: "Article Title by Author Name"
     const uniqueDiscussionTerm = `${articleTitle} by ${articleAuthor}`;
 
     const script = document.createElement('script');
@@ -491,7 +504,7 @@ function initGiscusComments(articleTitle, articleAuthor) {
     // Professional Term Mapping Protocols
     script.setAttribute('data-mapping', 'specific'); 
     script.setAttribute('data-term', uniqueDiscussionTerm); 
-    script.setAttribute('data-strict', '1'); // Strict mapping checks
+    script.setAttribute('data-strict', '1'); // Enforces strict matching check profiles
     
     script.setAttribute('data-reactions-enabled', '1'); 
     script.setAttribute('data-emit-metadata', '0');
