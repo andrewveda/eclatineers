@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════
 const CONFIG = {
     // Paste your Google Sheet ID here
-    SHEET_ID: 'PASTE_YOUR_GOOGLE_SHEET_ID_HERE',
+    SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
 
     // Tab names (must match exactly)
     SHEETS: {
