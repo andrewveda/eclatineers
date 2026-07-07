@@ -42,7 +42,13 @@ async function fetchSheet(sheetName) {
     return data.table.rows.map(row => {
         const obj = {};
         cols.forEach((col, i) => { 
-            obj[col] = row.c[i]?.v ?? ''; 
+            let val = row.c[i]?.v ?? ''; 
+            
+            // FIX: Normalize ID value matching fields to absolute lower-case to avoid case matching failure bugs
+            if (typeof val === 'string' && (col === 'id' || col === 'issueid')) {
+                val = val.toLowerCase().trim();
+            }
+            obj[col] = val;
         });
         return obj;
     });
@@ -62,11 +68,11 @@ async function loadAllData() {
 }
 
 const CoreData = {
-    getIssue: (id) => Cache.issues.find(i => String(i.id) === String(id)),
-    getArticles: (issueId) => Cache.articles.filter(a => String(a.issueid) === String(issueId)).sort((a, b) => (parseInt(a.order) || 0) - (parseInt(b.order) || 0)),
-    getArticle: (issueId, slug) => Cache.articles.find(a => String(a.issueid) === String(issueId) && a.slug === slug),
-    getPatrons: (issueId) => Cache.patrons.filter(p => String(p.issueid) === String(issueId)),
-    getEditorial: (issueId) => Cache.editorial.filter(e => String(e.issueid) === String(issueId))
+    getIssue: (id) => Cache.issues.find(i => String(i.id) === String(id).toLowerCase()),
+    getArticles: (issueId) => Cache.articles.filter(a => String(a.issueid) === String(issueId).toLowerCase()).sort((a, b) => (parseInt(a.order) || 0) - (parseInt(b.order) || 0)),
+    getArticle: (issueId, slug) => Cache.articles.find(a => String(a.issueid) === String(issueId).toLowerCase() && a.slug === slug),
+    getPatrons: (issueId) => Cache.patrons.filter(p => String(p.issueid) === String(issueId).toLowerCase()),
+    getEditorial: (issueId) => Cache.editorial.filter(e => String(e.issueid) === String(issueId).toLowerCase())
 };
 
 // ═══════════════════════════════════════════════════════
@@ -137,12 +143,14 @@ function parseContent(text, category) {
                 if (parts.length >= 3) {
                     const num = parts[0].trim();
                     const clue = parts[1].trim();
-                    const hint = parts[2].trim();
+                    // FIX: Recombine everything following the second token partition boundary cleanly
+                    const hint = parts.slice(2).join(':').trim(); 
+                    
                     html += `
                         <div class="clue-card">
                             <div class="clue-number">Clue ${num}</div>
                             <div class="clue-text">${escHtml(clue)}</div>
-                            <div class="clue-hint">Hint: ${escHtml(hint)}</div>
+                            <div class="clue-hint">${escHtml(hint)}</div>
                         </div>`;
                 }
             }
@@ -366,7 +374,6 @@ function renderArticlePage(issueId, slug) {
                 </div>
                 ${isPoetry ? `<div class="poetry-content">${contentHtml}</div>` : `<div class="article-content">${contentHtml}</div>`}
                 
-                <!-- Giscus Comment Section Target Anchor Base -->
                 <div class="ornament" style="margin-top: 50px;"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
                 <div id="giscus-container" style="margin-top: 30px; min-height: 150px;"></div>
             </div>
@@ -460,9 +467,6 @@ function initGiscusComments() {
     script.id = 'giscus-script';
     script.src = 'https://giscus.app/client.js';
     
-    // ═══════════════════════════════════════════════════════
-    // CONFIGURATION — Setup your targeted GitHub project details here
-    // ═══════════════════════════════════════════════════════
     script.setAttribute('data-repo', 'andrewveda/eclatineers');
     script.setAttribute('data-repo-id', 'R_kgDOMN0F0w'); 
     script.setAttribute('data-category', 'Announcements');
