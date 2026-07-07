@@ -2,25 +2,19 @@
 // GLOBAL APP ARCHITECTURE CONFIGURATION
 // ═══════════════════════════════════════════════════════
 const CONFIG = {
-    // Shared Google Spreadsheet ID
     SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
-    
-    // Tab names inside your Google Sheet
     SHEETS: {
         ISSUES: 'Issues',
         ARTICLES: 'Articles',
         PATRONS: 'Patrons',
         EDITORIAL: 'Editorial'
     },
-    
-    // Institutional Footer & Layout Context Data
     COLLEGE: 'SRM Valliammai Engineering College',
     DEPARTMENT: 'Department of English',
     WEBSITE: 'https://www.eclatineers.in/',
     FOOTER_NOTE: 'For private circulation only'
 };
 
-// Application State Memory Cache Engine
 const Cache = { issues: null, articles: null, patrons: null, editorial: null };
 
 // ═══════════════════════════════════════════════════════
@@ -32,19 +26,15 @@ async function fetchSheet(sheetName) {
     if (!res.ok) throw new Error(`Network failure requesting dataset: ${sheetName}`);
     
     const text = await res.text();
-    // Safely extract payload clean boundaries from the JSONP response envelope wrap
     const jsonStr = text.replace(/\/\*O_o\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);?\s*$/, '');
     const data = JSON.parse(jsonStr);
     
-    // Auto-normalize sheet cell structural indices using matching data tokens
     const cols = data.table.cols.map(c => c.label.toLowerCase().replace(/[^a-z0-9]/g, '_').trim());
     
     return data.table.rows.map(row => {
         const obj = {};
         cols.forEach((col, i) => { 
             let val = row.c[i]?.v ?? ''; 
-            
-            // FIX: Normalize ID value matching fields to absolute lower-case to avoid case matching failure bugs
             if (typeof val === 'string' && (col === 'id' || col === 'issueid')) {
                 val = val.toLowerCase().trim();
             }
@@ -76,7 +66,7 @@ const CoreData = {
 };
 
 // ═══════════════════════════════════════════════════════
-// UNIFIED ROUTER HANDLING SYSTEM (Hash Parameters)
+// UNIFIED ROUTER HANDLING SYSTEM
 // ═══════════════════════════════════════════════════════
 function getRouterParams() {
     const hash = window.location.hash.substring(1);
@@ -104,22 +94,29 @@ function handleRouting() {
     }
 }
 
+// Helper to render complex linear gold patterns
+function renderGoldOrnament() {
+    return `
+        <div class="ornament-frame">
+            <div class="ornament-line-complex"></div>
+            <div class="ornament-crest">✦ ⚜ ✦</div>
+            <div class="ornament-line-complex"></div>
+        </div>`;
+}
+
 // ═══════════════════════════════════════════════════════
-// DYNAMIC TEXT & ELEMENT CONTENT PARSER
+// DYNAMIC TEXT EDITOR DOCUMENT PARSER
 // ═══════════════════════════════════════════════════════
 function parseContent(text, category) {
     if (!text) return '';
 
-    // Interactive Riddle Render Loop
     if (category === 'Riddles') {
         let html = '';
         const qas = text.split('>>').map(item => item.trim()).filter(Boolean);
-        
         for (let i = 0; i < qas.length; i++) {
             if (qas[i].startsWith('??')) {
                 const question = qas[i].slice(2).trim().replace(/\n/g, '<br>');
                 const answer = (qas[i + 1] && !qas[i + 1].startsWith('??')) ? qas[i + 1].trim() : '...';
-                
                 html += `
                     <div class="riddle-card">
                         <div class="riddle-text">${question}</div>
@@ -131,11 +128,9 @@ function parseContent(text, category) {
         return html;
     }
 
-    // Cryptic Clue Parser Injection
     if (category && category.includes('Cryptic')) {
         const lines = text.split('\n');
-        let html = '<div style="display:grid; gap:12px;">';
-        
+        let html = '<div style="display:grid; gap:20px;">';
         lines.forEach(line => {
             if (line.trim().startsWith('!!')) {
                 const clean = line.replace(/^\s*!!/, '').trim();
@@ -143,9 +138,7 @@ function parseContent(text, category) {
                 if (parts.length >= 3) {
                     const num = parts[0].trim();
                     const clue = parts[1].trim();
-                    // FIX: Recombine everything following the second token partition boundary cleanly
                     const hint = parts.slice(2).join(':').trim(); 
-                    
                     html += `
                         <div class="clue-card">
                             <div class="clue-number">Clue ${num}</div>
@@ -159,13 +152,11 @@ function parseContent(text, category) {
         return html;
     }
 
-    // Traditional Structure Document Parser (Paragraphs, Quotes, Highlighting, Images)
     let html = '';
     const blocks = text.split('\n\n').map(b => b.trim()).filter(Boolean);
     let inBox = false;
 
     blocks.forEach(block => {
-        // Image parsing mapping sequence (!Caption:SourceURL)
         if (block.startsWith('!') && block.includes(':')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const parts = block.substring(1).split(':');
@@ -175,7 +166,6 @@ function parseContent(text, category) {
             return;
         }
 
-        // Pull Quotes
         if (block.startsWith('>>')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const quote = block.slice(2).trim();
@@ -183,7 +173,6 @@ function parseContent(text, category) {
             return;
         }
 
-        // Highlight Container Box Title Header
         if (block.startsWith('##')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const title = block.slice(2).trim();
@@ -192,7 +181,6 @@ function parseContent(text, category) {
             return;
         }
 
-        // Internal List Element Generation Loops
         if (inBox && block.startsWith('- ')) {
             const items = block.split('\n').filter(l => l.trim().startsWith('- '));
             html += '<ul>' + items.map(i => `<li>${escHtml(i.trim().slice(2))}</li>`).join('') + '</ul>';
@@ -204,7 +192,6 @@ function parseContent(text, category) {
             inBox = false;
         }
 
-        // Standard Editorial Paragraph Normalization
         const formatted = escHtml(block).replace(/\n/g, '<br>');
         html += `<p>${formatted}</p>`;
     });
@@ -226,7 +213,7 @@ window.toggleRiddle = function(btn) {
 };
 
 // ═══════════════════════════════════════════════════════
-// UI RENDERING SECTIONS
+// UI MASTER CORE RENDER ENGINES
 // ═══════════════════════════════════════════════════════
 function renderHomePage() {
     let html = `
@@ -234,28 +221,28 @@ function renderHomePage() {
             <div class="container">
                 <div class="college-name">${CONFIG.COLLEGE}</div>
                 <h1 class="magazine-title">Eclatineers</h1>
-                <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+                ${renderGoldOrnament()}
                 <div class="magazine-subtitle">${CONFIG.DEPARTMENT}</div>
             </div>
         </header>
-        <section style="padding: 30px 0;">
+        <section style="padding: 40px 0 80px;">
             <div class="container">
-                <h2 class="section-title">All Issues</h2>`;
+                <div class="editorial-canvas-grid">`;
 
     Cache.issues.forEach(issue => {
         const imgSrc = issue.cover || `https://picsum.photos/seed/${issue.id}/800/400.jpg`;
         html += `
-                <a class="issue-card" href="#issue=${issue.id}">
-                    <img class="issue-card-img" src="${escHtml(imgSrc)}" alt="${escHtml(issue.title)}" loading="lazy">
-                    <div class="issue-card-body">
-                        <div class="issue-card-date">${escHtml(issue.date)}</div>
-                        <div class="issue-card-title">${escHtml(issue.title)}</div>
-                        <div class="issue-card-tagline">${escHtml(issue.tagline || '')}</div>
-                    </div>
-                </a>`;
+            <a class="issue-card" href="#issue=${issue.id}">
+                <img class="issue-card-img" src="${escHtml(imgSrc)}" alt="${escHtml(issue.title)}" loading="lazy">
+                <div class="issue-card-body">
+                    <div class="issue-card-date">${escHtml(issue.date)}</div>
+                    <div class="issue-card-title">${escHtml(issue.title)}</div>
+                    <div class="issue-card-tagline">${escHtml(issue.tagline || '')}</div>
+                </div>
+            </a>`;
     });
 
-    html += `</div></section>${renderFooter()}`;
+    html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
     updateNavBarState(false);
     window.scrollTo(0, 0);
@@ -273,34 +260,38 @@ function renderIssuePage(issueId) {
             <div class="container">
                 <div class="college-name">${CONFIG.COLLEGE}</div>
                 <h1 class="magazine-title">${escHtml(issue.title)}</h1>
-                <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+                ${renderGoldOrnament()}
                 <div class="magazine-subtitle">${CONFIG.DEPARTMENT}</div>
-                <div class="issue-info">${escHtml(issue.date)} Issue</div>
+                <div class="issue-info">${escHtml(issue.date)} Folio</div>
             </div>
         </header>
-        <section class="cover-section">
+        <section class="cover-section" style="margin-bottom: 60px;">
             <div class="container">
-                <div class="cover-image-container">
-                    <img src="${escHtml(imgSrc)}" alt="Cover Master Asset" class="cover-image" loading="lazy">
+                <div class="cover-image-container" style="border: 1px solid var(--gold); padding: 12px; background: var(--cream-light)">
+                    <img src="${escHtml(imgSrc)}" alt="Cover Master Asset" class="cover-image" style="width:100%; height:auto; display:block;" loading="lazy">
                 </div>
             </div>
         </section>`;
 
     if (issue.about) {
         html += `
-        <section class="intro-section">
+        <section class="intro-section" style="margin-bottom: 80px;">
             <div class="container">
-                <p class="intro-text">${escHtml(issue.about)}</p>
+                <p class="intro-text" style="font-size:22px; font-style:italic; text-align:center; margin-bottom:40px; color:var(--text-medium); line-height:1.6;">"${escHtml(issue.about)}"</p>
                 <div class="definition-box">
                     <div class="definition-term">Eclatineers</div>
-                    <div class="definition-pronunciation">/ˌek-lə-ˈnīrz/ (rhymes with Engineers!)</div>
-                    <div class="definition-text">A fusion of éclat and engineers, representing the bridge between technical precision and creative intelligence.</div>
+                    <div class="definition-pronunciation">/ˌek-lə-ˈnīrz/</div>
+                    <div class="definition-text">The architectural bridge connecting human artistic brilliance with technical synthesis. Built on human computation, execution, and aesthetics.</div>
                 </div>
             </div>
         </section>`;
     }
 
-    html += `<section class="toc-section"><div class="container"><h2 class="section-title">In This Issue</h2><ul class="toc-list">`;
+    html += `
+        <section class="toc-section" style="padding-bottom:80px;">
+            <div class="container">
+                <h2 class="section-title">Index of Work</h2>
+                <ul class="toc-list">`;
     
     articles.forEach((art, i) => {
         const num = String(i + 1).padStart(2, '0');
@@ -310,7 +301,7 @@ function renderIssuePage(issueId) {
                     <div class="toc-number">${num}</div>
                     <div class="toc-content">
                         <div class="toc-title">${escHtml(art.title)}</div>
-                        <div class="toc-meta">${escHtml(art.author).toUpperCase()} • ${escHtml(art.category).toUpperCase()}</div>
+                        <div class="toc-meta">${escHtml(art.author).toUpperCase()} — ${escHtml(art.category).toUpperCase()}</div>
                     </div>
                     <div class="toc-arrow">→</div>
                 </a>
@@ -323,7 +314,7 @@ function renderIssuePage(issueId) {
                     <div class="toc-number">✦</div>
                     <div class="toc-content">
                         <div class="toc-title">Our Patrons</div>
-                        <div class="toc-meta">INSTITUTIONAL LEADERSHIP</div>
+                        <div class="toc-meta">INSTITUTIONAL DIRECTORY</div>
                     </div>
                     <div class="toc-arrow">→</div>
                 </a>
@@ -355,7 +346,7 @@ function renderArticlePage(issueId, slug) {
     const contentHtml = parseContent(article.content, article.category);
 
     let html = `
-        <section class="article-section" style="padding-top:80px;">
+        <section class="article-section">
             <div class="container">
                 <div class="article-category">${escHtml(article.category)}</div>
                 <h2 class="article-title">${escHtml(article.title)}</h2>`;
@@ -365,17 +356,15 @@ function renderArticlePage(issueId, slug) {
     }
 
     html += `
-                <div class="article-author">
-                    <div class="author-avatar">${escHtml(article.authorinitials || article.author.charAt(0))}</div>
-                    <div class="author-info">
-                        <div class="author-name">${escHtml(article.author)}</div>
-                        ${article.authorbio ? `<div class="author-bio">${escHtml(article.authorbio)}</div>` : ''}
-                    </div>
+                <div class="article-author-signature">
+                    <div class="author-name">${escHtml(article.author)}</div>
+                    ${article.authorbio ? `<div class="author-bio">${escHtml(article.authorbio)}</div>` : ''}
                 </div>
+                
                 ${isPoetry ? `<div class="poetry-content">${contentHtml}</div>` : `<div class="article-content">${contentHtml}</div>`}
                 
-                <div class="ornament" style="margin-top: 50px;"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
-                <div id="giscus-container" style="margin-top: 30px; min-height: 150px;"></div>
+                ${renderGoldOrnament()}
+                <div id="giscus-container" style="margin-top: 60px; min-height: 150px;"></div>
             </div>
         </section>${renderFooter()}`;
 
@@ -384,28 +373,27 @@ function renderArticlePage(issueId, slug) {
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 
-    // Bootstrap Dynamic Giscus Comment Frame Injection
     initGiscusComments();
 }
 
 function renderPatronsPage(issueId) {
     const patrons = CoreData.getPatrons(issueId);
     let html = `
-        <section class="patrons-section" style="padding-top:80px;">
+        <section class="patrons-section" style="padding-top:120px;">
             <div class="container">
-                <h2 class="section-title">Our Patrons</h2>`;
+                <h2 class="section-title">Our Patrons</h2>
+                <div style="margin-top:40px;">`;
                 
     patrons.forEach(p => {
         html += `
                 <div class="patron-card">
-                    <div class="patron-avatar">${escHtml(p.initials || p.name.charAt(0))}</div>
                     <div class="patron-name">${escHtml(p.name)}</div>
                     <div class="patron-title">${escHtml(p.title)}</div>
                     <div class="patron-bio">${escHtml(p.bio)}</div>
                 </div>`;
     });
     
-    html += `</div></section>${renderFooter()}`;
+    html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, 'Our Patrons', `#issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
@@ -415,22 +403,21 @@ function renderPatronsPage(issueId) {
 function renderEditorialPage(issueId) {
     const editorial = CoreData.getEditorial(issueId);
     let html = `
-        <section class="editorial-section" style="padding-top:80px;">
+        <section class="editorial-section" style="padding-top:120px;">
             <div class="container">
                 <h2 class="section-title">Editorial Board</h2>
-                <div class="editorial-grid">`;
+                <div class="editorial-grid" style="margin-top:40px;">`;
                 
     editorial.forEach(e => {
         html += `
                     <div class="editor-card">
-                        <div class="editor-avatar">${escHtml(e.initials || e.name.charAt(0))}</div>
                         <div class="editor-name">${escHtml(e.name)}</div>
                         <div class="editor-role">${escHtml(e.role)}</div>
                     </div>`;
     });
     
     html += `</div>
-                <div style="margin-top:35px; text-align:center; font-family:'Montserrat',sans-serif; font-size:11px; color:var(--text-light); font-style:italic;">${CONFIG.FOOTER_NOTE}</div>
+                <div style="margin-top:60px; text-align:center; font-family:'Montserrat',sans-serif; font-size:10px; letter-spacing:2px; color:var(--text-light); text-transform:uppercase;">${CONFIG.FOOTER_NOTE}</div>
             </div>
         </section>${renderFooter()}`;
         
@@ -456,10 +443,9 @@ function renderFooter() {
 }
 
 // ═══════════════════════════════════════════════════════
-// GISCUS COMMENT INTEGRATION PIPELINE
+// COMMENTARY FRAME PIPELINE INTERFACE (GISCUS)
 // ═══════════════════════════════════════════════════════
 function initGiscusComments() {
-    // Evict any existing instances if navigating between components to avoid element stacking bugs
     const oldScript = document.getElementById('giscus-script');
     if (oldScript) oldScript.remove();
 
@@ -471,15 +457,12 @@ function initGiscusComments() {
     script.setAttribute('data-repo-id', 'R_kgDOMN0F0w'); 
     script.setAttribute('data-category', 'Announcements');
     script.setAttribute('data-category-id', 'DIC_kwDOMN0F084CgSpf');
-    
-    // Strict 1:1 hashing mapping rule based entirely on structural parameters
     script.setAttribute('data-mapping', 'url'); 
-    
     script.setAttribute('data-strict', '0');
-    script.setAttribute('data-reactions-enabled', '1'); // Unlocks emoji reaction blocks
+    script.setAttribute('data-reactions-enabled', '1');
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'light_high_contrast'); // Blends perfectly with your cream editorial styling tokens
+    script.setAttribute('data-theme', 'light_high_contrast');
     script.setAttribute('data-lang', 'en');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
@@ -489,7 +472,7 @@ function initGiscusComments() {
 }
 
 // ═══════════════════════════════════════════════════════
-// UI ENGINE RE-RENDERING PIPELINE HOOKS
+// ENGINE CONTROLLERS & HOOK INTERFACES
 // ═══════════════════════════════════════════════════════
 function updateNavBarState(visible, title, backHash) {
     const nav = document.getElementById('navBar');
@@ -506,7 +489,7 @@ function buildDynamicSlideoutMenu(issueId, articles) {
     const list = document.getElementById('mobileMenuList');
     let html = `
         <li class="mobile-menu-sep">Navigation</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}">← Main Issue Page</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}">← Main Folio</a></li>
         <li class="mobile-menu-sep">Table of Contents</li>`;
         
     articles.forEach(art => {
@@ -514,15 +497,14 @@ function buildDynamicSlideoutMenu(issueId, articles) {
     });
     
     html += `
-        <li class="mobile-menu-sep">Board Context</li>
+        <li class="mobile-menu-sep">Management</li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}&section=patrons">Our Patrons</a></li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="#issue=${issueId}&section=editorial">Editorial Board</a></li>
-        <li class="mobile-menu-sep">Options</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View All Issues</a></li>`;
+        <li class="mobile-menu-sep">System</li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View Archive</a></li>`;
         
     list.innerHTML = html;
 
-    // Clear UI layout bounds on transition link selection
     list.querySelectorAll('.mobile-menu-link').forEach(link => {
         link.addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.remove('open');
@@ -538,13 +520,13 @@ function displayApplicationError(msg) {
 }
 
 // ═══════════════════════════════════════════════════════
-// INITIALIZATION ENTRY POINT
+// DOM READY INITIALIZATION INITIALIZERS
 // ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
-    // Dynamic event trigger bounds mapping
     document.getElementById('navMenuBtn').addEventListener('click', () => {
-        document.getElementById('mobileMenu').classList.add('open');
-        document.body.style.overflow = 'hidden';
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('open');
+        document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
     });
     
     document.getElementById('mobileMenuClose').addEventListener('click', () => {
@@ -558,16 +540,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // Listen for hash parameter routing changes cleanly 
     window.addEventListener('hashchange', handleRouting);
 
     try {
         await loadAllData();
         document.getElementById('loader').classList.add('hidden');
-        handleRouting(); // Bootstrap routing configuration engine parameters explicitly
+        handleRouting();
     } catch (err) {
         console.error(err);
         displayApplicationError('Failed to capture database cells from your spreadsheet channel.');
     }
 });
- 
