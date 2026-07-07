@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════
-// GLOBAL APP ARCHITECTURE CONFIGURATION
-// ═══════════════════════════════════════════════════════
 const CONFIG = {
     // Shared Google Spreadsheet ID
     SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
