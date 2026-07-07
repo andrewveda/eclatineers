@@ -475,6 +475,20 @@ function initGiscusComments(articleTitle, articleAuthor) {
     if (!container) return;
     container.innerHTML = ''; // fresh mount per article render
 
+    // Eclatineers uses hash routing (#issue=...&article=...), and giscus's
+    // default backlink drops the hash fragment, showing just the bare site
+    // URL. Setting the canonical link to the full window.location.href
+    // (hash included) tells giscus to use that as the backlink instead, so
+    // the discussion body shows the specific article URL — matching what
+    // A Quote A Day gets automatically from its query-string routing.
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+        canonicalLink = document.createElement('link');
+        canonicalLink.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', window.location.href);
+
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo',        'andrewveda/eclatineers');
