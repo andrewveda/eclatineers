@@ -340,7 +340,7 @@ function renderIssuePage(issueId) {
                 </a>
             </li>
             <li class="toc-item">
-                <a class="toc-link" href="?issue=${issueId}&section=patrons">
+                <a class="toc-link" href="?issue=${issueId}&section=editorial">
                     <div class="toc-number">✦</div>
                     <div class="toc-content">
                         <div class="toc-title">Editorial Board</div>
@@ -362,39 +362,110 @@ function renderArticlePage(issueId, slug) {
     const article = CoreData.getArticle(issueId, slug);
     if (!article) { displayApplicationError('Article structure could not be mapped.'); return; }
 
-    const isPoetry = ['Poetry', 'Poetry & Cryptic Clues', 'Lines & Lenses'].includes(article.category);
-    const contentHtml = parseContent(article.content, article.category);
+    const rawContent = article.content || '';
+    const category = article.category || '';
+    
+    let pageGroups = [];
 
-    let html = `
-        <section class="article-section">
-            <div class="container">
-                <div class="article-category">${escHtml(article.category)}</div>
-                <h2 class="article-title">${escHtml(article.title)}</h2>`;
+    // Chunking rules tailored specifically to content type to minimize empty spaces
+    if (category === 'Riddles' || (category && category.includes('Cryptic'))) {
+        // Special structural parsers require explicit self-contained rendering blocks
+        pageGroups.push(parseContent(rawContent, category));
+    } else {
+        const paragraphs = rawContent.split('\n\n').map(p => p.trim()).filter(Boolean);
+        let currentGroup = [];
+        
+        paragraphs.forEach((para, idx) => {
+            currentGroup.push(para);
+            // Dynamic clustering: Group chunks in segments of two to balance spatial layouts tightly
+            if (currentGroup.length === 2 || idx === paragraphs.length - 1) {
+                // Parse standard inner formatting tokens fields on generation
+                const collectiveHtml = currentGroup.map((p, pIdx) => {
+                    if (pageGroups.length === 0 && pIdx === 0 && !['Poetry', 'Lines & Lenses'].includes(category)) {
+                        // Apply drop-cap signature style formatting only on the first letter of the first page
+                        const cleanP = escHtml(p);
+                        return `<p class="drop-cap-p">${cleanP}</p>`;
+                    }
+                    return `<p>${escHtml(p).replace(/\n/g, '<br>')}</p>`;
+                }).join('');
                 
-    if (article.pullquote) {
-        html += `<div class="article-quote">${escHtml(article.pullquote)}</div>`;
+                pageGroups.push(collectiveHtml);
+                currentGroup = [];
+            }
+        });
     }
 
-    html += `
-                <!-- Minimal Editorial Signature Attribution — No Avatars -->
-                <div class="article-author-signature">
-                    <div class="author-name">${escHtml(article.author)}</div>
-                    ${article.authorbio ? `<div class="author-bio">${escHtml(article.authorbio)}</div>` : ''}
+    // Always append Giscus Discussion platform dynamically to the final layout page
+    const totalContentPages = pageGroups.length;
+    
+    let html = `
+        <div class="magazine-viewport">
+            <div class="magazine-book" id="magazineBook">`;
+
+    // Render generated content nodes out as sequential fixed portfolio flip elements
+    pageGroups.forEach((pageHtmlContent, pageIndex) => {
+        const pageNum = pageIndex + 1;
+        const totalPages = totalContentPages + 1; // plus 1 explicitly to account for comments sheet
+        const isFirst = pageIndex === 0;
+        const stateClass = isFirst ? 'active' : 'future';
+
+        html += `
+            <div class="magazine-page ${stateClass}" data-page="${pageIndex}">
+                <div class="article-category" style="margin-bottom:1vh;">${escHtml(category)}</div>
+                
+                <div class="page-content-wrapper">
+                    ${isFirst ? `<h2 class="article-title-compact">${escHtml(article.title)}</h2>` : ''}
+                    ${isFirst ? `
+                    <div class="article-author-signature" style="margin-bottom: 3vh;">
+                        <div class="author-name" style="font-size:11px;">${escHtml(article.author)}</div>
+                        ${article.authorbio ? `<div class="author-bio" style="font-size:13px; margin-top:2px;">${escHtml(article.authorbio)}</div>` : ''}
+                    </div>` : ''}
+                    
+                    <div class="article-body-bounded">
+                        ${pageHtmlContent}
+                    </div>
                 </div>
-                
-                ${isPoetry ? `<div class="poetry-content">${contentHtml}</div>` : `<div class="article-content">${contentHtml}</div>`}
-                
-                ${renderGoldOrnament()}
-                <div id="giscus-container" style="margin-top: 60px; min-height: 150px;"></div>
+
+                <div class="page-footer-strip">
+                    <div>${CONFIG.COLLEGE}</div>
+                    <div style="font-weight:600; color:var(--gold-dark);">${pageNum} / ${totalPages}</div>
+                    <div>${escHtml(article.title).substring(0, 20)}...</div>
+                </div>
+            </div>`;
+    });
+
+    // Mount dedicated Commentary Sheet to handle layout density isolation rules cleanly
+    const finalPageNum = totalContentPages + 1;
+    html += `
+            <div class="magazine-page future" data-page="${totalContentPages}">
+                <div class="article-category" style="margin-bottom:1vh;">Discussion Folio</div>
+                <div class="page-content-wrapper" style="justify-content: flex-start; overflow-y: auto;">
+                    <h3 style="font-family:'Playfair Display',serif; font-size:20px; text-align:center; margin-bottom:15px; color:var(--text-dark);">Literary Review Contributions</h3>
+                    <div id="giscus-container" style="min-height: 150px; width:100%;"></div>
+                </div>
+                <div class="page-footer-strip">
+                    <div>${CONFIG.COLLEGE}</div>
+                    <div style="font-weight:600; color:var(--gold-dark);">${finalPageNum} / ${finalPageNum}</div>
+                    <div>Reader Analytics</div>
+                </div>
             </div>
-        </section>${renderFooter()}`;
+        </div>
+    </div>
+    
+    <div class="magazine-controls">
+        <button class="mag-btn" onclick="turnMagazinePage(-1)">« Prev</button>
+        <button class="mag-btn" onclick="turnMagazinePage(1)">Next »</button>
+    </div>`;
 
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, article.title, `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
-    window.scrollTo(0, 0);
+    
+    // Initialize standard runtime parameters pointers context tracker fields
+    window.currentMagPageIndex = 0;
+    window.totalMagPages = finalPageNum;
 
-    // Initialize the professional comment structure dynamically mapped to Title & Author
+    // Bootstrap comments engine asynchronously
     initGiscusComments(article.title, article.author);
 }
 
@@ -472,12 +543,6 @@ function initGiscusComments(articleTitle, articleAuthor) {
     if (!container) return;
     container.innerHTML = ''; // fresh mount per article render
 
-    // Eclatineers uses hash routing (#issue=...&article=...), and giscus's
-    // default backlink drops the hash fragment, showing just the bare site
-    // URL. Setting the canonical link to the full window.location.href
-    // (hash included) tells giscus to use that as the backlink instead, so
-    // the discussion body shows the specific article URL — matching what
-    // A Quote A Day gets automatically from its query-string routing.
     let canonicalLink = document.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {
         canonicalLink = document.createElement('link');
@@ -529,7 +594,7 @@ function buildDynamicSlideoutMenu(issueId, articles) {
     html += `
         <li class="mobile-menu-sep">Management</li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=patrons">Our Patrons</a></li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=patrons">Editorial Board</a></li>
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
         <li class="mobile-menu-sep">System</li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View Archive</a></li>`;
         
@@ -572,7 +637,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-
     try {
         await loadAllData();
         document.getElementById('loader').classList.add('hidden');
@@ -582,3 +646,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayApplicationError('Failed to capture database cells from your spreadsheet channel.');
     }
 });
+
+// ═══════════════════════════════════════════════════════
+// MAG CORE ENGINE NAVIGATION CONTROLS
+// ═══════════════════════════════════════════════════════
+window.turnMagazinePage = function(direction) {
+    const book = document.getElementById('magazineBook');
+    if (!book) return;
+
+    const pages = book.querySelectorAll('.magazine-page');
+    let targetIndex = window.currentMagPageIndex + direction;
+
+    // Halt index evaluation at outer bounds boundaries
+    if (targetIndex < 0 || targetIndex >= window.totalMagPages) return;
+
+    window.currentMagPageIndex = targetIndex;
+
+    pages.forEach((page, idx) => {
+        page.classList.remove('past', 'active', 'future');
+        if (idx < targetIndex) {
+            page.classList.add('past');
+        } else if (idx === targetIndex) {
+            page.classList.add('active');
+        } else {
+            page.classList.add('future');
+        }
+    });
+};
+
+// Bind horizontal arrow key event triggers to enhance user accessibility
+document.removeEventListener('keydown', handleMagKeydowns);
+document.addEventListener('keydown', handleMagKeydowns);
+
+function handleMagKeydowns(e) {
+    if (e.key === 'ArrowRight') turnMagazinePage(1);
+    if (e.key === 'ArrowLeft') turnMagazinePage(-1);
+}
