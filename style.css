@@ -796,3 +796,17 @@ html, body {
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     z-index: 900;
 }
+.reader-container {
+    position: relative;
+    width: 100vw;
+    height: calc(100vh - 70px);
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3vh 5vw;
+    box-sizing: border-box;
+    
+    /* Crucial safety property: stops native browser bounce interference during gestures */
+    touch-action: none; 
+}
