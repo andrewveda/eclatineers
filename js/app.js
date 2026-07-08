@@ -268,7 +268,6 @@ function renderHomePage() {
     html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
     updateNavBarState(false);
-    detachEbookEventListeners();
     window.scrollTo(0, 0);
 }
 
@@ -362,17 +361,77 @@ function renderIssuePage(issueId) {
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, issue.title, '?');
     buildDynamicSlideoutMenu(issueId, articles);
-    detachEbookEventListeners();
     window.scrollTo(0, 0);
 }
 
 /* ═══════════════════════════════════════════════════════
-   ARTICLE PAGE — Premium E-Reader
+   READER SIDEBAR (persistent desktop index of the issue)
+   ═══════════════════════════════════════════════════════ */
+function renderReaderSidebarToc(issueId, articles, currentSlug) {
+    let html = `
+        <aside class="reader-sidebar-toc">
+            <a class="reader-sidebar-back" href="?issue=${issueId}">← Main Folio</a>
+            <div class="reader-sidebar-label">Index of Work</div>
+            <ul class="reader-toc-mini-list">`;
+
+    articles.forEach((art, i) => {
+        const num = String(i + 1).padStart(2, '0');
+        const active = art.slug === currentSlug ? ' active' : '';
+        html += `
+                <li class="reader-toc-mini-item">
+                    <a class="reader-toc-mini-link${active}" href="?issue=${issueId}&article=${art.slug}">
+                        ${num}. ${escHtml(art.title)}
+                        <span class="reader-toc-mini-meta">${escHtml(art.author)}</span>
+                    </a>
+                </li>`;
+    });
+
+    html += `
+            </ul>
+            <div class="reader-sidebar-divider"></div>
+            <ul class="reader-toc-mini-list">
+                <li class="reader-toc-mini-item"><a class="reader-toc-mini-link" href="?issue=${issueId}&section=patrons">Our Patrons</a></li>
+                <li class="reader-toc-mini-item"><a class="reader-toc-mini-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
+            </ul>
+        </aside>`;
+
+    return html;
+}
+
+/* ═══════════════════════════════════════════════════════
+   NEXT ARTICLE CARD
+   ═══════════════════════════════════════════════════════ */
+function renderNextArticleBlock(issueId, articles, currentSlug) {
+    const idx = articles.findIndex(a => a.slug === currentSlug);
+    const next = idx >= 0 && idx < articles.length - 1 ? articles[idx + 1] : null;
+
+    if (next) {
+        return `
+            <a class="next-article-card" href="?issue=${issueId}&article=${next.slug}">
+                <div>
+                    <div class="next-article-label">Next in this Issue</div>
+                    <div class="next-article-title">${escHtml(next.title)}</div>
+                    <div class="next-article-meta">${escHtml(next.author).toUpperCase()} — ${escHtml(next.category).toUpperCase()}</div>
+                </div>
+                <div class="next-article-arrow">→</div>
+            </a>`;
+    }
+
+    return `
+        <div class="end-of-issue-card">
+            <p>You've reached the end of this issue's index.</p>
+            <a href="?issue=${issueId}">Back to Main Folio</a>
+        </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ARTICLE PAGE — Continuous Scroll Reader
    ═══════════════════════════════════════════════════════ */
 function renderArticlePage(issueId, slug) {
     const article = CoreData.getArticle(issueId, slug);
     if (!article) { displayApplicationError('Article structure could not be mapped.'); return; }
 
+    const articles = CoreData.getArticles(issueId);
     const category = article.category || '';
     const rawContent = article.content || '';
 
@@ -388,33 +447,36 @@ function renderArticlePage(issueId, slug) {
     }
 
     let html = `
-        <div class="reader-container">
-            <div class="reader-canvas-viewport" id="readerViewport">
-                <div class="reader-fluid-book" id="readerBook">
-                    <div class="reader-folio-page">
-                        <div class="article-category">${escHtml(category)}</div>
-                        <h2>${escHtml(article.title)}</h2>
+        <div class="reader-page-grid">
+            ${renderReaderSidebarToc(issueId, articles, slug)}
 
-                        <div class="article-author-signature">
-                            <div class="author-name">${escHtml(article.author)}</div>
-                            ${article.authorbio ? `<div class="author-bio">${escHtml(article.authorbio)}</div>` : ''}
-                        </div>
+            <div class="reader-main-content">
+                <div class="reader-toolbar">
+                    <button class="toolbar-btn font-minus" onclick="adjustReaderFontSize(-1)" aria-label="Decrease font size">A−</button>
+                    <button class="toolbar-btn font-plus" onclick="adjustReaderFontSize(1)" aria-label="Increase font size">A+</button>
+                    <div class="toolbar-sep"></div>
+                    <button class="toolbar-btn" onclick="toggleSiteTheme()" aria-label="Toggle theme" id="readerThemeBtn">◐</button>
+                </div>
 
-                        <div class="reader-text-flow" id="readerTextFlow">
-                            ${finalBodyHtml}
-                        </div>
-                    </div>
+                <div class="article-category">${escHtml(category)}</div>
+                <h2>${escHtml(article.title)}</h2>
+
+                <div class="article-author-signature">
+                    <div class="author-name">${escHtml(article.author)}</div>
+                    ${article.authorbio ? `<div class="author-bio">${escHtml(article.authorbio)}</div>` : ''}
+                </div>
+
+                <div class="reader-text-flow" id="readerTextFlow">
+                    ${finalBodyHtml}
+                </div>
+
+                ${renderNextArticleBlock(issueId, articles, slug)}
+
+                <div class="article-footer-strip">
+                    <button class="drawer-toggle-trigger-btn" id="commentDrawerBtn" onclick="toggleCommentDrawer(true)">Reviews &amp; Thoughts</button>
                 </div>
             </div>
-
-            <div class="page-footer-strip">
-                <div onclick="turnEbookPage(-1)">‹ PREV</div>
-                <div id="ebookProgressIndicator">LOC 1 OF 1</div>
-                <div onclick="turnEbookPage(1)">NEXT ›</div>
-            </div>
         </div>
-
-        <button class="drawer-toggle-trigger-btn" id="commentDrawerBtn" onclick="toggleCommentDrawer(true)">Reviews & Thoughts</button>
 
         <div class="reader-comments-drawer" id="commentDrawer">
             <div class="drawer-header-bar">
@@ -428,158 +490,63 @@ function renderArticlePage(issueId, slug) {
 
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, article.title, `?issue=${issueId}`);
-    buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
-
-    // Initialize pagination
-    window.currentEbookPage = 0;
-    setTimeout(() => { calculateEbookPaginationMetrics(); }, 150);
+    buildDynamicSlideoutMenu(issueId, articles);
 
     // Initialize comments
     initGiscusComments(article.title, article.author);
 
-    // Attach ebook event listeners
-    attachEbookEventListeners();
+    updateThemeButtonIcon();
+    window.scrollTo(0, 0);
 }
 
 /* ═══════════════════════════════════════════════════════
-   E-READER PAGINATION ENGINE
+   READER FONT SIZE CONTROL
    ═══════════════════════════════════════════════════════ */
-function calculateEbookPaginationMetrics() {
-    const viewport = document.getElementById('readerViewport');
-    const book = document.getElementById('readerBook');
-    if (!viewport || !book) return;
+const FONT_SCALE_MIN = 0.8;
+const FONT_SCALE_MAX = 1.5;
+const FONT_SCALE_STEP = 0.1;
 
-    const viewHeight = viewport.clientHeight;
-    const totalScrollHeight = book.scrollHeight;
-
-    // Calculate pages based on content height vs viewport height
-    window.totalEbookPages = Math.max(1, Math.ceil(totalScrollHeight / viewHeight));
-    updateEbookNavigationFeedbackStrip();
+function applyFontScale(scale) {
+    document.documentElement.style.setProperty('--reader-font-scale', scale);
 }
 
-window.turnEbookPage = function(direction) {
-    const book = document.getElementById('readerBook');
-    const viewport = document.getElementById('readerViewport');
-    if (!book || !viewport) return;
-
-    let targetPage = window.currentEbookPage + direction;
-    if (targetPage < 0 || targetPage >= window.totalEbookPages) return;
-
-    window.currentEbookPage = targetPage;
-
-    // Vertical scroll-based pagination (more reliable than horizontal translate)
-    const shiftOffset = targetPage * viewport.clientHeight;
-    book.style.transform = `translateY(-${shiftOffset}px)`;
-
-    updateEbookNavigationFeedbackStrip();
+window.adjustReaderFontSize = function(direction) {
+    let scale = parseFloat(localStorage.getItem('eclatineers-font-scale')) || 1;
+    scale = Math.min(FONT_SCALE_MAX, Math.max(FONT_SCALE_MIN, +(scale + direction * FONT_SCALE_STEP).toFixed(2)));
+    localStorage.setItem('eclatineers-font-scale', scale);
+    applyFontScale(scale);
 };
 
-function updateEbookNavigationFeedbackStrip() {
-    const indicator = document.getElementById('ebookProgressIndicator');
-    if (indicator) {
-        indicator.textContent = `LOC ${window.currentEbookPage + 1} OF ${window.totalEbookPages}`;
-    }
+function initFontScale() {
+    const saved = parseFloat(localStorage.getItem('eclatineers-font-scale'));
+    applyFontScale(saved && !isNaN(saved) ? saved : 1);
 }
 
 /* ═══════════════════════════════════════════════════════
-   GESTURE & KEYBOARD EVENTS
+   THEME CONTROL (light / dark)
    ═══════════════════════════════════════════════════════ */
-let ebookWheelHandler = null;
-let ebookKeyHandler = null;
-let ebookTouchStartX = 0;
-let ebookTouchStartY = 0;
-let ebookTouchHandlerStart = null;
-let ebookTouchHandlerEnd = null;
-
-function attachEbookEventListeners() {
-    // Remove old listeners first
-    detachEbookEventListeners();
-
-    // Wheel
-    ebookWheelHandler = function(e) {
-        const book = document.getElementById('readerBook');
-        if (!book) return;
-        e.preventDefault();
-
-        if (window.ebookWheelThrottled) return;
-        window.ebookWheelThrottled = true;
-        setTimeout(() => { window.ebookWheelThrottled = false; }, 400);
-
-        if (e.deltaY > 0 || e.deltaX > 0) {
-            turnEbookPage(1);
-        } else {
-            turnEbookPage(-1);
-        }
-    };
-    document.addEventListener('wheel', ebookWheelHandler, { passive: false });
-
-    // Keyboard
-    ebookKeyHandler = function(e) {
-        if (!document.getElementById('readerBook')) return;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
-            e.preventDefault();
-            turnEbookPage(1);
-        }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
-            e.preventDefault();
-            turnEbookPage(-1);
-        }
-    };
-    document.addEventListener('keydown', ebookKeyHandler);
-
-    // Touch
-    ebookTouchHandlerStart = function(e) {
-        ebookTouchStartX = e.changedTouches[0].screenX;
-        ebookTouchStartY = e.changedTouches[0].screenY;
-    };
-    document.addEventListener('touchstart', ebookTouchHandlerStart, { passive: true });
-
-    ebookTouchHandlerEnd = function(e) {
-        if (!document.getElementById('readerBook')) return;
-
-        const deltaX = e.changedTouches[0].screenX - ebookTouchStartX;
-        const deltaY = e.changedTouches[0].screenY - ebookTouchStartY;
-        const threshold = 40;
-
-        if (Math.abs(deltaY) > Math.abs(deltaX)) {
-            if (Math.abs(deltaY) > threshold) {
-                e.preventDefault();
-                if (deltaY < 0) {
-                    turnEbookPage(1);
-                } else {
-                    turnEbookPage(-1);
-                }
-            }
-        } else {
-            if (Math.abs(deltaX) > threshold) {
-                if (deltaX < 0) {
-                    turnEbookPage(1);
-                } else {
-                    turnEbookPage(-1);
-                }
-            }
-        }
-    };
-    document.addEventListener('touchend', ebookTouchHandlerEnd, { passive: false });
+function initTheme() {
+    const saved = localStorage.getItem('eclatineers-theme');
+    const theme = saved === 'dark' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeButtonIcon();
 }
 
-function detachEbookEventListeners() {
-    if (ebookWheelHandler) {
-        document.removeEventListener('wheel', ebookWheelHandler);
-        ebookWheelHandler = null;
-    }
-    if (ebookKeyHandler) {
-        document.removeEventListener('keydown', ebookKeyHandler);
-        ebookKeyHandler = null;
-    }
-    if (ebookTouchHandlerStart) {
-        document.removeEventListener('touchstart', ebookTouchHandlerStart);
-        ebookTouchHandlerStart = null;
-    }
-    if (ebookTouchHandlerEnd) {
-        document.removeEventListener('touchend', ebookTouchHandlerEnd);
-        ebookTouchHandlerEnd = null;
-    }
+window.toggleSiteTheme = function() {
+    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('eclatineers-theme', next);
+    updateThemeButtonIcon();
+};
+
+function updateThemeButtonIcon() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const icon = isDark ? '☀' : '☾';
+    const globalBtn = document.getElementById('themeToggleBtn');
+    if (globalBtn) globalBtn.textContent = icon;
+    const readerBtn = document.getElementById('readerThemeBtn');
+    if (readerBtn) readerBtn.textContent = icon;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -595,7 +562,7 @@ window.toggleCommentDrawer = function(open) {
         if (btn) btn.style.display = 'none';
     } else {
         drawer.classList.remove('open');
-        if (btn) btn.style.display = 'block';
+        if (btn) btn.style.display = 'inline-block';
     }
 };
 
@@ -623,7 +590,6 @@ function renderPatronsPage(issueId) {
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, 'Our Patrons', `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
-    detachEbookEventListeners();
     window.scrollTo(0, 0);
 }
 
@@ -654,7 +620,6 @@ function renderEditorialPage(issueId) {
     document.getElementById('app').innerHTML = html;
     updateNavBarState(true, 'Editorial Board', `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
-    detachEbookEventListeners();
     window.scrollTo(0, 0);
 }
 
@@ -700,7 +665,7 @@ function initGiscusComments(articleTitle, articleAuthor) {
     script.setAttribute('data-category-id', 'DIC_kwDOTP7IL84DAruF');
     script.setAttribute('data-mapping', 'specific');
     script.setAttribute('data-term', `${articleTitle} — ${articleAuthor}`);
-    script.setAttribute('data-theme', 'preferred_color_scheme');
+    script.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
     script.crossOrigin = 'anonymous';
     script.async = true;
 
@@ -759,6 +724,14 @@ function displayApplicationError(msg) {
    INITIALIZATION
    ═══════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
+    // Theme + font scale must be ready before first render
+    initTheme();
+    initFontScale();
+
+    // Global theme toggle button
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) themeBtn.addEventListener('click', toggleSiteTheme);
+
     // Menu toggle
     document.getElementById('navMenuBtn').addEventListener('click', () => {
         const menu = document.getElementById('mobileMenu');
@@ -778,15 +751,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // Resize handler for ebook
-    window.addEventListener('resize', () => {
-        if (document.getElementById('readerBook')) {
-            window.currentEbookPage = 0;
-            document.getElementById('readerBook').style.transform = 'translateY(0px)';
-            calculateEbookPaginationMetrics();
-        }
-    });
-
     try {
         await loadAllData();
         document.getElementById('loader').classList.add('hidden');
@@ -796,3 +760,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayApplicationError('Failed to capture database cells from your spreadsheet channel.');
     }
 });
+
+window.addEventListener('popstate', handleRouting);
