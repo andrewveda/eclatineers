@@ -4,41 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Eclatineers | SRM Valliammai Engineering College</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
+    <script>
+        // Apply saved theme/font-scale immediately to avoid a flash of the wrong theme
+        (function () {
+            try {
+                var theme = localStorage.getItem('eclatineers-theme') === 'dark' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                var scale = parseFloat(localStorage.getItem('eclatineers-font-scale'));
+                if (scale && !isNaN(scale)) {
+                    document.documentElement.style.setProperty('--reader-font-scale', scale);
+                }
+            } catch (e) {}
+        })();
+    </script>
 <base target="_blank">
 </head>
 <body class="guilloche-bg">
-
     <nav class="nav-bar" id="navBar">
         <a id="navBack" class="nav-back-btn" href="#">‹</a>
         <div id="navTitle" class="nav-title">Eclatineers</div>
         <button id="navMenuBtn" class="nav-menu-btn" aria-label="Menu">☰</button>
     </nav>
-
     <main id="app"></main>
-
     <div class="mobile-menu" id="mobileMenu">
         <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close">✕</button>
         <ul class="mobile-menu-list" id="mobileMenuList"></ul>
     </div>
-
     <div class="loader-screen" id="loader">
         <div class="spinner"></div>
         <div class="loader-text">E C L A T I N E E R S</div>
     </div>
-
     <div class="error-screen" id="errorScreen">
         <p id="errorMsg">Could not load magazine layout context.</p>
         <button class="retry-btn" onclick="window.location.reload()">Retry</button>
     </div>
-
     <button class="back-to-top" id="backToTop" aria-label="Back to Top">↑</button>
-
+    <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle dark/light theme">☾</button>
     <script src="js/app.js"></script>
 </body>
 </html>
