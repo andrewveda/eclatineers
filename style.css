@@ -1247,3 +1247,97 @@ body {
     color: var(--cream);
     border-color: var(--text-dark);
 }
+
+
+/* ═══════════════════════════════════════════════════════
+   PATRONS PAGE
+   ═══════════════════════════════════════════════════════ */
+.patrons-section {
+    padding: 120px 0 80px;  /* Top padding clears the fixed nav bar */
+    min-height: 100vh;
+}
+
+.patron-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, rgba(0,0,0,0.08));
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.patron-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.patron-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a1a);
+    margin-bottom: 4px;
+}
+
+.patron-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-gold, #c9a227);
+    margin-bottom: 16px;
+}
+
+.patron-bio {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary, #555);
+}
+
+/* ═══════════════════════════════════════════════════════
+   EDITORIAL PAGE
+   ═══════════════════════════════════════════════════════ */
+.editorial-section {
+    padding: 120px 0 80px;  /* Top padding clears the fixed nav bar */
+    min-height: 100vh;
+}
+
+.editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.editor-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, rgba(0,0,0,0.08));
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease;
+}
+
+.editor-card:hover {
+    transform: translateY(-2px);
+}
+
+.editor-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a1a);
+    margin-bottom: 8px;
+}
+
+.editor-role {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light, #888);
+}
