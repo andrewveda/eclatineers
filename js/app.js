@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   CONFIGURATION
+   CONFIGURATION & DATA
    ═══════════════════════════════════════════════════════ */
 const CONFIG = {
     SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
@@ -15,14 +15,8 @@ const CONFIG = {
     FOOTER_NOTE: 'For private circulation only'
 };
 
-/* ═══════════════════════════════════════════════════════
-   CACHE
-   ═══════════════════════════════════════════════════════ */
 const Cache = { issues: null, articles: null, patrons: null, editorial: null };
 
-/* ═══════════════════════════════════════════════════════
-   DATA FETCHING
-   ═══════════════════════════════════════════════════════ */
 async function fetchSheet(sheetName) {
     const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
     const res = await fetch(url);
@@ -31,16 +25,13 @@ async function fetchSheet(sheetName) {
     const text = await res.text();
     const jsonStr = text.replace(/\/\*O_o\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);?\s*$/, '');
     const data = JSON.parse(jsonStr);
-
     const cols = data.table.cols.map(c => c.label.toLowerCase().replace(/[^a-z0-9]/g, '_').trim());
 
     return data.table.rows.map(row => {
         const obj = {};
         cols.forEach((col, i) => { 
             let val = row.c[i]?.v ?? '';
-            if (typeof val === 'string' && (col === 'id' || col === 'issueid')) {
-                val = val.toLowerCase().trim();
-            }
+            if (typeof val === 'string' && (col === 'id' || col === 'issueid')) val = val.toLowerCase().trim();
             obj[col] = val;
         });
         return obj;
@@ -60,9 +51,6 @@ async function loadAllData() {
     Cache.editorial = editorial;
 }
 
-/* ═══════════════════════════════════════════════════════
-   CORE DATA HELPERS
-   ═══════════════════════════════════════════════════════ */
 const CoreData = {
     getIssue: (id) => Cache.issues.find(i => String(i.id) === String(id).toLowerCase()),
     getArticles: (issueId) => Cache.articles
@@ -74,9 +62,6 @@ const CoreData = {
     getEditorial: (issueId) => Cache.editorial.filter(e => String(e.issueid) === String(issueId).toLowerCase())
 };
 
-/* ═══════════════════════════════════════════════════════
-   ROUTING
-   ═══════════════════════════════════════════════════════ */
 function getRouterParams() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -88,6 +73,9 @@ function getRouterParams() {
 
 function handleRouting() {
     const { issue, article, section } = getRouterParams();
+
+    // Reset floating reactive drawer state on route changes
+    toggleCommentDrawer(false);
 
     if (issue && article) {
         renderArticlePage(issue, article);
@@ -102,9 +90,6 @@ function handleRouting() {
     }
 }
 
-/* ═══════════════════════════════════════════════════════
-   ORNAMENT
-   ═══════════════════════════════════════════════════════ */
 function renderGoldOrnament() {
     return `
         <div class="ornament-frame">
@@ -114,9 +99,6 @@ function renderGoldOrnament() {
         </div>`;
 }
 
-/* ═══════════════════════════════════════════════════════
-   CONTENT PARSER
-   ═══════════════════════════════════════════════════════ */
 function escHtml(str) {
     if (str == null) return '';
     const div = document.createElement('div');
@@ -127,16 +109,13 @@ function escHtml(str) {
 function parseContent(text, category) {
     if (!text) return '';
 
-    // Riddles
     if (category === 'Riddles') {
         let html = '';
         const qas = text.split('>>').map(item => item.trim()).filter(Boolean);
-
         for (let i = 0; i < qas.length; i++) {
             if (qas[i].startsWith('??')) {
                 const question = qas[i].slice(2).trim().replace(/\n/g, '<br>');
                 const answer = (qas[i + 1] && !qas[i + 1].startsWith('??')) ? qas[i + 1].trim() : '...';
-
                 html += `
                     <div class="riddle-card">
                         <div class="riddle-text">${question}</div>
@@ -148,11 +127,9 @@ function parseContent(text, category) {
         return html;
     }
 
-    // Cryptic
     if (category && category.includes('Cryptic')) {
         const lines = text.split('\n');
         let html = '<div style="display:grid; gap:20px;">';
-
         lines.forEach(line => {
             if (line.trim().startsWith('!!')) {
                 const clean = line.replace(/^\s*!!/, '').trim();
@@ -161,7 +138,6 @@ function parseContent(text, category) {
                     const num = parts[0].trim();
                     const clue = parts[1].trim();
                     const hint = parts.slice(2).join(':').trim(); 
-
                     html += `
                         <div class="clue-card">
                             <div class="clue-number">Clue ${escHtml(num)}</div>
@@ -175,13 +151,11 @@ function parseContent(text, category) {
         return html;
     }
 
-    // Standard content
     let html = '';
     const blocks = text.split('\n\n').map(b => b.trim()).filter(Boolean);
     let inBox = false;
 
     blocks.forEach(block => {
-        // Image: !Caption:SourceURL
         if (block.startsWith('!') && block.includes(':')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const parts = block.substring(1).split(':');
@@ -191,7 +165,6 @@ function parseContent(text, category) {
             return;
         }
 
-        // Pull Quote
         if (block.startsWith('>>')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const quote = block.slice(2).trim();
@@ -199,7 +172,6 @@ function parseContent(text, category) {
             return;
         }
 
-        // Highlight Box
         if (block.startsWith('##')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const title = block.slice(2).trim();
@@ -208,7 +180,6 @@ function parseContent(text, category) {
             return;
         }
 
-        // List inside box
         if (inBox && block.startsWith('- ')) {
             const items = block.split('\n').filter(l => l.trim().startsWith('- '));
             html += '<ul>' + items.map(i => `<li>${escHtml(i.trim().slice(2))}</li>`).join('') + '</ul>';
@@ -220,7 +191,6 @@ function parseContent(text, category) {
             inBox = false;
         }
 
-        // Standard paragraph
         const formatted = escHtml(block).replace(/\n/g, '<br>');
         html += `<p>${formatted}</p>`;
     });
@@ -236,7 +206,7 @@ window.toggleRiddle = function(btn) {
 };
 
 /* ═══════════════════════════════════════════════════════
-   HOME PAGE
+   PAGES
    ═══════════════════════════════════════════════════════ */
 function renderHomePage() {
     let html = `
@@ -267,13 +237,10 @@ function renderHomePage() {
 
     html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(false);
+    updateNavBarState('Eclatineers', '?');
     window.scrollTo(0, 0);
 }
 
-/* ═══════════════════════════════════════════════════════
-   ISSUE PAGE
-   ═══════════════════════════════════════════════════════ */
 function renderIssuePage(issueId) {
     const issue = CoreData.getIssue(issueId);
     if (!issue) { displayApplicationError('Target issue reference context absent.'); return; }
@@ -354,19 +321,14 @@ function renderIssuePage(issueId) {
                     </div>
                     <div class="toc-arrow">→</div>
                 </a>
-            </li>`;
-
-    html += `</ul></div></section>${renderFooter()}`;
+            </li></ul></div></section>${renderFooter()}`;
 
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, issue.title, '?');
+    updateNavBarState(issue.title, '?');
     buildDynamicSlideoutMenu(issueId, articles);
     window.scrollTo(0, 0);
 }
 
-/* ═══════════════════════════════════════════════════════
-   READER SIDEBAR (persistent desktop index of the issue)
-   ═══════════════════════════════════════════════════════ */
 function renderReaderSidebarToc(issueId, articles, currentSlug) {
     let html = `
         <aside class="reader-sidebar-toc">
@@ -398,9 +360,6 @@ function renderReaderSidebarToc(issueId, articles, currentSlug) {
     return html;
 }
 
-/* ═══════════════════════════════════════════════════════
-   NEXT ARTICLE CARD
-   ═══════════════════════════════════════════════════════ */
 function renderNextArticleBlock(issueId, articles, currentSlug) {
     const idx = articles.findIndex(a => a.slug === currentSlug);
     const next = idx >= 0 && idx < articles.length - 1 ? articles[idx + 1] : null;
@@ -424,9 +383,6 @@ function renderNextArticleBlock(issueId, articles, currentSlug) {
         </div>`;
 }
 
-/* ═══════════════════════════════════════════════════════
-   ARTICLE PAGE — Continuous Scroll Reader
-   ═══════════════════════════════════════════════════════ */
 function renderArticlePage(issueId, slug) {
     const article = CoreData.getArticle(issueId, slug);
     if (!article) { displayApplicationError('Article structure could not be mapped.'); return; }
@@ -449,15 +405,7 @@ function renderArticlePage(issueId, slug) {
     let html = `
         <div class="reader-page-grid">
             ${renderReaderSidebarToc(issueId, articles, slug)}
-
             <div class="reader-main-content">
-                <div class="reader-toolbar">
-                    <button class="toolbar-btn font-minus" onclick="adjustReaderFontSize(-1)" aria-label="Decrease font size">A−</button>
-                    <button class="toolbar-btn font-plus" onclick="adjustReaderFontSize(1)" aria-label="Increase font size">A+</button>
-                    <div class="toolbar-sep"></div>
-                    <button class="toolbar-btn" onclick="toggleSiteTheme()" aria-label="Toggle theme" id="readerThemeBtn">◐</button>
-                </div>
-
                 <div class="article-category">${escHtml(category)}</div>
                 <h2>${escHtml(article.title)}</h2>
 
@@ -471,36 +419,20 @@ function renderArticlePage(issueId, slug) {
                 </div>
 
                 ${renderNextArticleBlock(issueId, articles, slug)}
-
-                <div class="article-footer-strip">
-                    <button class="drawer-toggle-trigger-btn" id="commentDrawerBtn" onclick="toggleCommentDrawer(true)">Reviews &amp; Thoughts</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="reader-comments-drawer" id="commentDrawer">
-            <div class="drawer-header-bar">
-                <span style="font-family:'Playfair Display',serif; font-size:15px; font-weight:600;">Contributions & Analysis</span>
-                <span style="cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; letter-spacing:1px;" onclick="toggleCommentDrawer(false)">✕ CLOSE</span>
-            </div>
-            <div style="padding: 20px 40px; height: calc(100% - 50px); overflow-y: auto;">
-                <div id="giscus-container"></div>
             </div>
         </div>`;
 
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, article.title, `?issue=${issueId}`);
+    updateNavBarState(article.title, `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, articles);
 
-    // Initialize comments
     initGiscusComments(article.title, article.author);
-
     updateThemeButtonIcon();
     window.scrollTo(0, 0);
 }
 
 /* ═══════════════════════════════════════════════════════
-   READER FONT SIZE CONTROL
+   CONTROLS & CONTROLLER LOGIC
    ═══════════════════════════════════════════════════════ */
 const FONT_SCALE_MIN = 0.8;
 const FONT_SCALE_MAX = 1.5;
@@ -522,9 +454,6 @@ function initFontScale() {
     applyFontScale(saved && !isNaN(saved) ? saved : 1);
 }
 
-/* ═══════════════════════════════════════════════════════
-   THEME CONTROL (light / dark)
-   ═══════════════════════════════════════════════════════ */
 function initTheme() {
     const saved = localStorage.getItem('eclatineers-theme');
     const theme = saved === 'dark' ? 'dark' : 'light';
@@ -545,30 +474,19 @@ function updateThemeButtonIcon() {
     const icon = isDark ? '☀' : '☾';
     const globalBtn = document.getElementById('themeToggleBtn');
     if (globalBtn) globalBtn.textContent = icon;
-    const readerBtn = document.getElementById('readerThemeBtn');
-    if (readerBtn) readerBtn.textContent = icon;
 }
 
-/* ═══════════════════════════════════════════════════════
-   COMMENTS DRAWER
-   ═══════════════════════════════════════════════════════ */
 window.toggleCommentDrawer = function(open) {
     const drawer = document.getElementById('commentDrawer');
-    const btn = document.getElementById('commentDrawerBtn');
     if (!drawer) return;
 
     if (open) {
         drawer.classList.add('open');
-        if (btn) btn.style.display = 'none';
     } else {
         drawer.classList.remove('open');
-        if (btn) btn.style.display = 'inline-block';
     }
 };
 
-/* ═══════════════════════════════════════════════════════
-   PATRONS PAGE
-   ═══════════════════════════════════════════════════════ */
 function renderPatronsPage(issueId) {
     const patrons = CoreData.getPatrons(issueId);
     let html = `
@@ -588,14 +506,11 @@ function renderPatronsPage(issueId) {
 
     html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, 'Our Patrons', `?issue=${issueId}`);
+    updateNavBarState('Our Patrons', `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 }
 
-/* ═══════════════════════════════════════════════════════
-   EDITORIAL PAGE
-   ═══════════════════════════════════════════════════════ */
 function renderEditorialPage(issueId) {
     const editorial = CoreData.getEditorial(issueId);
     let html = `
@@ -618,14 +533,11 @@ function renderEditorialPage(issueId) {
         </section>${renderFooter()}`;
 
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(true, 'Editorial Board', `?issue=${issueId}`);
+    updateNavBarState('Editorial Board', `?issue=${issueId}`);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 }
 
-/* ═══════════════════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════════════════ */
 function renderFooter() {
     return `
         <footer class="footer">
@@ -641,9 +553,6 @@ function renderFooter() {
         </footer>`;
 }
 
-/* ═══════════════════════════════════════════════════════
-   GISCUS COMMENTS
-   ═══════════════════════════════════════════════════════ */
 function initGiscusComments(articleTitle, articleAuthor) {
     const container = document.getElementById('giscus-container');
     if (!container) return;
@@ -672,18 +581,9 @@ function initGiscusComments(articleTitle, articleAuthor) {
     container.appendChild(script);
 }
 
-/* ═══════════════════════════════════════════════════════
-   NAVIGATION & MENU
-   ═══════════════════════════════════════════════════════ */
-function updateNavBarState(visible, title, backHash) {
-    const nav = document.getElementById('navBar');
-    if (visible) {
-        nav.classList.add('show');
-        document.getElementById('navTitle').textContent = title || 'Eclatineers';
-        document.getElementById('navBack').href = backHash || '?';
-    } else {
-        nav.classList.remove('show');
-    }
+function updateNavBarState(title, backHash) {
+    const backBtn = document.getElementById('navBack');
+    if (backBtn) backBtn.href = backHash || '?';
 }
 
 function buildDynamicSlideoutMenu(issueId, articles) {
@@ -702,7 +602,7 @@ function buildDynamicSlideoutMenu(issueId, articles) {
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=patrons">Our Patrons</a></li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
         <li class="mobile-menu-sep">System</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View Archive</a></li>`;
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?">View Archive</a></li>`;
 
     list.innerHTML = html;
 
@@ -720,19 +620,13 @@ function displayApplicationError(msg) {
     document.getElementById('errorScreen').classList.add('show');
 }
 
-/* ═══════════════════════════════════════════════════════
-   INITIALIZATION
-   ═══════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
-    // Theme + font scale must be ready before first render
     initTheme();
     initFontScale();
 
-    // Global theme toggle button
     const themeBtn = document.getElementById('themeToggleBtn');
     if (themeBtn) themeBtn.addEventListener('click', toggleSiteTheme);
 
-    // Menu toggle
     document.getElementById('navMenuBtn').addEventListener('click', () => {
         const menu = document.getElementById('mobileMenu');
         menu.classList.toggle('open');
@@ -744,7 +638,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.style.overflow = '';
     });
 
-    // Back to top
     const btt = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
         btt.classList.toggle('show', window.pageYOffset > 400);
