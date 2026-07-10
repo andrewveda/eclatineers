@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   CONFIGURATION & DATA
+   CONFIGURATION
    ═══════════════════════════════════════════════════════ */
 const CONFIG = {
     SHEET_ID: '1CnPHtSxSDl3EvsfewstH2ZPHG78nrnJ1ARmOQkrjWNs',
@@ -15,8 +15,14 @@ const CONFIG = {
     FOOTER_NOTE: 'For private circulation only'
 };
 
+/* ═══════════════════════════════════════════════════════
+   CACHE
+   ═══════════════════════════════════════════════════════ */
 const Cache = { issues: null, articles: null, patrons: null, editorial: null };
 
+/* ═══════════════════════════════════════════════════════
+   DATA FETCHING
+   ═══════════════════════════════════════════════════════ */
 async function fetchSheet(sheetName) {
     const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
     const res = await fetch(url);
@@ -25,13 +31,16 @@ async function fetchSheet(sheetName) {
     const text = await res.text();
     const jsonStr = text.replace(/\/\*O_o\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);?\s*$/, '');
     const data = JSON.parse(jsonStr);
+
     const cols = data.table.cols.map(c => c.label.toLowerCase().replace(/[^a-z0-9]/g, '_').trim());
 
     return data.table.rows.map(row => {
         const obj = {};
         cols.forEach((col, i) => { 
             let val = row.c[i]?.v ?? '';
-            if (typeof val === 'string' && (col === 'id' || col === 'issueid')) val = val.toLowerCase().trim();
+            if (typeof val === 'string' && (col === 'id' || col === 'issueid')) {
+                val = val.toLowerCase().trim();
+            }
             obj[col] = val;
         });
         return obj;
@@ -51,6 +60,9 @@ async function loadAllData() {
     Cache.editorial = editorial;
 }
 
+/* ═══════════════════════════════════════════════════════
+   CORE DATA HELPERS
+   ═══════════════════════════════════════════════════════ */
 const CoreData = {
     getIssue: (id) => Cache.issues.find(i => String(i.id) === String(id).toLowerCase()),
     getArticles: (issueId) => Cache.articles
@@ -62,6 +74,9 @@ const CoreData = {
     getEditorial: (issueId) => Cache.editorial.filter(e => String(e.issueid) === String(issueId).toLowerCase())
 };
 
+/* ═══════════════════════════════════════════════════════
+   ROUTING
+   ═══════════════════════════════════════════════════════ */
 function getRouterParams() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -73,9 +88,6 @@ function getRouterParams() {
 
 function handleRouting() {
     const { issue, article, section } = getRouterParams();
-
-    // Reset floating reactive drawer state on route changes
-    toggleCommentDrawer(false);
 
     if (issue && article) {
         renderArticlePage(issue, article);
@@ -90,6 +102,9 @@ function handleRouting() {
     }
 }
 
+/* ═══════════════════════════════════════════════════════
+   ORNAMENT
+   ═══════════════════════════════════════════════════════ */
 function renderGoldOrnament() {
     return `
         <div class="ornament-frame">
@@ -99,6 +114,9 @@ function renderGoldOrnament() {
         </div>`;
 }
 
+/* ═══════════════════════════════════════════════════════
+   CONTENT PARSER
+   ═══════════════════════════════════════════════════════ */
 function escHtml(str) {
     if (str == null) return '';
     const div = document.createElement('div');
@@ -109,13 +127,16 @@ function escHtml(str) {
 function parseContent(text, category) {
     if (!text) return '';
 
+    // Riddles
     if (category === 'Riddles') {
         let html = '';
         const qas = text.split('>>').map(item => item.trim()).filter(Boolean);
+
         for (let i = 0; i < qas.length; i++) {
             if (qas[i].startsWith('??')) {
                 const question = qas[i].slice(2).trim().replace(/\n/g, '<br>');
                 const answer = (qas[i + 1] && !qas[i + 1].startsWith('??')) ? qas[i + 1].trim() : '...';
+
                 html += `
                     <div class="riddle-card">
                         <div class="riddle-text">${question}</div>
@@ -127,9 +148,11 @@ function parseContent(text, category) {
         return html;
     }
 
+    // Cryptic
     if (category && category.includes('Cryptic')) {
         const lines = text.split('\n');
         let html = '<div style="display:grid; gap:20px;">';
+
         lines.forEach(line => {
             if (line.trim().startsWith('!!')) {
                 const clean = line.replace(/^\s*!!/, '').trim();
@@ -138,6 +161,7 @@ function parseContent(text, category) {
                     const num = parts[0].trim();
                     const clue = parts[1].trim();
                     const hint = parts.slice(2).join(':').trim(); 
+
                     html += `
                         <div class="clue-card">
                             <div class="clue-number">Clue ${escHtml(num)}</div>
@@ -151,11 +175,13 @@ function parseContent(text, category) {
         return html;
     }
 
+    // Standard content
     let html = '';
     const blocks = text.split('\n\n').map(b => b.trim()).filter(Boolean);
     let inBox = false;
 
     blocks.forEach(block => {
+        // Image: !Caption:SourceURL
         if (block.startsWith('!') && block.includes(':')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const parts = block.substring(1).split(':');
@@ -165,6 +191,7 @@ function parseContent(text, category) {
             return;
         }
 
+        // Pull Quote
         if (block.startsWith('>>')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const quote = block.slice(2).trim();
@@ -172,6 +199,7 @@ function parseContent(text, category) {
             return;
         }
 
+        // Highlight Box
         if (block.startsWith('##')) {
             if (inBox) { html += '</div>'; inBox = false; }
             const title = block.slice(2).trim();
@@ -180,6 +208,7 @@ function parseContent(text, category) {
             return;
         }
 
+        // List inside box
         if (inBox && block.startsWith('- ')) {
             const items = block.split('\n').filter(l => l.trim().startsWith('- '));
             html += '<ul>' + items.map(i => `<li>${escHtml(i.trim().slice(2))}</li>`).join('') + '</ul>';
@@ -191,6 +220,7 @@ function parseContent(text, category) {
             inBox = false;
         }
 
+        // Standard paragraph
         const formatted = escHtml(block).replace(/\n/g, '<br>');
         html += `<p>${formatted}</p>`;
     });
@@ -206,7 +236,7 @@ window.toggleRiddle = function(btn) {
 };
 
 /* ═══════════════════════════════════════════════════════
-   PAGES
+   HOME PAGE
    ═══════════════════════════════════════════════════════ */
 function renderHomePage() {
     let html = `
@@ -237,10 +267,14 @@ function renderHomePage() {
 
     html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
-    updateNavBarState('Eclatineers', '?');
+    updateNavBarState('', null);
+    setArticlePageActive(false);
     window.scrollTo(0, 0);
 }
 
+/* ═══════════════════════════════════════════════════════
+   ISSUE PAGE
+   ═══════════════════════════════════════════════════════ */
 function renderIssuePage(issueId) {
     const issue = CoreData.getIssue(issueId);
     if (!issue) { displayApplicationError('Target issue reference context absent.'); return; }
@@ -321,14 +355,20 @@ function renderIssuePage(issueId) {
                     </div>
                     <div class="toc-arrow">→</div>
                 </a>
-            </li></ul></div></section>${renderFooter()}`;
+            </li>`;
+
+    html += `</ul></div></section>${renderFooter()}`;
 
     document.getElementById('app').innerHTML = html;
-    updateNavBarState(issue.title, '?');
+    updateNavBarState(issue.title, `?issue=${issueId}`);
+    setArticlePageActive(false);
     buildDynamicSlideoutMenu(issueId, articles);
     window.scrollTo(0, 0);
 }
 
+/* ═══════════════════════════════════════════════════════
+   READER SIDEBAR (persistent desktop index of the issue)
+   ═══════════════════════════════════════════════════════ */
 function renderReaderSidebarToc(issueId, articles, currentSlug) {
     let html = `
         <aside class="reader-sidebar-toc">
@@ -355,11 +395,16 @@ function renderReaderSidebarToc(issueId, articles, currentSlug) {
                 <li class="reader-toc-mini-item"><a class="reader-toc-mini-link" href="?issue=${issueId}&section=patrons">Our Patrons</a></li>
                 <li class="reader-toc-mini-item"><a class="reader-toc-mini-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
             </ul>
+            <div class="reader-sidebar-divider"></div>
+            <div class="reader-sidebar-reactions" id="sidebarReactions"></div>
         </aside>`;
 
     return html;
 }
 
+/* ═══════════════════════════════════════════════════════
+   NEXT ARTICLE CARD
+   ═══════════════════════════════════════════════════════ */
 function renderNextArticleBlock(issueId, articles, currentSlug) {
     const idx = articles.findIndex(a => a.slug === currentSlug);
     const next = idx >= 0 && idx < articles.length - 1 ? articles[idx + 1] : null;
@@ -383,6 +428,9 @@ function renderNextArticleBlock(issueId, articles, currentSlug) {
         </div>`;
 }
 
+/* ═══════════════════════════════════════════════════════
+   ARTICLE PAGE — Continuous Scroll Reader
+   ═══════════════════════════════════════════════════════ */
 function renderArticlePage(issueId, slug) {
     const article = CoreData.getArticle(issueId, slug);
     if (!article) { displayApplicationError('Article structure could not be mapped.'); return; }
@@ -402,9 +450,13 @@ function renderArticlePage(issueId, slug) {
         }).join('');
     }
 
+    // Font size and theme controls now live in the persistent floating
+    // dock (index.html) rather than inline above the article — the
+    // article column starts straight at the category/title.
     let html = `
         <div class="reader-page-grid">
             ${renderReaderSidebarToc(issueId, articles, slug)}
+
             <div class="reader-main-content">
                 <div class="article-category">${escHtml(category)}</div>
                 <h2>${escHtml(article.title)}</h2>
@@ -420,19 +472,36 @@ function renderArticlePage(issueId, slug) {
 
                 ${renderNextArticleBlock(issueId, articles, slug)}
             </div>
+        </div>
+
+        <div class="reader-comments-drawer" id="commentDrawer">
+            <div class="drawer-header-bar">
+                <span style="font-family:'Playfair Display',serif; font-size:15px; font-weight:600;">Contributions & Analysis</span>
+                <span style="cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; letter-spacing:1px;" onclick="toggleCommentDrawer(false)">✕ CLOSE</span>
+            </div>
+            <div style="padding: 20px 40px; height: calc(100% - 50px); overflow-y: auto;">
+                <div id="giscus-container"></div>
+            </div>
         </div>`;
 
     document.getElementById('app').innerHTML = html;
     updateNavBarState(article.title, `?issue=${issueId}`);
+    setArticlePageActive(true);
     buildDynamicSlideoutMenu(issueId, articles);
 
+    // Reset last article's reaction icons — the new giscus thread will
+    // report its own counts once its iframe loads.
+    const reactionsEl = document.getElementById('sidebarReactions');
+    if (reactionsEl) { reactionsEl.innerHTML = ''; reactionsEl.classList.remove('has-data'); }
+
+    // Initialize comments
     initGiscusComments(article.title, article.author);
-    updateThemeButtonIcon();
+
     window.scrollTo(0, 0);
 }
 
 /* ═══════════════════════════════════════════════════════
-   CONTROLS & CONTROLLER LOGIC
+   READER FONT SIZE CONTROL
    ═══════════════════════════════════════════════════════ */
 const FONT_SCALE_MIN = 0.8;
 const FONT_SCALE_MAX = 1.5;
@@ -454,6 +523,38 @@ function initFontScale() {
     applyFontScale(saved && !isNaN(saved) ? saved : 1);
 }
 
+/* Single "Aa" button expands to reveal A+/A− rather than showing
+   both permanently in the dock. */
+function collapseFontControl() {
+    const group = document.getElementById('fontControlGroup');
+    const toggleBtn = document.getElementById('fontToggleBtn');
+    if (group) group.classList.remove('expanded');
+    if (toggleBtn) toggleBtn.classList.remove('active');
+}
+
+function initFontToggle() {
+    const toggleBtn = document.getElementById('fontToggleBtn');
+    const group = document.getElementById('fontControlGroup');
+    if (!toggleBtn || !group) return;
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = group.classList.toggle('expanded');
+        toggleBtn.classList.toggle('active', isOpen);
+    });
+
+    // Collapse when tapping anywhere else on the page.
+    document.addEventListener('click', (e) => {
+        if (group.classList.contains('expanded') &&
+            !group.contains(e.target) && e.target !== toggleBtn) {
+            collapseFontControl();
+        }
+    });
+}
+
+/* ═══════════════════════════════════════════════════════
+   THEME CONTROL (light / dark) — single persistent toggle
+   ═══════════════════════════════════════════════════════ */
 function initTheme() {
     const saved = localStorage.getItem('eclatineers-theme');
     const theme = saved === 'dark' ? 'dark' : 'light';
@@ -472,21 +573,45 @@ window.toggleSiteTheme = function() {
 function updateThemeButtonIcon() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const icon = isDark ? '☀' : '☾';
-    const globalBtn = document.getElementById('themeToggleBtn');
-    if (globalBtn) globalBtn.textContent = icon;
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) btn.textContent = icon;
 }
 
+/* ═══════════════════════════════════════════════════════
+   COMMENTS DRAWER — triggered only by the persistent dock button
+   ═══════════════════════════════════════════════════════ */
 window.toggleCommentDrawer = function(open) {
     const drawer = document.getElementById('commentDrawer');
     if (!drawer) return;
-
-    if (open) {
-        drawer.classList.add('open');
-    } else {
-        drawer.classList.remove('open');
-    }
+    drawer.classList.toggle('open', open);
 };
 
+function initCommentsToggleButton() {
+    const btn = document.getElementById('commentsToggleBtn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        const drawer = document.getElementById('commentDrawer');
+        if (!drawer) return;
+        toggleCommentDrawer(!drawer.classList.contains('open'));
+    });
+}
+
+/* ═══════════════════════════════════════════════════════
+   ARTICLE-PAGE STATE (drives which floating controls show)
+   ═══════════════════════════════════════════════════════ */
+function setArticlePageActive(isActive) {
+    document.body.classList.toggle('is-article-page', !!isActive);
+    // Leaving the article always closes the drawer and collapses the
+    // text-size control so nothing lingers open on the next page.
+    if (!isActive) {
+        toggleCommentDrawer(false);
+        collapseFontControl();
+    }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PATRONS PAGE
+   ═══════════════════════════════════════════════════════ */
 function renderPatronsPage(issueId) {
     const patrons = CoreData.getPatrons(issueId);
     let html = `
@@ -507,10 +632,14 @@ function renderPatronsPage(issueId) {
     html += `</div></div></section>${renderFooter()}`;
     document.getElementById('app').innerHTML = html;
     updateNavBarState('Our Patrons', `?issue=${issueId}`);
+    setArticlePageActive(false);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 }
 
+/* ═══════════════════════════════════════════════════════
+   EDITORIAL PAGE
+   ═══════════════════════════════════════════════════════ */
 function renderEditorialPage(issueId) {
     const editorial = CoreData.getEditorial(issueId);
     let html = `
@@ -534,10 +663,14 @@ function renderEditorialPage(issueId) {
 
     document.getElementById('app').innerHTML = html;
     updateNavBarState('Editorial Board', `?issue=${issueId}`);
+    setArticlePageActive(false);
     buildDynamicSlideoutMenu(issueId, CoreData.getArticles(issueId));
     window.scrollTo(0, 0);
 }
 
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════ */
 function renderFooter() {
     return `
         <footer class="footer">
@@ -553,6 +686,9 @@ function renderFooter() {
         </footer>`;
 }
 
+/* ═══════════════════════════════════════════════════════
+   GISCUS COMMENTS
+   ═══════════════════════════════════════════════════════ */
 function initGiscusComments(articleTitle, articleAuthor) {
     const container = document.getElementById('giscus-container');
     if (!container) return;
@@ -581,9 +717,73 @@ function initGiscusComments(articleTitle, articleAuthor) {
     container.appendChild(script);
 }
 
-function updateNavBarState(title, backHash) {
-    const backBtn = document.getElementById('navBack');
-    if (backBtn) backBtn.href = backHash || '?';
+/* ═══════════════════════════════════════════════════════
+   GISCUS REACTION ICONS — sidebar, live via postMessage
+   giscus broadcasts the discussion's reaction counts and total
+   comment count to the parent window once its iframe has loaded.
+   We listen for that and render it as a compact icon strip in the
+   reader sidebar, so counts are visible without opening the drawer.
+   ═══════════════════════════════════════════════════════ */
+const REACTION_ICONS = {
+    '+1': '👍', 'thumbs_up': '👍',
+    '-1': '👎', 'thumbs_down': '👎',
+    'laugh': '😄',
+    'hooray': '🎉',
+    'confused': '😕',
+    'heart': '❤️',
+    'rocket': '🚀',
+    'eyes': '👀'
+};
+
+function initGiscusReactionListener() {
+    window.addEventListener('message', (event) => {
+        if (event.origin !== 'https://giscus.app') return;
+        const data = event.data;
+        if (!data || !data.giscus || !data.giscus.discussion) return;
+        renderSidebarReactions(data.giscus.discussion);
+    });
+}
+
+function renderSidebarReactions(discussion) {
+    const el = document.getElementById('sidebarReactions');
+    if (!el) return; // not on an article page (or sidebar not in DOM)
+
+    const reactions = discussion.reactions || {};
+    const pills = [];
+
+    Object.keys(reactions).forEach(key => {
+        const entry = reactions[key];
+        const count = typeof entry === 'number' ? entry : (entry && entry.count) || 0;
+        if (count <= 0) return;
+        const icon = REACTION_ICONS[key.toLowerCase()];
+        if (!icon) return;
+        pills.push(`<span class="reaction-pill"><span class="reaction-icon">${icon}</span><span class="reaction-count">${count}</span></span>`);
+    });
+
+    const commentCount = discussion.totalCommentCount || 0;
+    if (commentCount > 0) {
+        pills.push(`<span class="reaction-pill"><span class="reaction-icon">💬</span><span class="reaction-count">${commentCount}</span></span>`);
+    }
+
+    if (pills.length === 0) {
+        el.innerHTML = '';
+        el.classList.remove('has-data');
+        return;
+    }
+
+    el.innerHTML = pills.join('');
+    el.classList.add('has-data');
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION & MENU
+   ═══════════════════════════════════════════════════════ */
+function updateNavBarState(contextTitle) {
+    const contextEl = document.getElementById('navContext');
+    if (!contextEl) return;
+    const inner = contextEl.querySelector('.nav-context-inner');
+    if (inner) inner.textContent = contextTitle || '';
+    contextEl.classList.toggle('has-accent', !!contextTitle);
 }
 
 function buildDynamicSlideoutMenu(issueId, articles) {
@@ -602,7 +802,7 @@ function buildDynamicSlideoutMenu(issueId, articles) {
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=patrons">Our Patrons</a></li>
         <li class="mobile-menu-item"><a class="mobile-menu-link" href="?issue=${issueId}&section=editorial">Editorial Board</a></li>
         <li class="mobile-menu-sep">System</li>
-        <li class="mobile-menu-item"><a class="mobile-menu-link" href="?">View Archive</a></li>`;
+        <li class="mobile-menu-item"><a class="mobile-menu-link" href="#">View Archive</a></li>`;
 
     list.innerHTML = html;
 
@@ -620,13 +820,28 @@ function displayApplicationError(msg) {
     document.getElementById('errorScreen').classList.add('show');
 }
 
+/* ═══════════════════════════════════════════════════════
+   INITIALIZATION
+   ═══════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
+    // Theme + font scale must be ready before first render
     initTheme();
     initFontScale();
 
+    // Global theme toggle button
     const themeBtn = document.getElementById('themeToggleBtn');
     if (themeBtn) themeBtn.addEventListener('click', toggleSiteTheme);
 
+    // Global comments toggle button (persistent, article-only)
+    initCommentsToggleButton();
+
+    // Expandable "Aa" text-size control (persistent, article-only)
+    initFontToggle();
+
+    // Live giscus reaction/comment-count icons in the reader sidebar
+    initGiscusReactionListener();
+
+    // Menu toggle
     document.getElementById('navMenuBtn').addEventListener('click', () => {
         const menu = document.getElementById('mobileMenu');
         menu.classList.toggle('open');
@@ -638,6 +853,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.style.overflow = '';
     });
 
+    // Back to top
     const btt = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
         btt.classList.toggle('show', window.pageYOffset > 400);
