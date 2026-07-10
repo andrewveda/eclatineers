@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"> 
     <title>Eclatineers | SRM Valliammai Engineering College</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script>
+        // Apply saved theme/font-scale immediately to avoid a flash of the wrong theme
         (function () {
             try {
                 var theme = localStorage.getItem('eclatineers-theme') === 'dark' ? 'dark' : 'light';
@@ -20,13 +21,14 @@
             } catch (e) {}
         })();
     </script>
-    <base target="_self">
+<base target="_blank">
 </head>
 <body class="guilloche-bg">
 
+    <!-- Persistent top bar: the wordmark always doubles as the Home button -->
     <nav class="nav-bar show" id="navBar">
-        <a id="navBack" class="nav-back-btn" href="?">‹</a>
-        <a href="?" id="navTitle" class="nav-title-btn">Eclatineers</a>
+        <a class="nav-brand" href="?" aria-label="Eclatineers — Home">Eclatineers</a>
+        <div class="nav-context" id="navContext"><span class="nav-context-inner"></span></div>
         <button id="navMenuBtn" class="nav-menu-btn" aria-label="Menu">☰</button>
     </nav>
 
@@ -35,23 +37,6 @@
     <div class="mobile-menu" id="mobileMenu">
         <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close">✕</button>
         <ul class="mobile-menu-list" id="mobileMenuList"></ul>
-    </div>
-
-    <div class="floating-controls-cluster">
-        <button class="floating-btn" id="fontMinusBtn" onclick="adjustReaderFontSize(-1)" aria-label="Decrease Font">A−</button>
-        <button class="floating-btn" id="fontPlusBtn" onclick="adjustReaderFontSize(1)" aria-label="Increase Font">A+</button>
-        <button class="floating-btn" id="themeToggleBtn" aria-label="Toggle Theme">☾</button>
-        <button class="floating-btn reaction-btn" id="commentDrawerBtn" onclick="toggleCommentDrawer(true)" aria-label="Reviews & Reactions">💬</button>
-    </div>
-
-    <div class="reader-comments-drawer" id="commentDrawer">
-        <div class="drawer-header-bar">
-            <span style="font-family:'Playfair Display',serif; font-size:15px; font-weight:600;">Contributions & Analysis</span>
-            <span style="cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; letter-spacing:1px;" onclick="toggleCommentDrawer(false)">✕ CLOSE</span>
-        </div>
-        <div style="padding: 20px 40px; height: calc(100% - 50px); overflow-y: auto;">
-            <div id="giscus-container"></div>
-        </div>
     </div>
 
     <div class="loader-screen" id="loader">
@@ -64,7 +49,21 @@
         <button class="retry-btn" onclick="window.location.reload()">Retry</button>
     </div>
 
-    <button class="back-to-top" id="backToTop" aria-label="Back to Top">↑</button>
+    <!-- Persistent floating control docks. Always the same style as the theme toggle.
+         Reader-only controls (font size, comments) reveal themselves only on article pages. -->
+    <div class="floating-dock dock-left">
+        <button class="dock-btn" id="themeToggleBtn" aria-label="Toggle dark/light theme">☾</button>
+        <button class="dock-btn reader-only-btn" id="fontToggleBtn" aria-label="Text size controls">Aa</button>
+        <div class="font-control-group" id="fontControlGroup">
+            <button class="dock-btn font-btn" id="fontMinusBtn" onclick="adjustReaderFontSize(-1)" aria-label="Decrease text size">A−</button>
+            <button class="dock-btn font-btn" id="fontPlusBtn" onclick="adjustReaderFontSize(1)" aria-label="Increase text size">A+</button>
+        </div>
+    </div>
+
+    <div class="floating-dock dock-right">
+        <button class="dock-btn reader-only-btn" id="commentsToggleBtn" aria-label="Open reviews and thoughts">💬</button>
+        <button class="dock-btn back-to-top" id="backToTop" aria-label="Back to Top">↑</button>
+    </div>
 
     <script src="js/app.js"></script>
 </body>
