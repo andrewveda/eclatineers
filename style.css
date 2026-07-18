@@ -1278,3 +1278,380 @@ body:not(.is-article-page) .font-control-group { display: none; }
    into the same right-hand dock as the comments button. */
 .dock-btn.back-to-top { display: none; }
 .dock-btn.back-to-top.show { display: inline-flex; }
+
+/* ═══════════════════════════════════════════════════════
+   QUOTES CAROUSEL STYLES
+   Designed to blend with Eclatineers gold-on-dark aesthetic
+   ═══════════════════════════════════════════════════════ */
+
+.quotes-showcase-section {
+    padding: 60px 0 80px;
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(201,168,76,0.03) 50%, var(--bg) 100%);
+    position: relative;
+}
+
+.quotes-showcase-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.4;
+}
+
+/* ─── Carousel Container ─── */
+.qc-container {
+    --qc-gold: #c9a84c;
+    --qc-gold-light: #e8d5a3;
+    --qc-gold-dark: #a08030;
+    --qc-gold-dim: rgba(201,168,76,0.15);
+    --qc-bg: var(--surface, #1a1a1f);
+    --qc-text: var(--text, #e8e6e1);
+    --qc-text-dim: var(--text-light, #8a8680);
+    --qc-border: rgba(201,168,76,0.12);
+
+    font-family: 'Montserrat', sans-serif;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px;
+    background: var(--qc-bg);
+    border-radius: 16px;
+    border: 1px solid var(--qc-border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+}
+
+.qc-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--qc-gold), transparent);
+    opacity: 0.6;
+}
+
+/* ─── Header ─── */
+.qc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.qc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--qc-gold);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.qc-subtitle {
+    font-size: 10px;
+    color: var(--qc-text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.qc-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.qc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--qc-gold-dim);
+    border: 1px solid var(--qc-gold-dark);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qc-dot.active {
+    background: var(--qc-gold);
+    box-shadow: 0 0 10px rgba(201,168,76,0.4);
+    transform: scale(1.3);
+}
+
+/* ─── Carousel Track ─── */
+.qc-carousel {
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
+}
+
+.qc-slide {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px;
+    pointer-events: none;
+}
+
+.qc-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.qc-slide.prev {
+    transform: translateX(-50px);
+}
+
+/* ─── Slide Content ─── */
+.qc-ornament {
+    text-align: center;
+    color: var(--qc-gold);
+    font-size: 14px;
+    letter-spacing: 10px;
+    margin-bottom: 20px;
+    opacity: 0.4;
+    font-family: 'Playfair Display', serif;
+}
+
+.qc-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 23px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--qc-text);
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+    padding: 0 16px;
+}
+
+.qc-quote::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: var(--qc-gold);
+    opacity: 0.15;
+    position: absolute;
+    top: -28px;
+    left: -4px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.qc-author {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--qc-gold-light);
+    text-align: center;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.qc-meaning {
+    font-size: 12.5px;
+    color: var(--qc-text-dim);
+    text-align: center;
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto 18px;
+    font-style: italic;
+    padding: 0 20px;
+}
+
+.qc-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 10px;
+    color: var(--qc-text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+}
+
+.qc-meta-sep {
+    width: 4px;
+    height: 4px;
+    background: var(--qc-gold-dark);
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+.qc-dept {
+    color: var(--qc-gold);
+    font-weight: 500;
+}
+
+/* ─── Navigation ─── */
+.qc-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.qc-nav-btn {
+    background: transparent;
+    border: 1px solid var(--qc-gold-dim);
+    color: var(--qc-gold);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.qc-nav-btn:hover {
+    background: var(--qc-gold);
+    color: var(--qc-bg);
+    border-color: var(--qc-gold);
+    box-shadow: 0 0 16px rgba(201,168,76,0.3);
+}
+
+.qc-counter {
+    font-size: 11px;
+    color: var(--qc-text-dim);
+    letter-spacing: 2.5px;
+    min-width: 50px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* ─── Footer Bar ─── */
+.qc-footer-bar {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--qc-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+
+.qc-source-link {
+    font-size: 10px;
+    color: var(--qc-text-dim);
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.qc-source-link:hover {
+    color: var(--qc-gold);
+}
+
+.qc-auto-toggle {
+    font-size: 10px;
+    color: var(--qc-text-dim);
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Montserrat', sans-serif;
+    user-select: none;
+}
+
+.qc-auto-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--qc-gold-dark);
+    transition: all 0.3s ease;
+    opacity: 0.5;
+}
+
+.qc-auto-dot.on {
+    background: var(--qc-gold);
+    box-shadow: 0 0 8px rgba(201,168,76,0.5);
+    opacity: 1;
+}
+
+/* ─── Loading / Error States ─── */
+.qc-loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--qc-text-dim);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.qc-loading::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--qc-gold), transparent);
+    margin: 16px auto 0;
+    animation: qcPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes qcPulse {
+    0%, 100% { opacity: 0.3; transform: scaleX(0.5); }
+    50% { opacity: 1; transform: scaleX(1); }
+}
+
+.qc-error {
+    text-align: center;
+    padding: 60px 20px;
+    color: #c9a84c;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-family: 'Montserrat', sans-serif;
+    opacity: 0.7;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+    .qc-container {
+        padding: 24px 20px;
+        margin: 0 16px;
+    }
+    .qc-quote {
+        font-size: 19px;
+        padding: 0 8px;
+    }
+    .qc-meaning {
+        font-size: 11.5px;
+        padding: 0 12px;
+    }
+    .qc-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .qc-dots {
+        align-self: flex-end;
+    }
+    .qc-meta {
+        gap: 10px;
+        font-size: 9px;
+    }
+}
