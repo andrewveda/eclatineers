@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <title>A Quote A Day | Student Video Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=IM+Fell+English:ital@0;1&family=DM+Mono:wght@300;400;500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="video-style.css">
+</head>
+<body>
+
+    <!-- ═══ MASTHEAD ═══ -->
+    <header class="vid-masthead" id="vidMasthead">
+        <div class="vid-masthead-rule top-rule"></div>
+        <div class="vid-masthead-inner">
+            <div class="vid-masthead-meta">
+                <a href="index.html" class="vid-meta-pill vid-back-link">← Archive</a>
+                <div class="vid-masthead-title-block">
+                    <div class="vid-masthead-eyebrow">English Department</div>
+                    <h1 class="vid-masthead-title">Student Voices</h1>
+                    <div class="vid-masthead-subtitle">A Quote A Day — Video Showcase</div>
+                </div>
+                <span id="vidCount" class="vid-meta-pill">0 Videos</span>
+            </div>
+        </div>
+        <div class="vid-masthead-rule bottom-rule"></div>
+        <nav class="vid-nav-bar" id="vidNavBar">
+            <button class="vid-quick-tab active" data-tab="all">All Videos</button>
+            <button class="vid-quick-tab" data-tab="students">By Student</button>
+            <button class="vid-quick-tab" data-tab="departments">By Dept</button>
+            <div class="vid-search-wrap">
+                <input type="text" id="vidSearchInput" class="vid-search-input" placeholder="Search student, dept…" autocomplete="off"/>
+                <span class="vid-search-icon">⌕</span>
+            </div>
+        </nav>
+
+        <!-- Compact bar — mobile, appears on scroll -->
+        <div class="vid-masthead-compact-bar" id="vidCompactBar">
+            <span class="vid-masthead-compact-title">Student Voices</span>
+            <div class="vid-masthead-compact-actions">
+                <button class="vid-compact-icon-btn" id="vidCompactSearchBtn" aria-label="Search">⌕</button>
+                <button class="vid-compact-icon-btn" id="vidCompactFilterBtn" aria-label="Filter">≡</button>
+            </div>
+        </div>
+        <div class="vid-compact-search-bar" id="vidCompactSearchBar">
+            <input type="text" id="vidCompactSearchInput" placeholder="Search student, dept…" autocomplete="off"/>
+        </div>
+    </header>
+
+    <!-- ═══ FILTER BOTTOM SHEET ═══ -->
+    <div class="vid-filter-sheet-backdrop" id="vidFilterSheetBackdrop">
+        <div class="vid-filter-sheet">
+            <div class="vid-filter-sheet-handle"></div>
+            <div class="vid-filter-sheet-title">View</div>
+            <div class="vid-filter-sheet-tabs" id="vidFilterSheetTabs">
+                <button class="vid-filter-sheet-tab active" data-tab="all">All Videos</button>
+                <button class="vid-filter-sheet-tab" data-tab="students">By Student</button>
+                <button class="vid-filter-sheet-tab" data-tab="departments">By Dept</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="vid-body" id="vidMainContent">
+        <div id="vidLoader" class="vid-loader-state">
+            <div class="vid-loader-ornament">▶</div>
+            <p class="vid-loader-text">Cueing the Reels…</p>
+        </div>
+    </main>
+
+    <!-- ═══ DECK OVERLAY (fullscreen video player) ═══ -->
+    <div class="vid-deck-overlay" id="vidDeckOverlay" role="dialog" aria-modal="true" aria-label="Video viewer">
+        <div class="vid-deck-topbar">
+            <button class="vid-deck-nav-btn" id="vidDeckClose" aria-label="Close">✕</button>
+            <div class="vid-deck-progress-wrap" id="vidDeckProgressWrap"></div>
+            <div id="vidDeckCounter" class="vid-deck-counter">1 / 1</div>
+        </div>
+        <div class="vid-deck-nav-arrows">
+            <button class="vid-arrow-btn" id="vidArrowPrev" aria-label="Previous">&#8592;</button>
+            <button class="vid-arrow-btn" id="vidArrowNext" aria-label="Next">&#8594;</button>
+        </div>
+        <div class="vid-deck-track-wrap">
+            <div class="vid-deck-track" id="vidDeckTrack"></div>
+        </div>
+    </div>
+
+    <!-- ═══ DIRECTORY PANEL ═══ -->
+    <div class="vid-dir-backdrop" id="vidDirBackdrop"></div>
+    <aside class="vid-dir-panel" id="vidDirPanel" role="complementary">
+        <div class="vid-dir-header">
+            <h2 id="vidDirTitle" class="vid-dir-title">Directory</h2>
+            <button id="vidDirClose" class="vid-dir-close-btn" aria-label="Close directory">✕</button>
+        </div>
+        <div id="vidDirList" class="vid-dir-list"></div>
+    </aside>
+
+    <script src="video-app.js"></script>
+</body>
+</html>
