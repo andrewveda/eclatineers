@@ -176,57 +176,81 @@ function parseContent(text, category) {
     }
 
     // Standard content
-    let html = '';
-    const blocks = text.split('\n\n').map(b => b.trim()).filter(Boolean);
-    let inBox = false;
+   // Standard content
+let html = '';
+const lines = text.split('\n');
+let paragraphBuffer = [];
+let listBuffer = [];
+let inBox = false;
 
-    blocks.forEach(block => {
-        // Image: !Caption:SourceURL
-        if (block.startsWith('!') && block.includes(':')) {
-            if (inBox) { html += '</div>'; inBox = false; }
-            const parts = block.substring(1).split(':');
-            const caption = parts[0].trim();
-            const src = parts.slice(1).join(':').trim();
-            html += `<div class="article-image"><img src="${escHtml(src)}" alt="${escHtml(caption)}" loading="lazy"><div class="image-caption">${escHtml(caption)}</div></div>`;
-            return;
-        }
+function flushParagraph() {
+    if (paragraphBuffer.length === 0) return;
+    const combined = paragraphBuffer.join('\n').trim();
+    paragraphBuffer = [];
+    if (!combined) return;
+    const formatted = escHtml(combined).replace(/\n/g, '<br>');
+    html += `<p>${formatted}</p>`;
+}
 
-        // Pull Quote
-        if (block.startsWith('>>')) {
-            if (inBox) { html += '</div>'; inBox = false; }
-            const quote = block.slice(2).trim();
-            html += `<div class="article-quote">${escHtml(quote)}</div>`;
-            return;
-        }
+function flushList() {
+    if (listBuffer.length === 0) return;
+    html += '<ul>' + listBuffer.map(i => `<li>${escHtml(i)}</li>`).join('') + '</ul>';
+    listBuffer = [];
+}
 
-        // Highlight Box
-        if (block.startsWith('##')) {
-            if (inBox) { html += '</div>'; inBox = false; }
-            const title = block.slice(2).trim();
-            html += `<div class="highlight-box"><h3>${escHtml(title)}</h3>`;
-            inBox = true;
-            return;
-        }
+lines.forEach(rawLine => {
+    const line = rawLine.trim();
 
-        // List inside box
-        if (inBox && block.startsWith('- ')) {
-            const items = block.split('\n').filter(l => l.trim().startsWith('- '));
-            html += '<ul>' + items.map(i => `<li>${escHtml(i.trim().slice(2))}</li>`).join('') + '</ul>';
-            return;
-        }
+    if (line === '') {
+        flushParagraph();
+        flushList();
+        return;
+    }
 
-        if (inBox && !block.startsWith('- ')) {
-            html += '</div>';
-            inBox = false;
-        }
+    // Image: !Caption:URL
+    if (line.startsWith('!') && line.includes(':')) {
+        flushParagraph(); flushList();
+        const parts = line.substring(1).split(':');
+        const caption = parts[0].trim();
+        const src = parts.slice(1).join(':').trim();
+        html += `<div class="article-image"><img src="${escHtml(src)}" alt="${escHtml(caption)}" loading="lazy"><div class="image-caption">${escHtml(caption)}</div></div>`;
+        return;
+    }
 
-        // Standard paragraph
-        const formatted = escHtml(block).replace(/\n/g, '<br>');
-        html += `<p>${formatted}</p>`;
-    });
+    // Pull quote
+    if (line.startsWith('>>')) {
+        flushParagraph(); flushList();
+        html += `<div class="article-quote">${escHtml(line.slice(2).trim())}</div>`;
+        return;
+    }
 
-    if (inBox) html += '</div>';
-    return html;
+    // Highlight box open
+    if (line.startsWith('##')) {
+        flushParagraph(); flushList();
+        if (inBox) html += '</div>';
+        html += `<div class="highlight-box"><h3>${escHtml(line.slice(2).trim())}</h3>`;
+        inBox = true;
+        return;
+    }
+
+    // List item
+    if (line.startsWith('- ')) {
+        flushParagraph();
+        listBuffer.push(line.slice(2).trim());
+        return;
+    }
+
+    // Anything else closes an open box/list and accumulates as a paragraph
+    flushList();
+    if (inBox) { html += '</div>'; inBox = false; }
+    paragraphBuffer.push(line);
+});
+
+flushParagraph();
+flushList();
+if (inBox) html += '</div>';
+
+return html;
 }
 
 window.toggleRiddle = function(btn) {
