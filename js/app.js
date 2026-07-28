@@ -24,7 +24,9 @@ const Cache = { issues: null, articles: null, patrons: null, editorial: null };
    DATA FETCHING
    ═══════════════════════════════════════════════════════ */
 async function fetchSheet(sheetName) {
-    const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+    // headers=1 asks Google to treat row 1 as the header row explicitly,
+    // rather than relying on its (unreliable) auto-detection.
+    const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&headers=1`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Network failure requesting dataset: ${sheetName}`);
 
@@ -32,11 +34,27 @@ async function fetchSheet(sheetName) {
     const jsonStr = text.replace(/\/\*O_o\*\/\s*google\.visualization\.Query\.setResponse\(/, '').replace(/\);?\s*$/, '');
     const data = JSON.parse(jsonStr);
 
-    const cols = data.table.cols.map(c => c.label.toLowerCase().replace(/[^a-z0-9]/g, '_').trim());
+    let cols = data.table.cols.map(c => (c.label || '').toLowerCase().replace(/[^a-z0-9]/g, '_').trim());
+    let rows = data.table.rows || [];
 
-    return data.table.rows.map(row => {
+    // Fallback: when every column in a sheet is text (e.g. long article
+    // bodies), Google's gviz endpoint can fail to auto-detect a header
+    // row even with headers=1, and instead returns blank column labels
+    // with the real header text sitting in the first data row. Detect
+    // that case and manually treat the first row as the header row.
+    const hasDetectedHeaders = cols.some(c => c.length > 0);
+    if (!hasDetectedHeaders && rows.length > 0) {
+        cols = rows[0].c.map(cell => {
+            const label = cell && cell.v != null ? String(cell.v) : '';
+            return label.toLowerCase().replace(/[^a-z0-9]/g, '_').trim();
+        });
+        rows = rows.slice(1);
+    }
+
+    return rows.map(row => {
         const obj = {};
-        cols.forEach((col, i) => { 
+        cols.forEach((col, i) => {
+            if (!col) return; // skip blank/unlabeled trailing columns
             let val = row.c[i]?.v ?? '';
             if (typeof val === 'string' && (col === 'id' || col === 'issueid')) {
                 val = val.toLowerCase().trim();
