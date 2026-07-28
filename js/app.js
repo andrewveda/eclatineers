@@ -175,82 +175,93 @@ function parseContent(text, category) {
         return html;
     }
 
-    // Standard content
-   // Standard content
-let html = '';
-const lines = text.split('\n');
-let paragraphBuffer = [];
-let listBuffer = [];
-let inBox = false;
+    // Standard content — processed line by line so that special
+    // markers (!, >>, ##, - ) are recognized whenever they start
+    // their own line, regardless of how many blank lines surround
+    // them. This is more forgiving of inconsistent spacing coming
+    // out of Google Sheets than a strict split-on-\n\n approach.
+    let html = '';
+    const lines = text.split('\n');
+    let paragraphBuffer = [];
+    let listBuffer = [];
+    let inBox = false;
 
-function flushParagraph() {
-    if (paragraphBuffer.length === 0) return;
-    const combined = paragraphBuffer.join('\n').trim();
-    paragraphBuffer = [];
-    if (!combined) return;
-    const formatted = escHtml(combined).replace(/\n/g, '<br>');
-    html += `<p>${formatted}</p>`;
-}
+    function flushParagraph() {
+        if (paragraphBuffer.length === 0) return;
+        const combined = paragraphBuffer.join('\n').trim();
+        paragraphBuffer = [];
+        if (!combined) return;
+        const formatted = escHtml(combined).replace(/\n/g, '<br>');
+        html += `<p>${formatted}</p>`;
+    }
 
-function flushList() {
-    if (listBuffer.length === 0) return;
-    html += '<ul>' + listBuffer.map(i => `<li>${escHtml(i)}</li>`).join('') + '</ul>';
-    listBuffer = [];
-}
+    function flushList() {
+        if (listBuffer.length === 0) return;
+        html += '<ul>' + listBuffer.map(i => `<li>${escHtml(i)}</li>`).join('') + '</ul>';
+        listBuffer = [];
+    }
 
-lines.forEach(rawLine => {
-    const line = rawLine.trim();
+    lines.forEach(rawLine => {
+        const line = rawLine.trim();
 
-    if (line === '') {
-        flushParagraph();
+        // Blank line: paragraph/list break
+        if (line === '') {
+            flushParagraph();
+            flushList();
+            return;
+        }
+
+        // Image: !Caption:SourceURL
+        if (line.startsWith('!') && line.includes(':')) {
+            flushParagraph();
+            flushList();
+            const parts = line.substring(1).split(':');
+            const caption = parts[0].trim();
+            const src = parts.slice(1).join(':').trim();
+            html += `<div class="article-image"><img src="${escHtml(src)}" alt="${escHtml(caption)}" loading="lazy"><div class="image-caption">${escHtml(caption)}</div></div>`;
+            return;
+        }
+
+        // Pull Quote
+        if (line.startsWith('>>')) {
+            flushParagraph();
+            flushList();
+            const quote = line.slice(2).trim();
+            html += `<div class="article-quote">${escHtml(quote)}</div>`;
+            return;
+        }
+
+        // Highlight Box header
+        if (line.startsWith('##')) {
+            flushParagraph();
+            flushList();
+            if (inBox) { html += '</div>'; }
+            const title = line.slice(2).trim();
+            html += `<div class="highlight-box"><h3>${escHtml(title)}</h3>`;
+            inBox = true;
+            return;
+        }
+
+        // List item (only meaningful inside a highlight box, but we
+        // support it generally so a bare "- " list also renders)
+        if (line.startsWith('- ')) {
+            flushParagraph();
+            listBuffer.push(line.slice(2).trim());
+            return;
+        }
+
+        // Any other line: close list/box context as needed, then
+        // accumulate into the current paragraph buffer.
         flushList();
-        return;
-    }
+        if (inBox) { html += '</div>'; inBox = false; }
+        paragraphBuffer.push(line);
+    });
 
-    // Image: !Caption:URL
-    if (line.startsWith('!') && line.includes(':')) {
-        flushParagraph(); flushList();
-        const parts = line.substring(1).split(':');
-        const caption = parts[0].trim();
-        const src = parts.slice(1).join(':').trim();
-        html += `<div class="article-image"><img src="${escHtml(src)}" alt="${escHtml(caption)}" loading="lazy"><div class="image-caption">${escHtml(caption)}</div></div>`;
-        return;
-    }
-
-    // Pull quote
-    if (line.startsWith('>>')) {
-        flushParagraph(); flushList();
-        html += `<div class="article-quote">${escHtml(line.slice(2).trim())}</div>`;
-        return;
-    }
-
-    // Highlight box open
-    if (line.startsWith('##')) {
-        flushParagraph(); flushList();
-        if (inBox) html += '</div>';
-        html += `<div class="highlight-box"><h3>${escHtml(line.slice(2).trim())}</h3>`;
-        inBox = true;
-        return;
-    }
-
-    // List item
-    if (line.startsWith('- ')) {
-        flushParagraph();
-        listBuffer.push(line.slice(2).trim());
-        return;
-    }
-
-    // Anything else closes an open box/list and accumulates as a paragraph
+    flushParagraph();
     flushList();
-    if (inBox) { html += '</div>'; inBox = false; }
-    paragraphBuffer.push(line);
-});
+    if (inBox) html += '</div>';
 
-flushParagraph();
-flushList();
-if (inBox) html += '</div>';
-
-return html;
+    return html;
 }
 
 window.toggleRiddle = function(btn) {
@@ -467,11 +478,7 @@ function renderArticlePage(issueId, slug) {
     if (category === 'Riddles' || (category && category.includes('Cryptic'))) {
         finalBodyHtml = parseContent(rawContent, category);
     } else {
-        const paragraphs = rawContent.split('\n\n').map(p => p.trim()).filter(Boolean);
-        finalBodyHtml = paragraphs.map((p, idx) => {
-            if (idx === 0) return `<p class="drop-cap-p">${escHtml(p).replace(/\n/g, '<br>')}</p>`;
-            return `<p>${escHtml(p).replace(/\n/g, '<br>')}</p>`;
-        }).join('');
+        finalBodyHtml = parseContent(rawContent, category);
     }
 
     // Font size and theme controls now live in the persistent floating
