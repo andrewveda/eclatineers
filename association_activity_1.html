@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Poetry Writing and Professional Online Presence Development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-dark: #8C6D1F;
+            --gold-mid: #B59410;
+            --ink: #4A3C15;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            background-color: #FDFBF5;
+            background-image:
+                linear-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--ink);
+            margin: 0;
+            padding: clamp(12px, 4vw, 40px) clamp(8px, 3vw, 20px);
+            padding-bottom: calc(clamp(12px, 4vw, 40px) + env(safe-area-inset-bottom));
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(253, 251, 245, 0.88);
+            padding: clamp(16px, 5vw, 40px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: clamp(28px, 6vw, 50px);
+            padding-bottom: clamp(18px, 4vw, 30px);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        h1 {
+            font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin: 0 0 10px;
+            letter-spacing: clamp(0.5px, 0.8vw, 1px);
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
+
+        h2 {
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            font-weight: 600;
+            color: var(--gold-mid);
+            margin: 5px 0;
+            font-style: italic;
+        }
+
+        h3 {
+            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+            font-weight: 400;
+            color: var(--ink);
+            margin: 12px 0;
+        }
+
+        /* ============ HALL OF FAME ============ */
+        .hall-of-fame {
+            position: relative;
+            margin-bottom: clamp(36px, 8vw, 60px);
+            padding: clamp(24px, 6vw, 40px) clamp(14px, 4vw, 30px) clamp(20px, 5vw, 30px);
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.18), rgba(253, 251, 245, 0.6) 70%);
+            border: 3px double var(--gold);
+            border-radius: 12px;
+            box-shadow:
+                0 0 25px rgba(212, 175, 55, 0.45),
+                inset 0 0 25px rgba(212, 175, 55, 0.12);
+            overflow: hidden;
+        }
+
+        .hall-of-fame::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(105deg, transparent, rgba(255, 245, 200, 0.55), transparent);
+            animation: shimmer 4.5s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0%   { left: -100%; }
+            60%  { left: 130%; }
+            100% { left: 130%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hall-of-fame::before { animation: none; }
+            * { scroll-behavior: auto !important; }
+        }
+
+        .hof-title {
+            text-align: center;
+            font-size: clamp(1.3rem, 6vw, 2rem);
+            font-weight: 700;
+            color: var(--gold-dark);
+            letter-spacing: clamp(1px, 1.5vw, 4px);
+            text-transform: uppercase;
+            margin: 0 0 8px;
+        }
+
+        .hof-subtitle {
+            text-align: center;
+            font-size: clamp(0.8rem, 3.2vw, 0.95rem);
+            font-style: italic;
+            color: var(--gold-mid);
+            margin: 0 0 clamp(18px, 5vw, 30px);
+        }
+
+        .hof-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+            gap: clamp(14px, 3.5vw, 24px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hof-list li { text-align: center; }
+
+        .hof-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            text-decoration: none;
+            color: #6B5310;
+            font-weight: 700;
+            font-size: clamp(0.85rem, 3.4vw, 1rem);
+            letter-spacing: 1.2px;
+            padding: 18px 12px;
+            background: linear-gradient(180deg, #FFF8E1, #F7E7B4);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(140, 109, 31, 0.25);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .hof-card:hover,
+        .hof-card:active {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.55);
+            border-color: var(--gold-dark);
+        }
+
+        .hof-card .laurel {
+            display: block;
+            font-size: clamp(1.3rem, 5vw, 1.6rem);
+            margin-bottom: 6px;
+            line-height: 1;
+        }
+
+        .hof-card .hof-badge {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 3px 12px;
+        }
+
+        /* ============ DIRECTORY ============ */
+        .directory-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: clamp(18px, 5vw, 25px);
+        }
+
+        .directory-heading {
+            flex-basis: 100%;
+            text-align: center;
+            font-size: clamp(1rem, 4.2vw, 1.3rem);
+            font-weight: 600;
+            color: var(--gold-mid);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0 0 4px;
+        }
+
+        .sort-btn {
+            font-family: inherit;
+            font-size: clamp(0.85rem, 3.4vw, 0.95rem);
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--gold-dark);
+            background: transparent;
+            border: 1px solid #E5C158;
+            border-radius: 999px;
+            padding: 12px 20px;          /* large tap target */
+            min-height: 44px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .sort-btn .arrow { font-size: 0.8em; }
+
+        .sort-btn:hover { background: rgba(212, 175, 55, 0.15); }
+
+        .sort-btn.active {
+            background: var(--gold);
+            color: #FFFFFF;
+            border-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .directory-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+            gap: clamp(10px, 2.5vw, 20px);
+        }
+
+        .directory-list li { text-align: center; min-width: 0; }
+
+        .directory-list a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;            /* thumb-friendly tap target */
+            text-decoration: none;
+            color: var(--gold-dark);
+            font-weight: 600;
+            font-size: clamp(0.78rem, 3.2vw, 0.95rem);
+            letter-spacing: clamp(0.5px, 0.6vw, 1.5px);
+            padding: 12px 8px;
+            background-color: transparent;
+            border: 1px solid #E5C158;
+            border-radius: 6px;
+            overflow-wrap: anywhere;
+            transition: all 0.25s ease;
+        }
+
+        .directory-list a:hover,
+        .directory-list a:active {
+            background-color: var(--gold);
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            border-color: var(--gold);
+        }
+
+        /* Small phones: two-column comfort tweaks */
+        @media (max-width: 480px) {
+            .directory-list { grid-template-columns: repeat(2, 1fr); }
+            .hof-list       { grid-template-columns: 1fr; }
+            .hof-card       { padding: 16px 12px; }
+        }
+
+        @media (max-width: 360px) {
+            .directory-list { grid-template-columns: 1fr; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>SRM Valliammai Engineering College</h1>
+            <h2>Department of English, Association Activity</h2>
+            <h3>10 September 2026</h3>
+            <h3>Poetry Writing and Professional Online Presence Development</h3>
+        </header>
+
+        <main>
+            <!-- ============ HALL OF FAME ============ -->
+            <section class="hall-of-fame">
+                <p class="hof-title">&#127942; Hall of Fame &#127942;</p>
+                <p class="hof-subtitle">Celebrating the finest poems of the day &mdash; chosen for imagery, craft, humor, and heart.</p>
+                <ul class="hof-list">
+                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/mohana-shree" target="_blank"><span class="laurel">&#127793;</span>MOHANA SHREE<span class="hof-badge">Most Poetic</span></a></li>
+                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/mukesh" target="_blank"><span class="laurel">&#128395;</span>MUKESH<span class="hof-badge">Best Craft</span></a></li>
+                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/haritha" target="_blank"><span class="laurel">&#127780;</span>HARITHA<span class="hof-badge">Best Imagery</span></a></li>
+                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/mohamed-naveeth" target="_blank"><span class="laurel">&#128514;</span>MOHAMED NAVEETH<span class="hof-badge">Most Original</span></a></li>
+                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/naren" target="_blank"><span class="laurel">&#128367;</span>NAREN<span class="hof-badge">Most Moving</span></a></li>
+                </ul>
+            </section>
+
+            <!-- ============ FULL DIRECTORY ============ -->
+            <div class="directory-bar">
+                <p class="directory-heading">All Poets</p>
+                <button type="button" class="sort-btn active" id="sortAsc" aria-label="Sort poets from A to Z">A&ndash;Z <span class="arrow">&#9650;</span></button>
+                <button type="button" class="sort-btn" id="sortDesc" aria-label="Sort poets from Z to A">Z&ndash;A <span class="arrow">&#9660;</span></button>
+            </div>
+
+            <ul class="directory-list" id="poetList">
+                <li data-name="AKSHAYA"><a href="https://andrewveda.com/eclatineers/poetry/akshaya" target="_blank">AKSHAYA</a></li>
+                <li data-name="AMBIKAVATHI"><a href="https://andrewveda.com/eclatineers/poetry/ambikavathi" target="_blank">AMBIKAVATHI</a></li>
+                <li data-name="ANGELINE"><a href="https://andrewveda.com/eclatineers/poetry/angeline" target="_blank">ANGELINE</a></li>
+                <li data-name="DEEPANA"><a href="https://andrewveda.com/eclatineers/poetry/deepana" target="_blank">DEEPANA</a></li>
+                <li data-name="DEEPIKA-E"><a href="https://andrewveda.com/eclatineers/poetry/deepika-e" target="_blank">DEEPIKA-E</a></li>
+                <li data-name="DHARSHINI"><a href="https://andrewveda.com/eclatineers/poetry/dharshini" target="_blank">DHARSHINI</a></li>
+                <li data-name="DHIVYA"><a href="https://andrewveda.com/eclatineers/poetry/dhivya" target="_blank">DHIVYA</a></li>
+                <li data-name="GAYATHRI"><a href="https://andrewveda.com/eclatineers/poetry/gayathri" target="_blank">GAYATHRI</a></li>
+                <li data-name="GOKULAPRIYA"><a href="https://andrewveda.com/eclatineers/poetry/gokulapriya" target="_blank">GOKULAPRIYA</a></li>
+                <li data-name="GURUJI"><a href="https://andrewveda.com/eclatineers/poetry/guruji" target="_blank">GURUJI</a></li>
+                <li data-name="HARISH"><a href="https://andrewveda.com/eclatineers/poetry/harish" target="_blank">HARISH</a></li>
+                <li data-name="INDIRAKUMARI"><a href="https://andrewveda.com/eclatineers/poetry/indirakumari" target="_blank">INDIRAKUMARI</a></li>
+                <li data-name="JAGADEESWARI"><a href="https://andrewveda.com/eclatineers/poetry/jagadeeswari" target="_blank">JAGADEESWARI</a></li>
+                <li data-name="JANANI"><a href="https://andrewveda.com/eclatineers/poetry/janani" target="_blank">JANANI</a></li>
+                <li data-name="JAYASRI"><a href="https://andrewveda.com/eclatineers/poetry/jayasri" target="_blank">JAYASRI</a></li>
+                <li data-name="JEDIDIAH-PAULSON"><a href="https://andrewveda.com/eclatineers/poetry/jedidiah-paulson" target="_blank">JEDIDIAH-PAULSON</a></li>
+                <li data-name="JEEVA-DHARSHINI"><a href="https://andrewveda.com/eclatineers/poetry/jeeva-dharshini" target="_blank">JEEVA-DHARSHINI</a></li>
+                <li data-name="KEVIN"><a href="https://andrewveda.com/eclatineers/poetry/kevin" target="_blank">KEVIN</a></li>
+                <li data-name="LOKESH"><a href="https://andrewveda.com/eclatineers/poetry/lokesh" target="_blank">LOKESH</a></li>
+                <li data-name="MUGI-DHARSHINIS"><a href="https://andrewveda.com/eclatineers/poetry/mugi-dharshinis" target="_blank">MUGI-DHARSHINIS</a></li>
+                <li data-name="NIRANJAN"><a href="https://andrewveda.com/eclatineers/poetry/niranjan" target="_blank">NIRANJAN</a></li>
+                <li data-name="NITHIESH"><a href="https://andrewveda.com/eclatineers/poetry/nithiesh" target="_blank">NITHIESH</a></li>
+                <li data-name="P-BAKIYASHREE"><a href="https://andrewveda.com/eclatineers/poetry/p-bakiyashree" target="_blank">P-BAKIYASHREE</a></li>
+                <li data-name="PRADEESH"><a href="https://andrewveda.com/eclatineers/poetry/pradeesh" target="_blank">PRADEESH</a></li>
+                <li data-name="RAGHAV"><a href="https://andrewveda.com/eclatineers/poetry/raghav" target="_blank">RAGHAV</a></li>
+                <li data-name="RAJ-KUMAR"><a href="https://andrewveda.com/eclatineers/poetry/raj-kumar" target="_blank">RAJ-KUMAR</a></li>
+                <li data-name="RISHTIKAA-RAMU"><a href="https://andrewveda.com/eclatineers/poetry/rishtikaa-ramu" target="_blank">RISHTIKAA-RAMU</a></li>
+            </ul>
+        </main>
+    </div>
+
+    <script>
+        (function () {
+            var list = document.getElementById('poetList');
+            var btnAsc = document.getElementById('sortAsc');
+            var btnDesc = document.getElementById('sortDesc');
+
+            function sortPoets(ascending) {
+                var items = Array.prototype.slice.call(list.children);
+                items.sort(function (a, b) {
+                    var nameA = a.getAttribute('data-name').toUpperCase();
+                    var nameB = b.getAttribute('data-name').toUpperCase();
+                    if (nameA < nameB) return ascending ? -1 : 1;
+                    if (nameA > nameB) return ascending ? 1 : -1;
+                    return 0;
+                });
+                items.forEach(function (li) { list.appendChild(li); });
+                btnAsc.classList.toggle('active', ascending);
+                btnDesc.classList.toggle('active', !ascending);
+                btnAsc.setAttribute('aria-pressed', ascending);
+                btnDesc.setAttribute('aria-pressed', !ascending);
+            }
+
+            btnAsc.addEventListener('click', function () { sortPoets(true); });
+            btnDesc.addEventListener('click', function () { sortPoets(false); });
+        })();
+    </script>
+
+</body>
+</html>
