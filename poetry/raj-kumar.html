@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Acrostic Poem — Raj Kumar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#f6efdc;--cream-panel:#fbf6ea;--gold:#b8933f;--gold-deep:#8a6a24;--gold-pale:#e3d3a3;--ink:#3a2c1a;--ink-soft:#6b5636;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--cream);background-image:linear-gradient(45deg, transparent 47%, var(--gold-pale) 49%, var(--gold-pale) 51%, transparent 53%),linear-gradient(-45deg, transparent 47%, var(--gold-pale) 49%, var(--gold-pale) 51%, transparent 53%);background-size:46px 46px;font-family:'Cormorant Garamond', serif;color:var(--ink);}
+  .layout-wrapper { display:flex; flex-direction:column; gap:2rem; max-width:1200px; margin:0 auto; padding:32px 16px 60px; align-items:center; }
+  .main-content, .comments-section { width:100%; max-width:520px; }
+  @media (min-width: 1024px) {
+    .layout-wrapper { flex-direction:row; align-items:flex-start; justify-content:center; gap:3rem; padding:40px 24px 80px; }
+    .comments-section { position:sticky; top:40px; }
+  }
+  .frame{background:rgba(251,246,234,0.92);border:1px solid var(--gold);padding:30px 24px;position:relative;height:100%;}
+  .frame::before{content:"";position:absolute;inset:6px;border:1px solid var(--gold-pale);pointer-events:none;}
+  h1{font-family:'Cinzel', serif;font-weight:600;font-size:1.4rem;letter-spacing:0.04em;text-align:center;color:var(--gold-deep);margin:2px 0 22px;}
+  .subtitle{text-align:center;font-style:italic;color:var(--ink-soft);font-size:1.05rem;margin:-14px 0 22px;}
+  p.line-text{font-family:'Cormorant Garamond', serif;font-style:italic;font-size:1.3rem;margin:8px 0;line-height:1.45;}
+  @keyframes goldShimmer { 0% { color: var(--gold-deep); text-shadow: 0 0 2px var(--gold-pale); } 50% { color: #f9d71c; text-shadow: 0 0 15px #f9d71c; } 100% { color: var(--gold-deep); text-shadow: 0 0 2px var(--gold-pale); } }
+  .cap{font-family:'Playfair Display', serif;font-style:normal;font-weight:800;font-size:2.6rem;animation:goldShimmer 2.5s infinite ease-in-out;display:inline-block;line-height:0.8;margin-right:4px;vertical-align:-3px;}
+  .meta{margin-top:36px;text-align:center;font-family:'Cormorant Garamond', serif;font-style:italic;font-size:1.8rem;font-weight:600;color:var(--ink);}
+</style>
+</head>
+<body>
+  <div class="layout-wrapper">
+    <!-- Left Side: Generated Poem -->
+    <div class="main-content">
+      <div class="frame">
+        <h1>An Acrostic Poem</h1>
+        <p class="line-text"><span class="cap">R</span>Aising with courage</p>
+        <p class="line-text"><span class="cap">A</span>Dimirable in all that you do</p>
+        <p class="line-text"><span class="cap">J</span>Ouring through every storm</p>
+        <p class="line-text"><span class="cap">K</span>eeping hope alive</p>
+        <p class="line-text"><span class="cap">U</span>nderstanding the value of every bond</p>
+        <p class="line-text"><span class="cap">M</span>Aking memories wherever I go</p>
+        <p class="line-text"><span class="cap">A</span>Lways carrying</p>
+        <p class="line-text"><span class="cap">R</span>emaining true to himself</p>
+        <p class="meta">— Raj Kumar, ECE-2, 10 September 2026</p>
+      </div>
+    </div>
+    <!-- Right Side / Mobile Bottom: Giscus Comments -->
+    <div class="comments-section">
+      <div class="frame">
+        <h1>Guestbook</h1>
+        <p class="subtitle">Share your thoughts</p>
+        <script src="https://giscus.app/client.js"
+          data-repo="andrewveda/eclatineers"
+          data-repo-id="R_kgDOTP7ILw"
+          data-category="General"
+          data-category-id="DIC_kwDOTP7IL84DAruF"
+          data-mapping="specific"
+          data-term="Raj Kumar — ECE-2 — 10 September 2026"
+          data-strict="1"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="light"
+          data-lang="en"
+          crossorigin="anonymous"
+          async>
+        </script>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
