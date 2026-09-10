@@ -81,118 +81,91 @@
             margin: 12px 0;
         }
 
-        /* ============ HALL OF FAME ============ */
-        .hall-of-fame {
-            position: relative;
-            margin-bottom: clamp(36px, 8vw, 60px);
-            padding: clamp(24px, 6vw, 40px) clamp(14px, 4vw, 30px) clamp(20px, 5vw, 30px);
-            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.18), rgba(253, 251, 245, 0.6) 70%);
-            border: 3px double var(--gold);
-            border-radius: 12px;
-            box-shadow:
-                0 0 25px rgba(212, 175, 55, 0.45),
-                inset 0 0 25px rgba(212, 175, 55, 0.12);
-            overflow: hidden;
+        /* ============ ACTIVITY REPORT ============ */
+        .report {
+            margin-bottom: clamp(30px, 7vw, 50px);
+            padding: clamp(18px, 5vw, 30px);
+            background: #FFFFFF;
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(140, 109, 31, 0.12);
         }
 
-        .hall-of-fame::before {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(105deg, transparent, rgba(255, 245, 200, 0.55), transparent);
-            animation: shimmer 4.5s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes shimmer {
-            0%   { left: -100%; }
-            60%  { left: 130%; }
-            100% { left: 130%; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .hall-of-fame::before { animation: none; }
-            * { scroll-behavior: auto !important; }
-        }
-
-        .hof-title {
-            text-align: center;
-            font-size: clamp(1.3rem, 6vw, 2rem);
-            font-weight: 700;
-            color: var(--gold-dark);
-            letter-spacing: clamp(1px, 1.5vw, 4px);
-            text-transform: uppercase;
-            margin: 0 0 8px;
-        }
-
-        .hof-subtitle {
-            text-align: center;
-            font-size: clamp(0.8rem, 3.2vw, 0.95rem);
-            font-style: italic;
-            color: var(--gold-mid);
-            margin: 0 0 clamp(18px, 5vw, 30px);
-        }
-
-        .hof-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
-            gap: clamp(14px, 3.5vw, 24px);
-            position: relative;
-            z-index: 1;
-        }
-
-        .hof-list li { text-align: center; }
-
-        .hof-card {
+        .report-header {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .report-avatar {
+            flex: 0 0 auto;
+            width: clamp(44px, 11vw, 56px);
+            height: clamp(44px, 11vw, 56px);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 44px;
-            text-decoration: none;
-            color: #6B5310;
+            letter-spacing: 0.5px;
+        }
+
+        .report-byline { min-width: 0; }
+
+        .report-byline .report-author {
             font-weight: 700;
-            font-size: clamp(0.85rem, 3.4vw, 1rem);
-            letter-spacing: 1.2px;
-            padding: 18px 12px;
-            background: linear-gradient(180deg, #FFF8E1, #F7E7B4);
-            border: 2px solid var(--gold);
-            border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(140, 109, 31, 0.25);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .hof-card:hover,
-        .hof-card:active {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.55);
-            border-color: var(--gold-dark);
-        }
-
-        .hof-card .laurel {
-            display: block;
-            font-size: clamp(1.3rem, 5vw, 1.6rem);
-            margin-bottom: 6px;
-            line-height: 1;
-        }
-
-        .hof-card .hof-badge {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
             color: var(--gold-dark);
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid var(--gold);
-            border-radius: 20px;
-            padding: 3px 12px;
+            font-size: clamp(0.95rem, 3.8vw, 1.05rem);
+            margin: 0;
+        }
+
+        .report-byline .report-meta {
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: #8a7a45;
+            margin: 2px 0 0;
+        }
+
+        .report-title {
+            font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin: 0 0 12px;
+            line-height: 1.35;
+        }
+
+        .report p {
+            font-size: clamp(0.88rem, 3.5vw, 0.98rem);
+            margin: 0 0 12px;
+        }
+
+        .report p:last-of-type { margin-bottom: 0; }
+
+        .report .report-lead { font-style: italic; color: #6b5a1e; }
+
+        .report ul {
+            margin: 0 0 12px;
+            padding-left: 1.2em;
+        }
+
+        .report ul li {
+            font-size: clamp(0.88rem, 3.5vw, 0.98rem);
+            margin-bottom: 10px;
+        }
+
+        .report ul li strong { color: var(--gold-dark); }
+
+        .report .report-tags {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(212, 175, 55, 0.35);
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: var(--gold-mid);
+            font-weight: 600;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
         /* ============ DIRECTORY ============ */
@@ -284,8 +257,6 @@
         /* Small phones: two-column comfort tweaks */
         @media (max-width: 480px) {
             .directory-list { grid-template-columns: repeat(2, 1fr); }
-            .hof-list       { grid-template-columns: 1fr; }
-            .hof-card       { padding: 16px 12px; }
         }
 
         @media (max-width: 360px) {
@@ -305,20 +276,39 @@
         </header>
 
         <main>
-            <!-- ============ HALL OF FAME ============ -->
-            <section class="hall-of-fame">
-                <p class="hof-title">&#127942; Hall of Fame &#127942;</p>
-                <p class="hof-subtitle">Celebrating the finest poems of the day &mdash; chosen for imagery, craft, humor, and heart.</p>
-                <ul class="hof-list">
-                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/mohana-shree" target="_blank"><span class="laurel">&#127793;</span>MOHANA SHREE<span class="hof-badge">Most Poetic</span></a></li>
-                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/mukesh" target="_blank"><span class="laurel">&#128395;</span>MUKESH<span class="hof-badge">Best Craft</span></a></li>
-                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/haritha" target="_blank"><span class="laurel">&#127780;</span>HARITHA<span class="hof-badge">Best Imagery</span></a></li>
-                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/mohamed-naveeth" target="_blank"><span class="laurel">&#128514;</span>MOHAMED NAVEETH<span class="hof-badge">Most Original</span></a></li>
-                    <li><a class="hof-card" href="https://andrewveda.com/eclatineers/poetry/naren" target="_blank"><span class="laurel">&#128367;</span>NAREN<span class="hof-badge">Most Moving</span></a></li>
-                </ul>
-            </section>
 
-            <!-- ============ FULL DIRECTORY ============ -->
+            <!-- ============ ACTIVITY REPORT ============ -->
+        <section class="report">
+            <div class="report-header">
+                <div class="report-avatar">SV</div>
+                <div class="report-byline">
+                    <p class="report-author">Department of English, SRM Valliammai Engineering College</p>
+                    <p class="report-meta">Activity Report &middot; 10 September 2026</p>
+                </div>
+            </div>
+
+<p class="report-title">Poetry Writing and Professional Online Presence Development</p>
+
+<p class="report-lead">On 10 September 2026, students participated in a session on <em>Poetry Writing and Professional Online Presence Development</em>, combining creative writing with an introduction to open-source contribution and professional digital identity.</p>
+
+<ul>
+    <li><strong>Introduction to open-source contribution</strong><br>
+    Students created GitHub accounts and made their first contributions to the class magazine repository, <em>Eclatineers</em>. Each student submitted their work through a pull request, gaining practical experience with the basic workflow involved in contributing to a shared repository.</li>
+
+<li><strong>Acrostic poetry and personal expression</strong><br>
+Students wrote acrostic poems in which the initial letters of the lines form their names. The activity provided an opportunity to explore poetry as a form of personal expression while encouraging students to reflect on their individual qualities, interests, and identities.</li>
+
+<li><strong>Poetry reading and presentation</strong><br>
+Several students volunteered to read their poems aloud. The readings gave students an opportunity to present their writing before their peers and experience the transition from written composition to oral performance.</li>
+
+
+</ul>
+
+<p><strong>Outcome:</strong> The session brought together creative writing, public presentation, and practical digital skills. Students completed an original piece of writing while also gaining their first experience of contributing to a collaborative open-source project.</p>
+
+        </section>
+
+        <!-- ============ FULL DIRECTORY ============ -->
             <div class="directory-bar">
                 <p class="directory-heading">All Poets</p>
                 <button type="button" class="sort-btn active" id="sortAsc" aria-label="Sort poets from A to Z">A&ndash;Z <span class="arrow">&#9650;</span></button>
@@ -337,6 +327,7 @@
                 <li data-name="GOKULAPRIYA"><a href="https://andrewveda.com/eclatineers/poetry/gokulapriya" target="_blank">GOKULAPRIYA</a></li>
                 <li data-name="GURUJI"><a href="https://andrewveda.com/eclatineers/poetry/guruji" target="_blank">GURUJI</a></li>
                 <li data-name="HARISH"><a href="https://andrewveda.com/eclatineers/poetry/harish" target="_blank">HARISH</a></li>
+                <li data-name="HARITHA"><a href="https://andrewveda.com/eclatineers/poetry/haritha" target="_blank">HARITHA</a></li>
                 <li data-name="INDIRAKUMARI"><a href="https://andrewveda.com/eclatineers/poetry/indirakumari" target="_blank">INDIRAKUMARI</a></li>
                 <li data-name="JAGADEESWARI"><a href="https://andrewveda.com/eclatineers/poetry/jagadeeswari" target="_blank">JAGADEESWARI</a></li>
                 <li data-name="JANANI"><a href="https://andrewveda.com/eclatineers/poetry/janani" target="_blank">JANANI</a></li>
@@ -345,7 +336,11 @@
                 <li data-name="JEEVA-DHARSHINI"><a href="https://andrewveda.com/eclatineers/poetry/jeeva-dharshini" target="_blank">JEEVA-DHARSHINI</a></li>
                 <li data-name="KEVIN"><a href="https://andrewveda.com/eclatineers/poetry/kevin" target="_blank">KEVIN</a></li>
                 <li data-name="LOKESH"><a href="https://andrewveda.com/eclatineers/poetry/lokesh" target="_blank">LOKESH</a></li>
+                <li data-name="MOHAMED-NAVEETH"><a href="https://andrewveda.com/eclatineers/poetry/mohamed-naveeth" target="_blank">MOHAMED-NAVEETH</a></li>
+                <li data-name="MOHANA SHREE"><a href="https://andrewveda.com/eclatineers/poetry/mohana-shree" target="_blank">MOHANA SHREE</a></li>
                 <li data-name="MUGI-DHARSHINIS"><a href="https://andrewveda.com/eclatineers/poetry/mugi-dharshinis" target="_blank">MUGI-DHARSHINIS</a></li>
+                <li data-name="MUKESH"><a href="https://andrewveda.com/eclatineers/poetry/mukesh" target="_blank">MUKESH</a></li>
+                <li data-name="NAREN"><a href="https://andrewveda.com/eclatineers/poetry/naren" target="_blank">NAREN</a></li>
                 <li data-name="NIRANJAN"><a href="https://andrewveda.com/eclatineers/poetry/niranjan" target="_blank">NIRANJAN</a></li>
                 <li data-name="NITHIESH"><a href="https://andrewveda.com/eclatineers/poetry/nithiesh" target="_blank">NITHIESH</a></li>
                 <li data-name="P-BAKIYASHREE"><a href="https://andrewveda.com/eclatineers/poetry/p-bakiyashree" target="_blank">P-BAKIYASHREE</a></li>
