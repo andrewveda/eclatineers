@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Poetry Writing and Professional Online Presence Development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-dark: #8C6D1F;
+            --gold-mid: #B59410;
+            --ink: #4A3C15;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            background-color: #FDFBF5;
+            background-image:
+                linear-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--ink);
+            margin: 0;
+            padding: clamp(12px, 4vw, 40px) clamp(8px, 3vw, 20px);
+            padding-bottom: calc(clamp(12px, 4vw, 40px) + env(safe-area-inset-bottom));
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(253, 251, 245, 0.88);
+            padding: clamp(16px, 5vw, 40px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: clamp(28px, 6vw, 50px);
+            padding-bottom: clamp(18px, 4vw, 30px);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        h1 {
+            font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin: 0 0 10px;
+            letter-spacing: clamp(0.5px, 0.8vw, 1px);
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
+
+        h2 {
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            font-weight: 600;
+            color: var(--gold-mid);
+            margin: 5px 0;
+            font-style: italic;
+        }
+
+        h3 {
+            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+            font-weight: 400;
+            color: var(--ink);
+            margin: 12px 0;
+        }
+
+        /* ============ ACTIVITY REPORT ============ */
+        .report {
+            margin-bottom: clamp(30px, 7vw, 50px);
+            padding: clamp(18px, 5vw, 30px);
+            background: #FFFFFF;
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(140, 109, 31, 0.12);
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .report-avatar {
+            flex: 0 0 auto;
+            width: clamp(44px, 11vw, 56px);
+            height: clamp(44px, 11vw, 56px);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+        }
+
+        .report-byline { min-width: 0; }
+
+        .report-byline .report-author {
+            font-weight: 700;
+            color: var(--gold-dark);
+            font-size: clamp(0.95rem, 3.8vw, 1.05rem);
+            margin: 0;
+        }
+
+        .report-byline .report-meta {
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: #8a7a45;
+            margin: 2px 0 0;
+        }
+
+        .report-title {
+            font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin: 0 0 12px;
+            line-height: 1.35;
+        }
+
+        .report p {
+            font-size: clamp(0.88rem, 3.5vw, 0.98rem);
+            margin: 0 0 12px;
+        }
+
+        .report p:last-of-type { margin-bottom: 0; }
+
+        .report .report-lead { font-style: italic; color: #6b5a1e; }
+
+        .report ul {
+            margin: 0 0 12px;
+            padding-left: 1.2em;
+        }
+
+        .report ul li {
+            font-size: clamp(0.88rem, 3.5vw, 0.98rem);
+            margin-bottom: 10px;
+        }
+
+        .report ul li strong { color: var(--gold-dark); }
+
+        .report .report-tags {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(212, 175, 55, 0.35);
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: var(--gold-mid);
+            font-weight: 600;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        /* ============ DIRECTORY ============ */
+        .directory-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: clamp(18px, 5vw, 25px);
+        }
+
+        .directory-heading {
+            flex-basis: 100%;
+            text-align: center;
+            font-size: clamp(1rem, 4.2vw, 1.3rem);
+            font-weight: 600;
+            color: var(--gold-mid);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0 0 4px;
+        }
+
+        .sort-btn {
+            font-family: inherit;
+            font-size: clamp(0.85rem, 3.4vw, 0.95rem);
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--gold-dark);
+            background: transparent;
+            border: 1px solid #E5C158;
+            border-radius: 999px;
+            padding: 12px 20px;          /* large tap target */
+            min-height: 44px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .sort-btn .arrow { font-size: 0.8em; }
+
+        .sort-btn:hover { background: rgba(212, 175, 55, 0.15); }
+
+        .sort-btn.active {
+            background: var(--gold);
+            color: #FFFFFF;
+            border-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .directory-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+            gap: clamp(10px, 2.5vw, 20px);
+        }
+
+        .directory-list li { text-align: center; min-width: 0; }
+
+        .directory-list a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;            /* thumb-friendly tap target */
+            text-decoration: none;
+            color: var(--gold-dark);
+            font-weight: 600;
+            font-size: clamp(0.78rem, 3.2vw, 0.95rem);
+            letter-spacing: clamp(0.5px, 0.6vw, 1.5px);
+            padding: 12px 8px;
+            background-color: transparent;
+            border: 1px solid #E5C158;
+            border-radius: 6px;
+            overflow-wrap: anywhere;
+            transition: all 0.25s ease;
+        }
+
+        .directory-list a:hover,
+        .directory-list a:active {
+            background-color: var(--gold);
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            border-color: var(--gold);
+        }
+
+        /* Small phones: two-column comfort tweaks */
+        @media (max-width: 480px) {
+            .directory-list { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 360px) {
+            .directory-list { grid-template-columns: 1fr; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>SRM Valliammai Engineering College</h1>
+            <h2>Department of Agricultural and Civil Engineering, Association Activity</h2>
+            <h3>15 October 2026</h3>
+            <h3>Poetry Writing and Professional Online Presence Development</h3>
+        </header>
+
+        <main>
+
+            <!-- ============ ACTIVITY REPORT ============ -->
+        <section class="report">
+        
+<p class="report-lead">On 15 October 2026, students from Agricultural and Civil Engineering participated in a session on <em>Poetry Writing and Professional Online Presence Development</em>, combining creative writing with an introduction to open-source contribution and professional digital identity.</p>
+
+<ul>
+    <li><strong>Introduction to open-source contribution</strong><br>
+    Students created GitHub accounts and made their first contributions to the department magazine repository, <em>Eclatineers</em>. Each student submitted their work through a pull request, gaining practical experience with the basic workflow involved in contributing to a shared repository.</li>
+
+<li><strong>Acrostic poetry and personal expression</strong><br>
+Students wrote acrostic poems in which the initial letters of the lines form their names. The activity provided an opportunity to explore poetry as a form of personal expression while encouraging students to reflect on their individual qualities, interests, and identities.</li>
+
+<li><strong>Poetry reading and presentation</strong><br>
+Several students volunteered to read their poems aloud. The readings gave students an opportunity to present their writing before their peers and experience the transition from written composition to oral performance.</li>
+
+
+</ul>
+
+<p><strong>Outcome:</strong> The session brought together creative writing, public presentation, and practical digital skills. Students completed an original piece of writing while also gaining their first experience of contributing to a collaborative open-source project.</p>
+
+        </section>
+
+        <!-- ============ FULL DIRECTORY ============ -->
+            <div class="directory-bar">
+                <p class="directory-heading">All Poets</p>
+                <button type="button" class="sort-btn active" id="sortAsc" aria-label="Sort contributors from A to Z">A&ndash;Z <span class="arrow">&#9650;</span></button>
+                <button type="button" class="sort-btn" id="sortDesc" aria-label="Sort contributors from Z to A">Z&ndash;A <span class="arrow">&#9660;</span></button>
+            </div>
+
+            <ul class="directory-list" id="poetList">
+<li data-name="ASHMITHA RANDAPRASAD"><a href="https://andrewveda.com/eclatineers/poetry/ashmitha-rangaprasad" target="_blank">Ashmitha Rangaprasad</a></li>
+<li data-name="DANIEL"><a href="https://andrewveda.com/eclatineers/poetry/daniel" target="_blank">Daniel</a></li>
+<li data-name="FLONA MARIYA"><a href="https://andrewveda.com/eclatineers/poetry/flona-mariya" target="_blank">Flona Mariya</a></li>
+<li data-name="HARISH RAJA"><a href="https://andrewveda.com/eclatineers/poetry/harish-raja" target="_blank">Harish Raja</a></li>
+<li data-name="MANOJ"><a href="https://andrewveda.com/eclatineers/poetry/manoj" target="_blank">Manoj</a></li>
+<li data-name="NAVEEN KISHORE"><a href="https://andrewveda.com/eclatineers/poetry/naveenkishore" target="_blank">Naveen Kishore</a></li>
+<li data-name="PRADEEP"><a href="https://andrewveda.com/eclatineers/poetry/pradeep" target="_blank">Pradeep</a></li>
+<li data-name="SANJITH SARAN"><a href="https://andrewveda.com/eclatineers/poetry/sanjith-saran" target="_blank">Sanjith Saran</a></li>
+<li data-name="SANTHOSH RAJ M"><a href="https://andrewveda.com/eclatineers/poetry/santhosh-raj-m" target="_blank">Santhosh Raj M</a></li>
+<li data-name="THARANIYA"><a href="https://andrewveda.com/eclatineers/poetry/tharaniya" target="_blank">Tharaniya</a></li>            </ul>
+        </main>
+    </div>
+
+    <script>
+        (function () {
+            var list = document.getElementById('poetList');
+            var btnAsc = document.getElementById('sortAsc');
+            var btnDesc = document.getElementById('sortDesc');
+
+            function sortPoets(ascending) {
+                var items = Array.prototype.slice.call(list.children);
+                items.sort(function (a, b) {
+                    var nameA = a.getAttribute('data-name').toUpperCase();
+                    var nameB = b.getAttribute('data-name').toUpperCase();
+                    if (nameA < nameB) return ascending ? -1 : 1;
+                    if (nameA > nameB) return ascending ? 1 : -1;
+                    return 0;
+                });
+                items.forEach(function (li) { list.appendChild(li); });
+                btnAsc.classList.toggle('active', ascending);
+                btnDesc.classList.toggle('active', !ascending);
+                btnAsc.setAttribute('aria-pressed', ascending);
+                btnDesc.setAttribute('aria-pressed', !ascending);
+            }
+
+            btnAsc.addEventListener('click', function () { sortPoets(true); });
+            btnDesc.addEventListener('click', function () { sortPoets(false); });
+        })();
+    </script>
+
+</body>
+</html>
